@@ -3,11 +3,8 @@ import { List, Image, Search,Divider } from "semantic-ui-react";
 import axios from "axios";
 import { useHistory } from "react-router";
 import { Button, Icon } from 'semantic-ui-react'
-import {followuser,followings} from '../../utils/followaction'
-import TextField from '@mui/material/TextField';
-import SearchAction from "../../utils/SearchAction";
-import ReactSearchBox from "react-search-box";
-import { borderRadius } from "@mui/system";
+
+
 export const Searchbar=()=>{
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);

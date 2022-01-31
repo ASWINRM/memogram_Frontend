@@ -1,7 +1,7 @@
 
 import {useEffect,useState} from 'react';
 import axios from 'axios';
-import Cookies from "js-cookie";
+
 import {NoPosts} from '../Components/Layout/NoData'
 import {PostDeleteToastr} from '../Components/Layout/Toastr'
 import CreatePost from '../Components/Post/CreatePost';

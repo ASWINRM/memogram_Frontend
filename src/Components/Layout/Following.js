@@ -4,7 +4,7 @@ import { Grid, Image, Segment , List,Dimmer,Loader,Button} from 'semantic-ui-rea
 import {userfollow,userunfollow} from '../../utils/followaction'
 import { Link } from 'react-router-dom';
 import {NoFollowData} from './NoData'
-import expressAsyncHandler from 'express-async-handler';
+
 function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
     //  console.log( userfollowstats,userinfo,profile);
      const currentuser=JSON.parse(localStorage.getItem('user'));
