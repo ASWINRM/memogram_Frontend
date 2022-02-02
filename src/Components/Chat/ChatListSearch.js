@@ -3,14 +3,14 @@ import  { useState ,useEffect} from "react";
 import { List, Image, Search,Divider } from "semantic-ui-react";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { Button, Icon } from 'semantic-ui-react'
+import {  Icon } from 'semantic-ui-react'
 function ChatListSearch({search}) {
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);
     const [results, setresults] = useState([]);
     const [inputval, setinputval] = useState("");
     const localuser=JSON.parse(localStorage.getItem('user'))
-   const history=useHistory();
+   
    var value="";
 
   //  useEffect(()=>{
@@ -18,7 +18,7 @@ function ChatListSearch({search}) {
   //  },[results]);
 
    useEffect(()=>{
-     if(text==""){
+     if(text===""){
      
         setresults([]);
       

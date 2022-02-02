@@ -1,4 +1,4 @@
-import React from "react";
+
 import axios from "axios";
 
 export const checkusername=async (username,userstatemanage)=>{
@@ -6,12 +6,7 @@ export const checkusername=async (username,userstatemanage)=>{
     //  console.log(username);
 
     try{
-        const config = {
-            headers: {
-                "Content-Type": "application/json",
-                
-            }
-        }
+        
         const res=await axios.get(`https://memogramapp.herokuapp.com/api/signup/${username}`);
         if(res.data==="Available"){
             // console.log(res.data);
@@ -43,11 +38,11 @@ export async function handlesubmit(username,currentpassword,newpassword,password
             currentpassword:currentpassword,
             newpassword:newpassword})
 
-            if(res){
-                // console.log(res);
-                let {data}=res
-                // console.log(data);
-            }
+            // if(res){
+            //     // console.log(res);
+            //     let {data}=res
+            //     // console.log(data);
+            // }
         
             if(res && res.data==="password updated"){
                 //  console.log(res.data);      

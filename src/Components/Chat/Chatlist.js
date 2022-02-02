@@ -2,17 +2,18 @@ import React,{useState,useEffect} from 'react';
 import { Divider, Comment, Icon, List } from "semantic-ui-react";
 import {useHistory} from 'react-router-dom'
 import calculateTime from '../../utils/calculateTime'
-import {useLocation} from "react-router-dom";
+
 function Chatlist({chat, connectedusers,deletechat}) {
 const history=useHistory();
-const querymessage=useLocation().message;
+
 const querymsgwith=window.location.pathname.split("/")[2]
 
 const [isOnline,setisOnline]=useState(false);
 useEffect(()=>{
 setisOnline(connectedusers&&connectedusers.length>0&&connectedusers.filter((users)=>users.userId===chat.messagesWith).length>0
 )
-},[connectedusers])
+
+},[connectedusers,chat.messagesWith])
 return  (
     <>
     {

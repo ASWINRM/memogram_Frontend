@@ -1,14 +1,12 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { Card, Icon, Image, Divider, Segment, Container,Dimmer,Loader } from "semantic-ui-react";
-import {NoPostFound} from '../Layout/NoData'
+
 import PostComments from "./PostComments";
 import CommentInputField from "./CommentInputField";
 import calculateTime from "../../utils/calculateTime";
-import { deletePost, likePost } from "../../utils/postaction";
+import { likePost } from "../../utils/postaction";
 import LikedList from "./LikedList";
-import ImageModal from "./ImageModal";
-import NoImageModal from "./NoImageModal";
 import { Link } from "react-router-dom";
 import Navbar from "../Layout/Navbar";
 
@@ -76,7 +74,7 @@ function PostPage() {
               <Card.Content>
                 <Image floated="left" src={post.user.profilepicurl} avatar circular />
                 <Card.Header>
-                  <Link href={`/${post.user.username}`}>
+                  <Link to={`/${post.user.username}`}>
                     <a>{post.user.name}</a>
                   </Link>
                 </Card.Header>

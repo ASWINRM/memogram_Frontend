@@ -22,7 +22,7 @@ function LikeNotification({ notification }) {
           {notification.post.picUrl && (
             <Feed.Extra images>
               <a href={`/post/${notification.post._id}`}>
-                <img src={notification.post.profilepicurl} />
+                <img src={notification.post.profilepicurl} alt="postpic"/>
               </a>
             </Feed.Extra>
           )}

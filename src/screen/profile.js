@@ -1,13 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import { useState,useEffect} from 'react'
-import { useHistory } from 'react-router'
+
 import { Alert } from '@mui/material'
 import { Grid } from 'semantic-ui-react'
 import ProfileMenutabs from '../Components/Layout/ProfileMenutabs'
 import ProfileHeader from '../Components/Layout/ProfileHeader'
-import { followuser,unfollowuser } from '../utils/followaction'
-import {PlaceHolderPosts} from '../Components/Layout/PlaceHolderGroup'
+
+
 
 import CardPost from '../Components/Post/CardPost'
 import { NoProfilePosts } from '../Components/Layout/NoData'
@@ -34,7 +34,7 @@ import Settings from '../Components/Layout/Settings'
     const handleClick=(item)=>(setactiveitem(item))
     const [user,setuser]=useState()
     const  [profile,setprofile]=useState()
-    const [postres,setpostres]=useState()
+ 
     const [ShowToastr,setShowToastr]=useState(false)
    
     
@@ -54,7 +54,7 @@ import Settings from '../Components/Layout/Settings'
 
 //   console.log(activeitem)
         
-  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
         
     },[username]);
 

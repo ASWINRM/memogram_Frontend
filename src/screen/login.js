@@ -1,11 +1,11 @@
 import React from 'react'
 import {Headermessage,Footermessage} from '../Components/Common/WelcomeMessage'
-import {Form,Message,Button,Divider,TextArea,Segment,Icon} from 'semantic-ui-react'
-import { useState,useEffect,useRef} from 'react'
+import {Form,Message,Button,Segment} from 'semantic-ui-react'
+import { useState,useEffect} from 'react'
 import axios from 'axios'
-import {SetToken} from '../utils/registerUser'
+
 import catcherror from '../utils/catcherror'
-import cookie from 'js-cookie'
+
 import { useHistory } from 'react-router'
 import { Container } from 'semantic-ui-react'
 import Navbar from '../Components/Layout/Navbar'
@@ -25,7 +25,7 @@ const Login  =()=>  {
     const [submitDisable, setsubmitDisable] = useState(true);
     const handlechange=(e)=>{
         
-        const {name,value,files}=e.target;
+        const {name,value}=e.target;
       
       setuser((prev)=>({...prev,[name]:value}))
     }
@@ -37,6 +37,7 @@ const Login  =()=>  {
        }else{
            setsubmitDisable(false);
        }
+       // eslint-disable-next-line react-hooks/exhaustive-deps
      }, [user])
 
      const submithandler=async()=>{
@@ -73,7 +74,7 @@ const Login  =()=>  {
                });
                 localStorage.setItem('user',JSON.stringify(res.data.user));
                 
-                const logintoken=localStorage.getItem('token');
+               
                 if(localStorage.getItem('user') && localStorage.getItem('token')){
                     setformloading(false); 
                     // console.log(JSON.parse(localStorage.getItem('token')));
@@ -112,7 +113,7 @@ const Login  =()=>  {
         
        }
       
-      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
         <Container>

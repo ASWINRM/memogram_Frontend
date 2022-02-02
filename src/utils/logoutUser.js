@@ -1,4 +1,4 @@
-import cookie from 'js-cookie';
+
 
 
 function LogoutUser(email){

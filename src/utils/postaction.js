@@ -1,6 +1,6 @@
 import axios from 'axios';
 import catcherror from './catcherror';
-import Cookies from 'js-cookie';
+
 
 export  const  submitNewPost=async( text, location, picurl, setPosts, setNewPost, setError,picUrl)=>{
 
@@ -13,7 +13,7 @@ export  const  submitNewPost=async( text, location, picurl, setPosts, setNewPost
                
                 headers: {   "Content-Type": "application/json",Authorization: logintoken}
               });
-            const token=logintoken;
+            
             
           
                 const res=await Axios.post('https://memogramapp.herokuapp.com/api/post/newpost',{
@@ -42,8 +42,8 @@ export  const  submitNewPost=async( text, location, picurl, setPosts, setNewPost
 
 
         }catch(e){
-            const errormsg=catcherror(e);
-            setError(e);
+          
+            catcherror(e);
               // console.log(e);
         }
   
@@ -66,7 +66,7 @@ export async function  deletePost(postId,setposts,setShowToastr,setError,posts,s
         let res=await Axios.put(`https://memogramapp.herokuapp.com/api/post/delete/${postId}`);
        if(res){
         //  console.log(res);
-         let post=res.data  
+    
         //  console.log(post);
          settingpost(postId,posts);
         
@@ -74,7 +74,7 @@ export async function  deletePost(postId,setposts,setShowToastr,setError,posts,s
        
     }catch(e){
       const errormsg=catcherror(e);
-      setError(errormsg)
+      catcherror(errormsg)
       // console.log(e);
     }
 }
@@ -103,8 +103,8 @@ export async function likePost(postId,userId,setlikes,like,isLiked){
               isLiked=false;
           }
     }catch(e){
-      const errormsg=catcherror(e);
-     
+      // const errormsg=catcherror(e);
+      catcherror(e)
       // console.log(e);
     }
 }

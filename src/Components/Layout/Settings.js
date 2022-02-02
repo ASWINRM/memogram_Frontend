@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button,  Form } from 'semantic-ui-react'
 import {checkusername,handlesubmit} from '../../utils/usernameaction'
 import { Message,Input,Icon } from 'semantic-ui-react'
 
@@ -34,7 +34,7 @@ function Settings() {
         (async()=>{
             username===""?setusernameAvailable(false):await usernamechecking(username)
         })();
-        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[username])
 
    async function usernamechecking(username){

@@ -5,7 +5,7 @@ import { NoNotifications } from "../Components/Layout/NoData";
 import LikeNotification from "../Components/Notifications/LikeNotification";
 import CommentNotification from "../Components/Notifications/CommentNotification";
 import FollowerNotification from "../Components/Notifications/FollowerNotification";
-import Navbar from '../Components/Layout/Navbar'
+
 import { parseInt } from "lodash";
 function Notifications() {
   const [userfollowstats,setuserfollowstats]=useState();
@@ -35,7 +35,7 @@ function Notifications() {
     olduser['unreadNotification']=false;
     localStorage.setItem('user',JSON.stringify(olduser))
     localStorage.setItem('NotificationLength',0)
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(()=>{
@@ -69,7 +69,7 @@ function Notifications() {
 const makeNotificationsRead=async ()=>{
     try{
 
-        const res=await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength})
+       await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength})
 
     }catch(e){
         // console.log(e)

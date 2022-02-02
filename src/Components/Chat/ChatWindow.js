@@ -1,10 +1,10 @@
-import React,{useEffect, useRef} from 'react';
-import io from 'socket.io-client'
+import React from 'react';
+
 import Banner from './Banner';
 import MessageInputField from './MessageInputField';
 import Message from './Message'
 import { Dimmer, Loader } from 'semantic-ui-react'
-import { Divider, Comment, Icon, List, Grid ,Segment} from "semantic-ui-react";
+import {  Grid} from "semantic-ui-react";
 function ChatWindow({bannerdata,messages,user,divRef,sendmsg}) {
 
     const querymsgwith=window.location.pathname.split("/")[2];

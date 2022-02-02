@@ -20,6 +20,7 @@ function Message({ message, user, bannerProfilePic, divRef }) {
         <img
           className="inlineIcon"
           src={ifYouSender ? user.profilepicurl : bannerProfilePic}
+          alt="bannerpic"
         />
 
         <div className={ifYouSender ? "ownBubble own" : "otherBubble other"}>

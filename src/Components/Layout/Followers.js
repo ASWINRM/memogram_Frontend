@@ -1,9 +1,9 @@
 import React from 'react';
 import {useState,useEffect} from 'react'
-import { Grid, Image, Segment , List,Dimmer,Loader,Button} from 'semantic-ui-react'
+import {  Image,  List,Loader,Button} from 'semantic-ui-react'
 import {userfollow,userunfollow} from '../../utils/followaction'
 import { NoFollowData} from './NoData'
-function Followers({ userfollowstats,setuserfollowstats,userinfo,profile}) {
+function Followers({ userfollowstats,setuserfollowstats,userinfo}) {
     const currentuser=JSON.parse(localStorage.getItem('user'));
     
     //  console.log( userfollowstats,userinfo,profile);

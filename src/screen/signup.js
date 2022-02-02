@@ -1,12 +1,12 @@
 import React from 'react'
 import {Headermessage,Footermessage} from '../Components/Common/WelcomeMessage'
-import {Form,Message,Button,Divider,TextArea,Segment,Icon,Header,Image} from 'semantic-ui-react'
+import {Form,Message,Button,Divider,Segment} from 'semantic-ui-react'
 import { useState,useEffect} from 'react'
 import Commoninputs from '../Components/Common/Commoninput.js'
 import ImageDropDiv from '../Components/Common/ImageDropDiv'
 import axios from 'axios'
 import Registeruser from '../utils/registerUser'
-import { sign } from 'jsonwebtoken'
+
 import { useHistory } from 'react-router'
 import { Container } from 'semantic-ui-react'
 import Navbar from '../Components/Layout/Navbar'
@@ -37,7 +37,7 @@ useEffect(()=>{
       instagram:""
     })
  },[]);
-   let cancel;
+
    const [errormsg, seterrormsg] = useState(null);
    const [username, setusername] = useState("");
    const [showsociallinks, setshowsociallinks] = useState(false);
@@ -102,6 +102,7 @@ useEffect(()=>{
       }else{
           setsubmitDisable(false);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
 
     const checkusername=async (username)=>{
@@ -109,12 +110,7 @@ useEffect(()=>{
      
 
         try{
-            const config = {
-                headers: {
-                    "Content-Type": "application/json",
-                    
-                }
-            }
+           
             const res=await axios.get(`https://memogramapp.herokuapp.com/api/signup/${username}`);
             if(res.data==="Available"){
                 // console.log(res.data);

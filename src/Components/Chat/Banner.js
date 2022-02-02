@@ -1,4 +1,5 @@
-import React,{useEffect} from "react";
+// import React,{useEffect} from "react";
+import React from "react";
 import { Segment, Grid, Image } from "semantic-ui-react";
 
 function Banner({ bannerData }) {

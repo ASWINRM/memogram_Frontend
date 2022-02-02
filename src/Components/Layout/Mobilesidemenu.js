@@ -3,7 +3,7 @@ import { List, Icon, Dropdown, Container ,Menu} from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
 import  LogoutUser  from '../../utils/logoutUser'
-import { Divider } from 'semantic-ui-react'
+
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
@@ -72,6 +72,8 @@ function Mobilesidemenu({user,pc}) {
            sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
          }
        })();
+       
+  // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     // useEffect(()=>{

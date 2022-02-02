@@ -1,8 +1,8 @@
 import React, { useState ,useEffect} from "react";
-import { List, Image, Search,Divider } from "semantic-ui-react";
+import { List, Image,Divider } from "semantic-ui-react";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { Button, Icon } from 'semantic-ui-react'
+import {  Icon } from 'semantic-ui-react'
 
 
 export const Searchbar=()=>{
@@ -18,7 +18,7 @@ export const Searchbar=()=>{
   //  },[results]);
 
    useEffect(()=>{
-     if(text==""){
+     if(text===""){
      
         setresults([]);
       

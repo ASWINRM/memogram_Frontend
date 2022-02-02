@@ -8,11 +8,11 @@ import CreatePost from '../Components/Post/CreatePost';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlaceHolderPosts,EndMessage} from '../Components/Layout/PlaceHolderGroup'
 import CardPost from '../Components/Post/CardPost.js';
-import { Button, Segment } from 'semantic-ui-react';
-import PostComments from '../Components/Post/PostComments';
+import { Segment } from 'semantic-ui-react';
+
 import { Dimmer, Loader } from 'semantic-ui-react'
-import {Headermessage,Footermessage} from '../Components/Common/WelcomeMessage'
-import { Divider } from 'semantic-ui-react'
+
+
 const Home=()=>{
   const [posts,setposts] = useState([]);
   const [hasmore, sethasmore] = useState(false);
@@ -47,7 +47,7 @@ const Home=()=>{
      document.title=`WelCome ${user.name.toString().split(" ")[0]}`;
      fetchDataOnScroll();
    }
-  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
 
  useEffect(() => {
@@ -154,7 +154,7 @@ const Home=()=>{
 
      }
      {
-       loading==false &&  <Segment>
+       loading===false &&  <Segment>
        {/* <CreatePost user={user} setPosts={setposts}></CreatePost> */}
       <InfiniteScroll
      hasMore={hasmore}

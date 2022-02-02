@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useRef} from 'react';
-import { Divider, Comment, Icon, List, Grid ,Segment} from "semantic-ui-react";
+import { Comment, Grid ,Segment} from "semantic-ui-react";
 import axios from 'axios';
 import {useHistory} from 'react-router-dom'
 import Chatlist from './Chatlist';
@@ -67,7 +67,7 @@ function Chat() {
         console.error(e);
     }
     })();
-   
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
 
@@ -111,7 +111,7 @@ function Chat() {
               socket.current.off();
             }
           };
-      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     // async function finduser(){
@@ -183,6 +183,7 @@ function Chat() {
        
         
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     useEffect(()=>{
@@ -262,7 +263,7 @@ function Chat() {
   const deletechat=async(messageId)=>{
     
       setchats((prev)=>[...prev.filter((p)=>p.messagesWith!==messageId)])
-    let deleteres=await Axios.post('https://memogramapp.herokuapp.com/api/chat/deleteChat',{messagesWith:messageId})
+    await Axios.post('https://memogramapp.herokuapp.com/api/chat/deleteChat',{messagesWith:messageId})
 
     
   }

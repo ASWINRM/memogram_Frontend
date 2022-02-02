@@ -1,13 +1,13 @@
 import React from 'react'
 import { useLocation } from 'react-router';
-import {Menu,Icon,Container} from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
+import {Menu,Container} from 'semantic-ui-react'
+
 
 
 const Navbar=  ()=> {
     const location=useLocation();
 
-    const isActive=(route)=>location.pathname===route;
+    
 
     return (
         <>

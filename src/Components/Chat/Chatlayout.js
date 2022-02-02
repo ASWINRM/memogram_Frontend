@@ -1,10 +1,10 @@
 import React,{createRef} from 'react'
 
 import NewNavbar from '../Layout/NewNavbar'
-import {Container, Grid,Sticky,Ref,Visibility,Segment} from 'semantic-ui-react'
+import {Container, Grid,Sticky,Ref} from 'semantic-ui-react'
 import SideMenu from '../Layout/SideMenu'
 import Chat from './Chat'
-import ChatListSearch from './ChatListSearch'
+
 import { createMedia } from "@artsy/fresnel";
 import Mobilesidemenu from '../Layout/Mobilesidemenu';
 const AppMedia = createMedia({

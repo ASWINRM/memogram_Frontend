@@ -1,13 +1,13 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState} from 'react';
 import { Button,  Divider,  Form,Message,Header,Icon } from 'semantic-ui-react'
 import ImageDropDiv from '../Common/ImageDropDiv';
 import Commoninputs from '../Common/Commoninput'
 import axios from 'axios';
 import { Profileupdate} from '../../utils/profileaction'
-import { useHistory } from "react-router";
+
 
 function Updateprofile({profile,setactiveitem}) {
-    const history=useHistory();
+    
     console.log(profile);
 const [media,setmedia]=useState(null);
 const [mediapreview,setmediapreview]=useState(profile.user.profilepicurl);
@@ -66,7 +66,7 @@ const handlechange=async (e)=>{
             if(name!=='Bio'){
                 setuser(prev=>({...prev,[name]:value}))
             }else{
-                setuser(prev=>({...prev,['bio']:value}))
+                setuser(prev=>({...prev,['Bio']:value}))
             }
             
         }

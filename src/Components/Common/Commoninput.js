@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import {Form,Message,Button,Divider} from 'semantic-ui-react'
 
 const Commoninputs  =({user,handlechange,showsociallinks,

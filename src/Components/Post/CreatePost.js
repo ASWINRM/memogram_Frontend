@@ -1,5 +1,5 @@
-import React, { useState, useRef,useEffect } from "react";
-import { Form, Button, Image, Divider, Message, Icon,Loader,Dimmer } from "semantic-ui-react";
+import React, { useState, useRef } from "react";
+import { Form, Button, Image, Divider, Message, Icon } from "semantic-ui-react";
 
 import { submitNewPost } from "../../utils/postaction";
 import axios from 'axios';
