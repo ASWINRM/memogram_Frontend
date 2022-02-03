@@ -99,7 +99,7 @@ function Mobilesidemenu({user,pc}) {
        
        selection>   
            {
-               pc==true? <List
+               pc===true? <List
                style={{ paddingTop: "1rem",marginLeft:"1rem" }}
                size="big"
                

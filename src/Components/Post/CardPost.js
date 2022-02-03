@@ -34,18 +34,31 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
   //   console.log(typeof(setShowToastr))
   // }
   const [likes, setLikes] = useState(post.likes ? post.likes :[]);
-  let [isLiked,setisLiked]=useState();
+  let isLiked =(likes && post.likes.length > 0) && likes.filter(like => like.user._id === user._id).length > 0;
  
-  if(likes){
-    // console.log(post.likes)
-     isLiked =
-    post.likes.length > 0 && likes.filter(like => like.user._id === user._id).length > 0;
-    // console.log( likes.filter(like => like.user._id === user._id).length > 0);
-    // console.log(isLiked+" isLiked")
-  }else{
-    isLiked=false;
-    // console.log(isLiked+" isLiked")
-  }
+  useEffect(()=>{
+    console.log("isliked changing")
+    // console.log(likes)
+    if((likes) && likes.filter(like => like.user._id === user._id).length > 0){
+      // console.log(likes)
+      isLiked =true
+      // console.log(isLiked)
+    }else{
+      // console.log(likes)
+      isLiked =false
+      // console.log(isLiked)
+    }
+  
+  },[likes])
+  // if(likes){
+  //   // console.log(post.likes)
+   
+  //   // console.log( likes.filter(like => like.user._id === user._id).length > 0);
+  //   // console.log(isLiked+" isLiked")
+  // }else{
+  //   isLiked=false;
+  //   // console.log(isLiked+" isLiked")
+  // }
 
   let [icon,seticon]=useState( isLiked?"heart":"heart outline" )
 
@@ -63,7 +76,23 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
   // console.log(user);
   // console.log(post.picurl);
   // },[])
+  const settingcomments=(commentId)=>{
+    if(commentId){
+      console.log(commentId)
+      console.log(comments)
+      setComments((prev)=>prev.filter((comment)=>comment.id!==commentId))
+      console.log(comments)
+    }
+  
+  }
    
+
+  const addingcomments=(addedcomments)=>{
+    if(addedcomments){
+      setComments((prev)=>[addedcomments,...prev])
+      console.log(comments)
+    }
+  }
   const addPropsToModal = () => ({
     post,
     user,
@@ -71,16 +100,12 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
     likes,
     isLiked,
     comments,
-    setComments
+    setComments,
+    settingcomments
   });
 
 
-  const settingcomments=(commentId)=>{
-    if(commentId){
-      setComments((prev)=>prev.filter((comment)=>comment._id!==commentId))
-    }
-  
-  }
+ 
 
   return (
     <>
@@ -196,11 +221,21 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
               name={icon}
               color="red"
               style={{ cursor: "pointer" }}
-              onClick={() =>{
+              onClick={async() =>{
+                // console.log(isLiked)
+                seticon(isLiked===true? "heart outline":"heart")
+                // if(isLiked){
+                 
+                //   setLikes((prev)=>prev.filter(like=>like.user!==user.id));
+                 
+                // }else{
+                //   console.log("setlike is false")
                 
-                seticon(isLiked===false? "heart":"heart outline")
-                likePost(post._id, user._id, setLikes, isLiked ? false : true,setError,isLiked);
+                //   setLikes((prev)=>[...prev,{user:user._id}])
+                // }
                 
+               await likePost(post._id, user, setLikes, isLiked ? true : false,setError,isLiked);
+               
                 
               }
              
@@ -256,6 +291,8 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
               user={user}
               postId={post._id}
               setComments={setComments}
+             addingcomments={addingcomments}
+
             />
           </Card.Content>
         </Card>

@@ -1,6 +1,5 @@
-import React from 'react';
-import {useState,useEffect} from 'react'
-import { Grid, Image, Segment , List,Dimmer,Loader,Button} from 'semantic-ui-react'
+import React,{useState}  from 'react';
+import {  Image,  List,Loader,Button} from 'semantic-ui-react'
 import {userfollow,userunfollow} from '../../utils/followaction'
 import { Link } from 'react-router-dom';
 import {NoFollowData} from './NoData'

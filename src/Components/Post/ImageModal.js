@@ -14,7 +14,8 @@ const ImageModal=({
   likes,
   isLiked,
   comments,
-  setComments
+  setComments,
+  settingcomments
 }) =>{
   return (
     <>
@@ -88,6 +89,7 @@ const ImageModal=({
                       postId={post._id}
                       user={user}
                       setComments={setComments}
+                      settingcomments={ settingcomments}
                     />
                   ))}
               </div>

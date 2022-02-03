@@ -79,11 +79,11 @@ export async function  deletePost(postId,setposts,setShowToastr,setError,posts,s
     }
 }
 
-export async function likePost(postId,userId,setlikes,like,isLiked){
+export async function likePost(postId,user,setLikes,like,isLiked){
 
     try{
-        // console.log("isliked "+isLiked);
-        // console.log(like);
+        console.log("isliked "+isLiked);
+        console.log(like);
         const Axios = axios.create({
                 
             headers: {  "Content-Type": "application/json",Authorization: JSON.parse(localStorage.getItem('token')) }
@@ -92,15 +92,19 @@ export async function likePost(postId,userId,setlikes,like,isLiked){
           if(like){
               // console.log("inside true");
               // console.log(postId);
-             let res= await Axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`);
+              console.log(like);
+              setLikes((prev)=>prev.filter(like=>like.user._id!==user._id));
+              await Axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`);
              
-              setlikes((prev)=>[...prev,{user:userId}])
-              isLiked=true;
+             
+              // 
+              // isLiked=true;
           }else{
             // console.log("inside false");
-              await Axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`);
-              setlikes((prev)=>prev.filter(like=>like.user!==userId));
-              isLiked=false;
+            setLikes((prev)=>[...prev,{user:user}])
+            await Axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`);
+         
+              // isLiked=false;
           }
     }catch(e){
       // const errormsg=catcherror(e);
@@ -109,17 +113,22 @@ export async function likePost(postId,userId,setlikes,like,isLiked){
     }
 }
 
-export async function postComment(postId,user,text,setcomments,settext){
+export async function postComment(postId,user,text,setcomments,settext,addingcomments){
      
     try{
+      
+      console.log(text);
         const Axios = axios.create({
                 
             headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
           });
     
-          const res=await Axios.post(`https://memogramapp.herokuapp.com/api/post/commenting/${postId}`,{text});
-          
-          setcomments((prev)=>[res.data,...prev]);
+          const res=await Axios.post('https://memogramapp.herokuapp.com/api/post/commenting/'+postId,{text});
+          if(res){
+            console.log(res.data)
+            
+          }
+          addingcomments(res.data)
           settext("");
     }catch(e){
         // console.log(e);
@@ -128,17 +137,15 @@ export async function postComment(postId,user,text,setcomments,settext){
 
 export async function deleteComment(postId,commentId,setComments, settingcomments){
     try{
+     
       // console.log("deletecomment action");
         const Axios = axios.create({
                 
             headers: {"Content-Type": "application/json", Authorization:JSON.parse(localStorage.getItem('token'))  }
           });
 
-        var res=await Axios.put(`https://memogramapp.herokuapp.com/api/post/comment/delete/${postId}/${commentId}`);
-        if(res){
-          // console.log(res.data);
-          settingcomments(commentId);
-        }
+        var res=await Axios.put(`https://memogramapp.herokuapp.com/api/post/comment/delete/`+postId+'/'+commentId);
+       
     }catch(e){
       //  console.log(e);
     }

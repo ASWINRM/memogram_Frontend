@@ -1,8 +1,8 @@
 import React from 'react';
 import  { useState ,useEffect} from "react";
-import { List, Image, Search,Divider } from "semantic-ui-react";
+import { List, Image, Divider } from "semantic-ui-react";
 import axios from "axios";
-import { useHistory } from "react-router";
+
 import {  Icon } from 'semantic-ui-react'
 function ChatListSearch({search}) {
     const [text, settext] = useState("");

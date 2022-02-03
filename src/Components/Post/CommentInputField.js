@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form } from "semantic-ui-react";
 import {postComment } from "../../utils/postaction";
 
-const CommentInputField=({ postId, user, setComments })=>{
+const CommentInputField=({ postId, user, setComments,addingcomments })=>{
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ const CommentInputField=({ postId, user, setComments })=>{
       onSubmit={async e => {
         e.preventDefault();
         setLoading(true);
-        await postComment(postId, user, text, setComments, setText);
+        await postComment(postId, user, text, setComments, setText,addingcomments);
         setLoading(false);
       }}>
       <Form.Input

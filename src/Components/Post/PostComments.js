@@ -12,6 +12,7 @@ const PostComments=({ comment, user, setComments, postId,settingcomments })=>{
   
   let [commentremove,setcommentremove]=useState(false);
   let ownuser=JSON.parse(localStorage.getItem('user'))
+  
   // console.log(ownuser._id);
   // console.log(comment)
   // console.log(comment.user._id)
@@ -44,10 +45,11 @@ const PostComments=({ comment, user, setComments, postId,settingcomments })=>{
                   color="red"
                   name="trash"
                   onClick={async () => {
+                    settingcomments(comment.id);
                     setDisabled(true);
                     await deleteComment(postId, comment.id, setComments,settingcomments);
                     setDisabled(false);
-                    setcommentremove(true);
+                    
                   }}
                 />
               )}
