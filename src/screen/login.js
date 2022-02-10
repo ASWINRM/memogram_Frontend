@@ -10,6 +10,7 @@ import { useHistory } from 'react-router'
 import { Container } from 'semantic-ui-react'
 import Navbar from '../Components/Layout/Navbar'
 import { Link } from 'react-router-dom'
+
 const Login  =()=>  {
     
     let [user, setuser] = useState({
@@ -119,7 +120,11 @@ const Login  =()=>  {
         <Container>
         <div>
         <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}}>
-           <Navbar  ></Navbar>
+      
+            
+               <Navbar></Navbar>
+            
+         
            </div>
              <Headermessage></Headermessage>
              <Form loading={formloading} error={errormsg!==null} 

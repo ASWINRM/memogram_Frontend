@@ -26,7 +26,7 @@ export const Headermessage =()=> {
 export  const Footermessage=()=>{
     
     // eslint-disable-next-line no-restricted-globals
-    const signuproute=location.pathname==="/"
+    const signuproute=location.pathname==="/signup"
     return (
         <div>
           {
@@ -35,7 +35,7 @@ export  const Footermessage=()=>{
               <>
                <Message attached="bottom" warning >
                
-                Existing User?{" "}<Link to="/login" style={{ textDecoration: 'none' }}>Login</Link>
+                Existing User?{" "}<Link to="/" style={{ textDecoration: 'none' }}>Login</Link>
             </Message>
                 <Divider></Divider>
 
@@ -51,7 +51,7 @@ export  const Footermessage=()=>{
                <Message attached="bottom" warning>
                 <Icon name="help"></Icon>
                 New User?{" "}
-               <Link to="/">Sign up</Link>
+               <Link to="/signup">Sign up</Link>
               </Message>
               <Divider></Divider>
 
