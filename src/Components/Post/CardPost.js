@@ -19,7 +19,7 @@ import LikedList from "./LikedList";
 import ImageModal from "./ImageModal";
 import NoImageModal from "./NoImageModal";
 
-const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
+const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
   const user=JSON.parse(localStorage.getItem('user'));
 
   // console.log(posts)
@@ -233,10 +233,29 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
                 
                 //   setLikes((prev)=>[...prev,{user:user._id}])
                 // }
+                if(isLiked){
+                  setLikes((prev)=>prev.filter(like=>like.user._id!==user._id));
+                  socket.current.emit("dislikepost",{userId:user._id,postId:post._id})
+
+                }else{
+                  setLikes((prev)=>[...prev,{user:user}])
+                  socket.current.emit("likepost",{userId:user._id,postId:post._id})
+
+                }
+              
+              //  socket.current.emit("likepost",{userId:user._id, like : isLiked ? true : false,postId:post._id})
                 
-               await likePost(post._id, user, setLikes, isLiked ? true : false,setError,isLiked);
+               socket.current.on('postliked',async()=>{
+                 console.log("postliked")
                
-                
+                 
+               })
+
+               socket.current.on('postdisliked',async()=>{
+                console.log("postdisliked")
+               
+              
+              })
               }
              
               }
@@ -271,6 +290,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
                       user={user}
                       setComments={setComments}
                       settingcomments={settingcomments}
+                      socket={socket}
                     />
                   )
               )}
@@ -292,7 +312,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost})=>{
               postId={post._id}
               setComments={setComments}
              addingcomments={addingcomments}
-
+               socket={socket}
             />
           </Card.Content>
         </Card>

@@ -1,7 +1,7 @@
 
-import {useEffect,useState} from 'react';
+import {useEffect,useState,useRef} from 'react';
 import axios from 'axios';
-
+import NotificationPortal from './NotificationPortal' 
 import {NoPosts} from '../Components/Layout/NoData'
 import {PostDeleteToastr} from '../Components/Layout/Toastr'
 import CreatePost from '../Components/Post/CreatePost';
@@ -9,7 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlaceHolderPosts,EndMessage} from '../Components/Layout/PlaceHolderGroup'
 import CardPost from '../Components/Post/CardPost.js';
 import { Segment } from 'semantic-ui-react';
-
+import io from 'socket.io-client'
 import { Dimmer, Loader } from 'semantic-ui-react'
 
 
@@ -22,6 +22,48 @@ const Home=()=>{
   const user=JSON.parse(localStorage.getItem('user'));
   const [loading, setloading] = useState(true);
   const header=window.location.pathname.split('/')[1]
+  const [newNotification,setnewNotification]=useState(null);
+  const [notificationPopup, showNotificationPopup] = useState(false);
+  let socket=useRef()
+
+  useEffect(()=>{
+    if(!socket.current){
+      socket.current=io.connect('https://memogramapp.herokuapp.com');
+      if(socket.current){
+        socket.current.emit('join',{userId:user._id})
+
+        socket.current.on("connectedusers",({users})=>{
+          // if(users.length>0){
+          //      console.log(users)
+            
+          // }
+        })
+    }
+  }
+},[])
+useEffect(()=>{
+  if(showNotificationPopup===false){
+   setnewNotification("");
+  }
+},[showNotificationPopup])
+
+useEffect(()=>{
+  if(socket.current){
+ socket.current.on("newlikenotification",({data})=>{
+   console.log(data);
+    setnewNotification(data)
+    showNotificationPopup(true)
+ })
+
+ socket.current.on('newcommentNotification',({data})=>{
+   console.log("comment received")
+   console.log(data);
+  setnewNotification(data)
+  showNotificationPopup(true)
+ })
+  }
+},[])
+
 
  function settingpost(postid,post){
     // console.log(postid);
@@ -128,6 +170,7 @@ const Home=()=>{
   
   )
  }
+ 
 
  if(posts.length>0){
    setTimeout(()=>{
@@ -136,6 +179,14 @@ const Home=()=>{
   return(
     <>
    <div style={{margin:"20px"}}></div>
+   {notificationPopup && newNotification !== null && (
+        <NotificationPortal
+          newNotification={newNotification}
+          notificationPopup={notificationPopup}
+          showNotificationPopup={showNotificationPopup}
+        />
+      )}
+
      <CreatePost user={user} setPosts={setposts} setloading={setloading}></CreatePost>
      {
        ShowToastr && <PostDeleteToastr></PostDeleteToastr>
@@ -173,6 +224,7 @@ const Home=()=>{
        posts={posts}
        setShowToastr={setShowToastr}
        settingpost={settingpost}
+       socket={socket}
        ></CardPost>
        ))}
       </InfiniteScroll> 

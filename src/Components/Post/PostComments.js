@@ -4,7 +4,7 @@ import calculateTime from "../../utils/calculateTime";
 import { deleteComment } from "../../utils/postaction";
 
 
-const PostComments=({ comment, user, setComments, postId,settingcomments })=>{
+const PostComments=({ comment, user, setComments, postId,settingcomments,socket })=>{
   // console.log(comment);
   let [disabled, setDisabled] = useState(false);
   let [name, setname] = useState(comment.user.name);
@@ -46,10 +46,10 @@ const PostComments=({ comment, user, setComments, postId,settingcomments })=>{
                   name="trash"
                   onClick={async () => {
                     settingcomments(comment.id);
-                    setDisabled(true);
-                    await deleteComment(postId, comment.id, setComments,settingcomments);
-                    setDisabled(false);
-                    
+                    socket.current.emit('deletecomment',{userId:ownuser._id,commentId:comment._id,postId:postId})
+                    socket.current.on("commentdeleted",()=>{
+                      console.log("comment deleted")
+                    })
                   }}
                 />
               )}

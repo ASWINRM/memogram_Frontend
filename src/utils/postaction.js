@@ -90,21 +90,18 @@ export async function likePost(postId,user,setLikes,like,isLiked){
           });
 
           if(like){
-              // console.log("inside true");
-              // console.log(postId);
+          
               console.log(like);
               setLikes((prev)=>prev.filter(like=>like.user._id!==user._id));
-              await Axios.post(`https://memogramapp.herokuapp.com/api/post/dislike/${postId}`);
+            
              
-             
-              // 
-              // isLiked=true;
+  
           }else{
-            // console.log("inside false");
+     
             setLikes((prev)=>[...prev,{user:user}])
-            await Axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`);
+            // await axios.post(`https://memogramapp.herokuapp.com/api/post/liking/${postId}`,{userId:user._id});
          
-              // isLiked=false;
+      
           }
     }catch(e){
       // const errormsg=catcherror(e);
@@ -123,13 +120,9 @@ export async function postComment(postId,user,text,setcomments,settext,addingcom
             headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
           });
     
-          const res=await Axios.post('https://memogramapp.herokuapp.com/api/post/commenting/'+postId,{text});
-          if(res){
-            console.log(res.data)
-            
-          }
-          addingcomments(res.data)
-          settext("");
+          // const res=await Axios.post('https://memogramapp.herokuapp.com/api/post/commenting/'+postId,{text});
+         
+          
     }catch(e){
         // console.log(e);
     }
