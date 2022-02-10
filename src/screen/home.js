@@ -24,6 +24,7 @@ const Home=()=>{
   const header=window.location.pathname.split('/')[1]
   const [newNotification,setnewNotification]=useState(null);
   const [notificationPopup, showNotificationPopup] = useState(false);
+  console.log(JSON.parse(localStorage.getItem('user')))
   let socket=useRef()
 
   useEffect(()=>{
