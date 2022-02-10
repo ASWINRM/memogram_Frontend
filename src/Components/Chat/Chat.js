@@ -274,6 +274,8 @@ function Chat() {
             </div>
 
             {
+
+              querymsgwith==='nochats'?<NoMessages></NoMessages>:
                 (chats&&chats.length>0) ? (
                     <div style={{marginTop:"20px",width:"100%"}}>
                     <Grid stackable>

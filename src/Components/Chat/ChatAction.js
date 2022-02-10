@@ -16,7 +16,7 @@ function ChatAction(props) {
                 // console.log(res.data)
              
                 localStorage.setItem('chats',JSON.stringify(res.data))
-                history.push(`/messages/${res.data[0].messagesWith}`)
+                history.push(`/messages/nochats`)
             }else{
                 localStorage.setItem('chats',JSON.stringify(res.data))
                 history.push(`/messages/${res.data[0].messagesWith}`)

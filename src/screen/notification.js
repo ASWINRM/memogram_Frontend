@@ -96,9 +96,12 @@ const notificationRead = async () => {
         setpageloading(true)
         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/getuserNotifications`);
 
-        if(res){
+        if(res!=="no notifications"){
             setnotifications(res.data)
             setpageloading(false)
+        }else{
+          setnotifications([]);
+          setpageloading(false)
         }
       } catch (error) {
         setpageloading(false)

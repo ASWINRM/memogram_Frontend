@@ -7,8 +7,6 @@ import { Grid } from 'semantic-ui-react'
 import ProfileMenutabs from '../Components/Layout/ProfileMenutabs'
 import ProfileHeader from '../Components/Layout/ProfileHeader'
 
-
-
 import CardPost from '../Components/Post/CardPost'
 import { NoProfilePosts } from '../Components/Layout/NoData'
 import { PostDeleteToastr } from '../Components/Layout/Toastr'
