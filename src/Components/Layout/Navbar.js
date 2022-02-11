@@ -3,6 +3,7 @@ import { useLocation } from 'react-router';
 import {Menu,Icon,Container} from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 import { createMedia } from "@artsy/fresnel";
+
 const AppMedia = createMedia({
   breakpoints: { zero: 0, mobile: 549, tablet: 850, computer: 1080 }
 });
@@ -12,7 +13,7 @@ const { Media, MediaContextProvider } = AppMedia;
 
 const Navbar=  ()=> {
     const location=useLocation();
-
+   
     const isActive=(route)=>location.pathname===route;
 
     return (
@@ -20,7 +21,8 @@ const Navbar=  ()=> {
         <MediaContextProvider>
         <Media greaterThanOrEqual="computer">
         <Menu fluid borderless>
-                <div>
+    
+                <div >
                 <h1 style={{color:"#007FFF",padding:"2rem"}}>MEMOGRAM</h1>
                 </div>
             <Container text>

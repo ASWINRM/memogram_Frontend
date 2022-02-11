@@ -13,7 +13,7 @@ import io from 'socket.io-client'
 import { Dimmer, Loader } from 'semantic-ui-react'
 
 
-const Home=(home)=>{
+const UpdatedHome=()=>{
   const [posts,setposts] = useState([]);
   const [hasmore, sethasmore] = useState(false);
   const [ShowToastr, setShowToastr] = useState(false);
@@ -66,25 +66,25 @@ useEffect(()=>{
 },[])
 
 
-useEffect(()=>{
-  return ()=>{
-    setposts([]);
-   sethasmore(false);
-   setShowToastr(false);
-  
- setPageNumber();
-  
-  setloading();
-  
-  setnewNotification();
- showNotificationPopup();
- if (socket.current) {
-  socket.current.disconnect();
-  socket.current.off();
-}
-  };
-},[])
 
+useEffect(()=>{
+    return ()=>{
+      setposts([]);
+     sethasmore(false);
+     setShowToastr(false);
+    
+   setPageNumber();
+    
+    setloading();
+    
+    setnewNotification();
+   showNotificationPopup();
+   if (socket.current) {
+    socket.current.disconnect();
+    socket.current.off();
+  }
+    };
+  },[])
 
  function settingpost(postid,post){
     // console.log(postid);
@@ -108,12 +108,10 @@ useEffect(()=>{
    if(user){
     // console.log(user);
      document.title=`WelCome ${user.name.toString().split(" ")[0]}`;
-     fetchDataOnScroll()
+     fetchDataOnScroll();
    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
-
-
 
  useEffect(() => {
   
@@ -164,15 +162,11 @@ useEffect(()=>{
         
  }
 
- 
-
- if(!posts || posts.length===0) {
+ if(posts.length===0) {
   setTimeout(()=>{
     setloading(false);
   },2000)
   return(
-
-
     <div style={{"marginTop":"5%","marginLeft":"5%"}}>
  <Segment>
  
@@ -203,8 +197,6 @@ useEffect(()=>{
    setTimeout(()=>{
      setloading(false);
    },7000)
-
-
   return(
     <>
    <div style={{margin:"20px"}}></div>
@@ -269,4 +261,4 @@ useEffect(()=>{
 }
 
 
-export default Home;
+export default UpdatedHome;

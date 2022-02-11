@@ -1,9 +1,10 @@
-import React,{createRef} from 'react'
+import React,{createRef,useState} from 'react'
 import NewNavbar from './NewNavbar'
 import {Container, Grid,Sticky,Ref,Visibility,Segment} from 'semantic-ui-react'
 import SideMenu from './SideMenu';
 import Searchbar from './Searchbar';
 import Home from '../../screen/home'
+import UpdatedHome from '../../screen/UpdatedHome'
 import { createMedia } from "@artsy/fresnel";
 import Mobilesidemenu from './Mobilesidemenu';
 const AppMedia = createMedia({
@@ -15,6 +16,16 @@ const { Media, MediaContextProvider } = AppMedia;
 const Layout= ()=>{
     const ContextRef=createRef();
    const user=JSON.parse(localStorage.getItem('user'));
+   const [home,sethome]=useState(true);
+   const scrollToTop = async () => {
+    sethome(!home);
+   window.scrollTo({
+     top: 0,
+     behavior: "smooth"
+   });
+   
+ 
+ };
     return (
         <>
         <style>{mediaStyles}</style>
@@ -25,8 +36,8 @@ const Layout= ()=>{
         
         <div>
             
-            <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}}>
-           <NewNavbar  ></NewNavbar>
+            <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}} onClick={()=>scrollToTop()}>
+           <NewNavbar></NewNavbar>
            </div>
            <Media greaterThanOrEqual="computer">
            <Ref innerRef={ContextRef}>
@@ -42,7 +53,12 @@ const Layout= ()=>{
                         </Sticky> 
                    </Grid.Column>
                    <Grid.Column  mobile={16} tablet={4} computer={11}>
-                     <Visibility context={ContextRef}><Home></Home></Visibility>
+                     <Visibility context={ContextRef}>
+                       {
+                         home ? <Home ></Home>:<UpdatedHome ></UpdatedHome>
+                       }
+                       
+                       </Visibility>
                    </Grid.Column>
                    <Grid.Column floated="left"  mobile={0} tablet={2} computer={3}>
                     <Sticky context={ContextRef} active={true} offset={85}>

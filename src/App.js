@@ -28,6 +28,7 @@ function App() {
           
          <Switch>
        <Route exact  path='/home'  component={Layout}></Route>
+       
        <Route exact  path='/signup'  component={Signup}></Route>
        <Route exact   path='/'      component={Login}></Route>
        <Route exact   path='/search'      component={Searchbar}></Route>
