@@ -17,6 +17,13 @@ function Notifications() {
     
     headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
   });
+ 
+
+  useEffect(()=>{
+    console.log(userfollowstats)
+    
+  },[userfollowstats]);
+
   useEffect(() => {
 
     
@@ -51,17 +58,17 @@ function Notifications() {
     try{
         setpageloading(true)
         const followingstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followings`);
-
+        
         const followerstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followers`);
-
+        console.log({following:followingstats.data,followers:followerstats.data})
         if(followingstats && followerstats){
-            
+            console.log({following:followingstats.data,followers:followerstats.data})
             setuserfollowstats({following:followingstats.data,followers:followerstats.data})
             setpageloading(false)
         }
     }catch(e){
         setpageloading(false)
-        // console.log(e)
+        console.log(e)
     }
     
 }
@@ -94,6 +101,7 @@ const notificationRead = async () => {
   const usernotifications=async ()=>{
     try {
         setpageloading(true)
+        
         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/getuserNotifications`);
         console.log(res.data)
         console.log(res.data)
@@ -148,7 +156,7 @@ const notificationRead = async () => {
                       />
                     )}
 
-                    {notification.type === "NewFollower" && (
+                    {(notification.type === "NewFollower" &&userfollowstats)&& (
                       <FollowerNotification
                         key={notification._id}
                         notification={notification}

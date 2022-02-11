@@ -6,6 +6,7 @@ import {userfollow,userunfollow} from '../../utils/followaction'
 function FollowerNotification({ notification,userfollowstats,setuserfollowstats}) {
   const [disabled, setDisabled] = useState(false);
    const [loading,setloading]=useState(false);
+   console.log(userfollowstats)
   const isFollowing =
   userfollowstats.following.length > 0 &&
   userfollowstats.following.filter(
