@@ -30,7 +30,7 @@ function Notifications() {
     (async function() {
 
         try {
-            
+            await getuserfollowstatstics()
             await Promise.all([getuserfollowstatstics,  usernotifications(),notificationRead(),makeNotificationsRead()]);
            
         } catch (e) {
@@ -57,6 +57,7 @@ function Notifications() {
    
     try{
         setpageloading(true)
+        console.log("fdjjdjd");
         const followingstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followings`);
         
         const followerstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followers`);

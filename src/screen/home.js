@@ -62,6 +62,13 @@ useEffect(()=>{
   setnewNotification(data)
   showNotificationPopup(true)
  })
+
+ socket.current.on("followerNotification",({data})=>{
+   console.log("following request notifcation");
+
+   setnewNotification(data)
+   showNotificationPopup(true);
+ })
   }
 },[])
 

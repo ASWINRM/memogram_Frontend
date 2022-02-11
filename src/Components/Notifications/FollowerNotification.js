@@ -7,11 +7,10 @@ function FollowerNotification({ notification,userfollowstats,setuserfollowstats}
   const [disabled, setDisabled] = useState(false);
    const [loading,setloading]=useState(false);
    console.log(userfollowstats)
-  const isFollowing =
-  userfollowstats.following.length > 0 &&
-  userfollowstats.following.filter(
-      following => following.user === notification.user._id
-    ).length > 0;
+  const [isFollowing,setisFollowing] =useState( userfollowstats.following.length > 0 &&
+    userfollowstats.following.filter(
+        following => following.user === notification.user._id
+      ).length > 0);
 
     function followuser(id){
         // console.log('followuser')
@@ -61,7 +60,7 @@ function FollowerNotification({ notification,userfollowstats,setuserfollowstats}
                     setloading(true)
                     isFollowing?await userunfollow(notification.user._id,unfollowuser):await userfollow(notification.user._id,followuser)
                     setloading(false);
-                     isFollowing=!isFollowing
+                     setisFollowing(!isFollowing)
                   
                
 

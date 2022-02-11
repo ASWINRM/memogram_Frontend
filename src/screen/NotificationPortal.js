@@ -3,6 +3,7 @@ import { Segment, TransitionablePortal, Icon, Feed } from "semantic-ui-react";
 import calculateTime from '../utils/calculateTime';
 import { useHistory } from 'react-router'
 import newNotificationSound from './newNotificationSound'
+import { SendToMobileRounded } from '@mui/icons-material';
 function NotificationPortal({
     newNotification,
     notificationPopup,
@@ -11,9 +12,9 @@ function NotificationPortal({
     const history=useHistory()
     console.log(newNotification);
     const {type}=newNotification;
-    const {profilepicurl,name,_id}=type==="comment"? newNotification.comment.user:newNotification.notification.notifyuser;
-    const  post=type==="comment"?newNotification.notification. newnotification.post:newNotification.notification.newNotification.post;
-    const username= type==="comment"?newNotification.notification.notifyuser.username:newNotification.notification.notifyuser.username
+    const {profilepicurl,name,_id}=type==="comment"? newNotification.comment.user:type==="like"?newNotification.notification.notifyuser:newNotification.sender;
+    const  post=type==="comment"?newNotification.notification. newnotification.post:type==="like"?newNotification.notification.newNotification.post:"";
+    const username= type==="comment"?newNotification.notification.notifyuser.username:type==="like"?newNotification.notification.notifyuser.username:newNotification.sender.username;
     const {text}=type==="comment"?newNotification.comment:"";
 
     
@@ -39,17 +40,31 @@ function NotificationPortal({
                 </Feed.Label>
                 <Feed.Content>
                   {
-                    type==="comment"? (
+                    type==="comment"&& (
                       <Feed.Summary>
                       <Feed.User onClick={() => history.push(`/${username}`)}>{name} </Feed.User>{" "}
                       commented {text} on your <a onClick={() => history.push(`/post/${post}`)}> post</a>
                       <Feed.Date>{calculateTime(Date.now())}</Feed.Date>
               
                         </Feed.Summary>
-                    ):(
+                    )
+                  } 
+                    {
+                    type==="like" && (
                       <Feed.Summary>
                       <Feed.User onClick={() => history.push(`/${username}`)}>{name} </Feed.User>{" "}
                      liked on your <a onClick={() => history.push(`/post/${post}`)}> post</a>
+                      <Feed.Date>{calculateTime(Date.now())}</Feed.Date>
+              
+                        </Feed.Summary>
+                    )
+                  }
+
+                  {
+                    type==="Follower" &&(
+                      <Feed.Summary>
+                      <Feed.User onClick={() => history.push(`/${username}`)}>{name} </Feed.User>{" "}
+                       has started to follow you
                       <Feed.Date>{calculateTime(Date.now())}</Feed.Date>
               
                         </Feed.Summary>
