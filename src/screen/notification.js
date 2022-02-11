@@ -14,7 +14,7 @@ function Notifications() {
   let notificationLength=parseInt(sessionStorage.getItem('NotificationLength'))
   // console.log(notificationLength+"  in notification js")
   const Axios=axios.create({
-                
+    
     headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
   });
   useEffect(() => {
@@ -95,8 +95,9 @@ const notificationRead = async () => {
     try {
         setpageloading(true)
         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/getuserNotifications`);
-
-        if(res!=="no notifications"){
+        console.log(res.data)
+        console.log(res.data)
+        if(res.data!=="no notifications"){
             setnotifications(res.data)
             setpageloading(false)
         }else{

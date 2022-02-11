@@ -56,6 +56,7 @@ useEffect(()=>{
        const {name,value,files}=e.target;
        if(name==="media"){
            
+         console.log("dei machan media")
          
          
          const file=files[0];
@@ -133,13 +134,23 @@ useEffect(()=>{
 
     const handlesubmit=async()=>{
     
+        if(user.profilepicurl){
+            setformloading(true);
+            await Registeruser(user,seterrormsg,setformloading);
+            setformloading(false);
+            history.push('/home');
+        }else{
+            setuser((prev)=>({...prev,  profilepicurl:"https://res.cloudinary.com/memogram/image/upload/v1642075170/memogram/sazypiijphrrca0dxwln.jpg"}))
+            setformloading(true);
+            await Registeruser(user,seterrormsg,setformloading);
+            setformloading(false);
+            history.push('/home');
+        }
+        }
 
-     setformloading(true);
-     await Registeruser(user,seterrormsg,setformloading);
-     setformloading(false);
-     history.push('/home');
+    
      
-    }
+    
 
 //     useEffect(()=>{
 //         console.log(errormsg)
@@ -267,6 +278,7 @@ useEffect(()=>{
         </div>
         </Container>
     )
-}
+  }
+
 
 export default Signup

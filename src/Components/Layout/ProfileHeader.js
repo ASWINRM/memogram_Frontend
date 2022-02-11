@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Segment, Image, Grid, Divider, Header, Button, List } from "semantic-ui-react";
 import {userfollow,userunfollow} from '../../utils/followaction'
 
-function ProfileHeader({ownprofile, profile, userfollowstats, user,setuserfollowstats}) {
+function ProfileHeader({ownprofile, profile, userfollowstats, user,setuserfollowstats,unfollowuser,followuser}) {
     const [loading, setLoading] = useState(false);
 // console.log(ownprofile,profile,userfollowstats,user)
 const [isfollowing, setisfollowing] = useState((userfollowstats.following.length>0 && userfollowstats.following.filter((following)=>following.user===user._id)).length>0?true:false);
@@ -17,25 +17,6 @@ const [isfollowing, setisfollowing] = useState((userfollowstats.following.length
 //   console.log(userfollowstats)
 // },[userfollowstats])
 
-function followuser(id){
-    // console.log('followuser')
-   setuserfollowstats(prev=>({
-       ...prev,
-       following:[...prev.following,{user:id}]
-   }))
-
- 
-   setisfollowing(true);
-}
-function unfollowuser(id){
-  //  console.log("unfollow user")
-   setuserfollowstats(prev=>({
-       ...prev,
-       following:prev.following.filter((f)=>f.user!==id)
-   }))
-   
-   setisfollowing(false);
-}
 
 return (
         <>
@@ -129,14 +110,15 @@ return (
                     color={isfollowing ? "instagram" : "twitter"}
                     onClick={async () => {
                       setLoading(true);
+                      setisfollowing(!isfollowing)
                      isfollowing
-                        ? 
+                        ?    
                             await userunfollow(profile.user._id,unfollowuser)
                            
                         : 
                             await userfollow(profile.user._id,followuser);
                           
-                    setisfollowing(!isfollowing)
+                  
                             setLoading(false);
 
                     }}

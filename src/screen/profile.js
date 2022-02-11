@@ -61,7 +61,7 @@ import Settings from '../Components/Layout/Settings'
 
 
     useEffect(()=>{
-        // console.log(userfollowstats)
+        console.log(userfollowstats)
         // console.log(userinfo)
         let user=JSON.parse(localStorage.getItem('user'));
         if(userinfo && user){
@@ -103,6 +103,23 @@ import Settings from '../Components/Layout/Settings'
         }
     }
       
+    
+function followuser(id){
+    // console.log('followuser')
+   setuserfollowstats(prev=>({
+       ...prev,
+       following:[...prev.following,{user:id}]
+   }))
+}
+function unfollowuser(id){
+  //  console.log("unfollow user")
+   setuserfollowstats(prev=>({
+       ...prev,
+       following:prev.following.filter((f)=>f.user!==id)
+   }))
+   
+  
+}
   
 
     // useEffect(()=>{
@@ -223,6 +240,8 @@ import Settings from '../Components/Layout/Settings'
                         userfollowstats={userfollowstats}
                         user={user}
                         setuserfollowstats={setuserfollowstats}
+                        followuser={followuser}
+                        unfollowuser={unfollowuser}
                       ></ProfileHeader>
                   </Grid.Row>:<Dimmer><Loader></Loader></Dimmer> }
                   <Grid.Row>
