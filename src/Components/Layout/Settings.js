@@ -21,13 +21,13 @@ function Settings() {
     const [update ,setupdate]=useState(false);
 
     const [typed,settyped]=useState({
-        field1:false,
+       
         field:false
     })
 
     const {currentpassword,newpassword}=userpasswords;
 
-    const {field1,field2}=typed;
+    const {field2}=typed;
 
     useEffect(()=>{
 

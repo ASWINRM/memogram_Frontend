@@ -54,7 +54,7 @@ import Settings from '../Components/Layout/Settings'
         
   // eslint-disable-next-line react-hooks/exhaustive-deps
         
-    },[username]);
+    },[username,getuserinfo,getposts,getuserfollowstatstics]);
 
   
 
@@ -127,7 +127,7 @@ function unfollowuser(id){
     // },[username])
 
     useEffect(()=>{
-        {ShowToastr && setTimeout(() => setShowToastr(false), 3000)}
+        ShowToastr && setTimeout(() => setShowToastr(false), 3000)
     },[ShowToastr])
 
     const Axios=axios.create({

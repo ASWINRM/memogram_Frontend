@@ -1,13 +1,11 @@
 import React from 'react'
-import { useLocation } from 'react-router';
+
 import {Menu,Container} from 'semantic-ui-react'
-import { useHistory } from 'react-router';
 
 
-const Navbar=  ()=> {
-    const location=useLocation();
 
-    const history=useHistory();
+const Navbar=  (scrollToTop)=> {
+ 
 
     return (
         <>
@@ -18,7 +16,7 @@ const Navbar=  ()=> {
                     
                
                 <div style={{color:"#007FFF",padding:"2rem",marginLeft:"20%",textAlign:'center',cursor:'pointer'}}
-               
+               onClick={()=>scrollToTop()}
                 >
                 
                     <Container text >

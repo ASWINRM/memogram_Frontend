@@ -8,13 +8,14 @@ import {
   Button,
   Popup,
   Header,
-  Modal
+  Modal,
+  Message
 } from "semantic-ui-react";
 import PostComments from "./PostComments";
 import CommentInputField from "./CommentInputField";
 import calculateTime from "../../utils/calculateTime";
 import { Link } from "react-router-dom";
-import { deletePost, likePost } from "../../utils/postaction";
+import { deletePost } from "../../utils/postaction";
 import LikedList from "./LikedList";
 import ImageModal from "./ImageModal";
 import NoImageModal from "./NoImageModal";
@@ -34,18 +35,18 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
   //   console.log(typeof(setShowToastr))
   // }
   const [likes, setLikes] = useState(post.likes ? post.likes :[]);
-  let isLiked =(likes && post.likes.length > 0) && likes.filter(like => like.user._id === user._id).length > 0;
+  let [isLiked,setisLiked] =(likes && post.likes.length > 0) && likes.filter(like => like.user._id === user._id).length > 0;
  
   useEffect(()=>{
     console.log("isliked changing")
     // console.log(likes)
     if((likes) && likes.filter(like => like.user._id === user._id).length > 0){
       // console.log(likes)
-      isLiked =true
+      setisLiked(true)
       // console.log(isLiked)
     }else{
       // console.log(likes)
-      isLiked =false
+      setisLiked(false)
       // console.log(isLiked)
     }
   
@@ -109,6 +110,10 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
 
   return (
     <>
+               {error!==null &&
+                   <Message error header="OOPS!" content={error}
+                   onDismiss={()=>seterrormsg(null)}
+                   ></Message> }
       {showModal && (
         <Modal
           open={showModal}
@@ -143,7 +148,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
             
            
 
-              {(user.role === "root" || post && post.user.username=== user.username) && (
+              {(user.role === "root" || (post && post.user.username=== user.username)) && (
               <>
                 <Popup
                   on="click"

@@ -147,7 +147,7 @@ function Chat() {
             OpenId.current=chat.messagesWith._id;
             setbannerdata({name:chat.messagesWith.name,profilepicurl:chat.messagesWith.profilepicurl})
         })
-    },[querymsgwith])
+    },[querymsgwith,user._id])
 
 
     useEffect(()=>{

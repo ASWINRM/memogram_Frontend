@@ -63,10 +63,10 @@ const handlechange=async (e)=>{
            
         }else{
             // console.log("updating others")
-            if(name!=='Bio'){
+            if(name!=='bio'){
                 setuser(prev=>({...prev,[name]:value}))
             }else{
-                setuser(prev=>({...prev,['Bio']:value}))
+                setuser(prev=>({...prev,['bio']:value}))
             }
             
         }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {  Menu, Icon } from 'semantic-ui-react'
 function ProfileMenutabs({ activeitem,handleClick,userfollowstats,followerslength,followingslength,ownprofile,}) {
     // console.log(activeitem)

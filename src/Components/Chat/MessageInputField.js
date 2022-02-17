@@ -3,7 +3,7 @@ import { Form, Segment } from "semantic-ui-react";
 
 function MessageInputField({ sendmsg }) {
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
+
 
   return (
     <div style={{  bottom: "0" }}>
@@ -24,8 +24,7 @@ function MessageInputField({ sendmsg }) {
             action={{
               color: "blue",
               icon: "telegram plane",
-              disabled: text === "",
-              loading: loading
+              disabled: text === ""
             }}
           />
         </Form>

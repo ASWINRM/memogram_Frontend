@@ -41,6 +41,7 @@ function PostPage() {
       })();
 
     },[])
+
     const settingcomments=(commentId)=>{
         if(commentId){
           setcomments((prev)=>prev.filter((comment)=>comment._id!==commentId))
@@ -74,7 +75,7 @@ function PostPage() {
               <Card.Content>
                 <Image floated="left" src={post.user.profilepicurl} avatar circular />
                 <Card.Header>
-                  <Link to={`/${post.user.username}`}>
+                  <Link href={`/${post.user.username}`}>
                     <a>{post.user.name}</a>
                   </Link>
                 </Card.Header>

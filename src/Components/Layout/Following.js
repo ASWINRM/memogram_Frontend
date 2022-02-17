@@ -10,7 +10,7 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
     //  console.log(currentuser)
      const [loading,setloading]=useState(false);
     //  let [isfollowing, setisfollowing] = useState(false);
-     const[followloading,setfollowloading]=useState(false)
+
 
      
 

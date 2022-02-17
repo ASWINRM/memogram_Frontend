@@ -37,7 +37,7 @@ const Layout= ()=>{
         <div>
             
             <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}} onClick={()=>scrollToTop()}>
-           <NewNavbar></NewNavbar>
+           <NewNavbar scrollToTop={scrollToTop}></NewNavbar>
            </div>
            <Media greaterThanOrEqual="computer">
            <Ref innerRef={ContextRef}>

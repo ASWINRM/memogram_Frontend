@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Segment, Image, Grid, Divider, Header, Button, List } from "semantic-ui-react";
 import {userfollow,userunfollow} from '../../utils/followaction'
 

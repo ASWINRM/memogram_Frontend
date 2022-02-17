@@ -69,16 +69,7 @@ useEffect(()=>{
 
 useEffect(()=>{
     return ()=>{
-      setposts([]);
-     sethasmore(false);
-     setShowToastr(false);
     
-   setPageNumber();
-    
-    setloading();
-    
-    setnewNotification();
-   showNotificationPopup();
    if (socket.current) {
     socket.current.disconnect();
     socket.current.off();

@@ -42,7 +42,7 @@ function unfollowuser(id){
         
           {
              userinfo.userfollowers.length>0 ? (userinfo.userfollowers.map((userfollower)=>{
-                let isfollowing=(userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id)).length>0
+                 setisfollowing(userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id)).length>0
 
                
                 return (
@@ -65,7 +65,7 @@ function unfollowuser(id){
                                     setloading(true)
                                   isfollowing?await userunfollow(userfollower.user._id,unfollowuser):await userfollow(userfollower.user._id,followuser)
                                   setloading(false)
-                                  isfollowing=!isfollowing
+                                  setisfollowing(!isfollowing)
 
                                  }}
                                 />

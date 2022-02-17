@@ -18,6 +18,7 @@ const Navbar=  ()=> {
 
     return (
         <>
+         <style>{mediaStyles}</style>
         <MediaContextProvider>
         <Media greaterThanOrEqual="computer">
         <Menu fluid borderless>
