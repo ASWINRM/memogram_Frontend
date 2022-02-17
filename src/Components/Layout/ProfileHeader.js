@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Segment, Image, Grid, Divider, Header, Button, List } from "semantic-ui-react";
 import {userfollow,userunfollow} from '../../utils/followaction'
 
@@ -6,6 +6,7 @@ function ProfileHeader({ownprofile, profile, userfollowstats, user,setuserfollow
     const [loading, setLoading] = useState(false);
 // console.log(ownprofile,profile,userfollowstats,user)
 const [isfollowing, setisfollowing] = useState((userfollowstats.following.length>0 && userfollowstats.following.filter((following)=>following.user===user._id)).length>0?true:false);
+
 
 
 // useEffect(()=>{

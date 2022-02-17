@@ -153,30 +153,34 @@ function Chat() {
     useEffect(()=>{
       if(socket.current){
         socket.current.on("newmsgreceived",(newchat)=>{
-          // console.log(newchat)
-          setmessages((prev)=>[...prev,newchat])
-          newMsgSound(bannerdata.name);
-           let newchats=JSON.parse(localStorage.getItem('chats'))
-          // console.log(newchats);
-        
-          if(newchats &&newchats.filter((ms)=>ms.messagesWith===newchat.sender).length>0 ){
-            newchats.find((ms)=>ms.messagesWith===newchat.sender)['lastMessage']=newchat.msg;
-            newchats.find((ms)=>ms.messagesWith===newchat.sender)['date']=Date.now();
-            // console.log(newchats)
-           
-             setchats(prev=> [newchats.find((ms)=>ms.messagesWith===newchat.sender),...prev.filter((chat)=>chat.messagesWith!==newchat.sender)])
-          }else{
-            let newch={
-              date:newchat.date,
-              lastMessage:newchat.msg,
-              messagesWith:newchat.receiver,
-              name:bannerdata.name,
-              profilepicurl:bannerdata.profilepicurl
-            }
 
+         
+   // console.log(newchat)
+   setmessages((prev)=>[...prev,newchat])
+   newMsgSound(bannerdata.name);
+    let newchats=JSON.parse(localStorage.getItem('chats'))
+   // console.log(newchats);
+ 
+   if(newchats &&newchats.filter((ms)=>ms.messagesWith===newchat.sender).length>0 ){
+     newchats.find((ms)=>ms.messagesWith===newchat.sender)['lastMessage']=newchat.msg;
+     newchats.find((ms)=>ms.messagesWith===newchat.sender)['date']=Date.now();
+     // console.log(newchats)
+    
+      setchats(prev=> [newchats.find((ms)=>ms.messagesWith===newchat.sender),...prev.filter((chat)=>chat.messagesWith!==newchat.sender)])
+   }else{
+     let newch={
+       date:newchat.date,
+       lastMessage:newchat.msg,
+       messagesWith:newchat.receiver,
+       name:bannerdata.name,
+       profilepicurl:bannerdata.profilepicurl
+     }
+
+   
+     setchats((prev)=>[newch,...prev])
+   }
           
-            setchats((prev)=>[newch,...prev])
-          }
+       
          
           // localStorage.setItem('chats',JSON.stringify(chats))
         })
@@ -184,7 +188,7 @@ function Chat() {
         
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    })
 
     useEffect(()=>{
       (async()=>{
@@ -193,12 +197,16 @@ function Chat() {
           // console.log(querymsgwith)
           if(querymsgwith){
             let res=await axios.get(`https://memogramapp.herokuapp.com/api/chat/finduser/${querymsgwith}`)
+             
             if(res){
+              if(res!=="nochats"){
+                OpenId.current=res.data._id
+                setbannerdata({name:res.data.name,profilepicurl:res.data.profilepicurl})
+                setmessages([]);
+              }
               // console.log("findusers")
               // console.log(res)
-              OpenId.current=res.data._id
-              setbannerdata({name:res.data.name,profilepicurl:res.data.profilepicurl})
-              setmessages([]);
+             
             }
           }
          

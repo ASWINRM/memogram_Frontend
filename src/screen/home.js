@@ -24,7 +24,7 @@ const Home=(home)=>{
   const header=window.location.pathname.split('/')[1]
   const [newNotification,setnewNotification]=useState(null);
   const [notificationPopup, showNotificationPopup] = useState(false);
-  console.log(JSON.parse(localStorage.getItem('user')))
+  // console.log(JSON.parse(localStorage.getItem('user')))
   let socket=useRef()
 
   useEffect(()=>{
@@ -34,10 +34,10 @@ const Home=(home)=>{
         socket.current.emit('join',{userId:user._id})
 
         socket.current.on("connectedusers",({users})=>{
-          // if(users.length>0){
-          //      console.log(users)
+          if(users.length>0){
+              //  console.log(users)
             
-          // }
+          }
         })
     }
   }
@@ -70,7 +70,7 @@ useEffect(()=>{
    showNotificationPopup(true);
  })
   }
-},[])
+})
 
 
 useEffect(()=>{

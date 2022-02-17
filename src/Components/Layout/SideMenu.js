@@ -7,6 +7,7 @@ import  LogoutUser  from '../../utils/logoutUser'
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import axios from "axios";
+import ChatAction from "../Chat/ChatAction";
 const SideMenu=({user,pc})=>{
 //   console.log(pc)
 // console.log(user)
@@ -110,7 +111,7 @@ const SideMenu=({user,pc})=>{
         </Link>
         <br />
 
-        <Link to="/chats" style={{ textDecoration: 'none' }}>
+        
           <List.Item active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
           {
             (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
@@ -120,6 +121,7 @@ const SideMenu=({user,pc})=>{
               color={
                 (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
               }
+              onClick={()=>ChatAction()}
             />
             </Badge>:<Icon
               name={unreadMessage ? "mail" : "mail outline"}
@@ -127,6 +129,7 @@ const SideMenu=({user,pc})=>{
               color={
                 (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
               }
+              onClick={()=>ChatAction()}
             />
           }
           {(pc===true) &&<List.Content>
@@ -134,7 +137,7 @@ const SideMenu=({user,pc})=>{
             </List.Content> }
             
           </List.Item>
-        </Link>
+        
         <br />
 
         <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>

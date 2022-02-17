@@ -1,6 +1,7 @@
 import React ,{useEffect}from 'react';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios';
+
 function ChatAction(props) {
     const history=useHistory();
     const Axios = axios.create({
@@ -12,12 +13,9 @@ function ChatAction(props) {
         (async()=>{
             let res=await Axios.get(`https://memogramapp.herokuapp.com/api/chat`);
     
-            if(res!=="no chats"){
+            if(res){
                 // console.log(res.data)
-             
-                localStorage.setItem('chats',JSON.stringify(res.data))
-                history.push(`/messages/nochats`)
-            }else{
+                console.log(res);
                 localStorage.setItem('chats',JSON.stringify(res.data))
                 history.push(`/messages/${res.data[0].messagesWith}`)
             }
@@ -26,9 +24,7 @@ function ChatAction(props) {
      // eslint-disable-next-line react-hooks/exhaustive-deps
       },[])
 
-      return (
-          <></>
-      )
+     
    
 }
 
