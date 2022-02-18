@@ -15,7 +15,7 @@ const Commoninputs  =({user,handlechange,showsociallinks,
     
    setuser((prev)=>({...prev,[name]: value}))
   
-},[user])
+},[setuser])
     return (
         <>
           {/* <Form.Field

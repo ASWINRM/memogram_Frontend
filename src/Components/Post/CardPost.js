@@ -94,7 +94,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
       console.log(comments)
     }
   },[comments])
-  
+
   const addPropsToModal = () => ({
     post,
     user,
@@ -113,7 +113,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
     <>
                {error!==null &&
                    <Message error header="OOPS!" content={error}
-                   onDismiss={()=>seterrormsg(null)}
+                   onDismiss={()=>setError(null)}
                    ></Message> }
       {showModal && (
         <Modal

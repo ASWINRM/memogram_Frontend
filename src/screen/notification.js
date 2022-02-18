@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { Feed, Segment, Divider, Container,Dimmer,Loader } from "semantic-ui-react";
 import axios from "axios";
 import { NoNotifications } from "../Components/Layout/NoData";

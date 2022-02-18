@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useCallback} from 'react';
 import { Button,  Divider,  Form,Message,Header,Icon } from 'semantic-ui-react'
 import ImageDropDiv from '../Common/ImageDropDiv';
 import Commoninputs from '../Common/Commoninput'
@@ -22,7 +22,7 @@ const [updated,setupdated]=useState(false)
 //     console.log(user);
 // },[user])
 
-const changesocialstate=usecallback((showsociallinks)=>{
+const changesocialstate=useCallback((showsociallinks)=>{
     setshowsociallinks(!showsociallinks)
 },[showsociallinks])
 
@@ -79,7 +79,7 @@ const handlechange=useCallback(async (e)=>{
 },[user,mediapreview,media])
 
 
-const uploadimage=usecallback(async ()=>{
+const uploadimage=useCallback(async ()=>{
     try{
         if(media!==null){
             // console.log(media);

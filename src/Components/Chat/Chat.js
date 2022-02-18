@@ -48,7 +48,7 @@ function Chat() {
       localStorage.setItem('user',JSON.stringify(olduser))
       // console.log(res)
     }
-  },[])
+  },[Axios])
   
   const lengthToZer0=useCallback(async()=>{
     let res=await Axios.post(`https://memogramapp.herokuapp.com/api/chat/NotifyLengthZero`)
@@ -57,7 +57,7 @@ function Chat() {
       sessionStorage.setItem('MesgNotificationLength',0)
       // console.log(res)
     }
-  },[])
+  },[Axios])
 
   useEffect(()=>{
     (async()=>{
@@ -238,7 +238,7 @@ function Chat() {
     }
    
 
-  },[chats])
+  },[chats,history])
 
 
   const sendmsg=useCallback((text)=>{
@@ -267,7 +267,7 @@ function Chat() {
         msg:text
       })
     }
-  },[messages]);
+  },[messages,bannerdata]);
 
 
   const deletechat=async(messageId)=>{

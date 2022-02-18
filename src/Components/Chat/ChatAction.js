@@ -13,7 +13,7 @@ function ChatAction() {
     let signal=controller.signal
     try{
         (async()=>{
-            let res=await Axios.get(`https://memogramapp.herokuapp.com/api/chat`,{signal,signal});
+            let res=await Axios.get(`https://memogramapp.herokuapp.com/api/chat`,{signal:signal});
     
             if(res){
                 // console.log(res.data)
