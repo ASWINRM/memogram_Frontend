@@ -23,4 +23,4 @@ function Banner({ bannerData }) {
   );
 }
 
-export default memo(Banner);
+export default Banner;

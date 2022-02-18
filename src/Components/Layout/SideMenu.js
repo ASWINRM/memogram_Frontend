@@ -3,7 +3,7 @@ import { List, Icon } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
 import  LogoutUser  from '../../utils/logoutUser'
-
+import { useHistory } from "react-router";
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import axios from "axios";
@@ -11,7 +11,7 @@ import ChatAction from "../Chat/ChatAction";
 const SideMenu=({user,pc})=>{
 //   console.log(pc)
 // console.log(user)
-  
+  let history=useHistory();
     const location=useLocation();
     const  { unreadNotification, email, unreadMessage, username }=user
     // console.log(username);
@@ -42,6 +42,7 @@ const SideMenu=({user,pc})=>{
       if(window.location.pathname.split('/')[1]==='messages'){
         setmsgNotification(0)
       }
+
   },[msgNotification])
 
   useEffect(()=>{
@@ -55,17 +56,22 @@ const SideMenu=({user,pc})=>{
     });
 
     useEffect(()=>{
+      let controller=new AbortController();
+     let signal = controller.signal;
        (async()=>{
-         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`)
+    
+         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
 
          if(res){
           setnotificationLength(parseInt(res.data))
           sessionStorage.setItem('NotificationLength',parseInt(res.data))
          }
+         
        })();
 
        (async()=>{
-         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`)
+        
+         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
 
          if(msgres){
           //  console.log(msgres.data.TotalLength)
@@ -74,6 +80,9 @@ const SideMenu=({user,pc})=>{
            sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
          }
        })();
+
+      return () => controller.abort();
+       
        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -121,7 +130,7 @@ const SideMenu=({user,pc})=>{
               color={
                 (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
               }
-              onClick={()=>ChatAction()}
+              onClick={()=>ChatAction(history)}
             />
             </Badge>:<Icon
               name={unreadMessage ? "mail" : "mail outline"}
@@ -129,7 +138,7 @@ const SideMenu=({user,pc})=>{
               color={
                 (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
               }
-              onClick={()=>ChatAction()}
+              onClick={()=>ChatAction(history)}
             />
           }
           {(pc===true) &&<List.Content>

@@ -3,14 +3,15 @@ import { List, Icon, Dropdown, Container ,Menu} from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
 import  LogoutUser  from '../../utils/logoutUser'
-
+import ChatAction from "../Chat/ChatAction";
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-
+import { useHistory } from "react-router";
 import axios from "axios";
 function Mobilesidemenu({user,pc}) {
     // console.log(user);
     // console.log(pc)
+    let history=useHistory();
     const location=useLocation();
     const  { unreadNotification, email, unreadMessage, username }=user
     // console.log(username);
@@ -53,8 +54,10 @@ function Mobilesidemenu({user,pc}) {
     });
 
     useEffect(()=>{
+      let controller=new AbortController();
+      let signal = controller.signal;
        (async()=>{
-         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`)
+         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
 
          if(res){
           setnotificationLength(parseInt(res.data))
@@ -63,7 +66,7 @@ function Mobilesidemenu({user,pc}) {
        })();
 
        (async()=>{
-         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`)
+         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
 
          if(msgres){
         //    console.log(msgres.data.TotalLength)
@@ -72,7 +75,7 @@ function Mobilesidemenu({user,pc}) {
            sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
          }
        })();
-       
+       return ()=>controller.abort()
   // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -123,6 +126,7 @@ function Mobilesidemenu({user,pc}) {
                  color={
                    (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
                  }
+                 onClick={()=>ChatAction(history)}
                />
                </Badge>:<Icon
                  name={unreadMessage ? "mail" : "mail outline"}
@@ -130,6 +134,7 @@ function Mobilesidemenu({user,pc}) {
                  color={
                    (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
                  }
+                 onClick={()=>ChatAction(history)}
                />
              }
              
@@ -201,6 +206,7 @@ function Mobilesidemenu({user,pc}) {
            color={
              (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
            }
+           onClick={()=>ChatAction(history)}
          />
          </Badge>:<Icon
            name={unreadMessage ? "mail" : "mail outline"}
@@ -208,6 +214,7 @@ function Mobilesidemenu({user,pc}) {
            color={
              (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
            }
+           onClick={()=>ChatAction(history)}
          />
        }
        

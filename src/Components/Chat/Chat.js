@@ -48,7 +48,7 @@ function Chat() {
       localStorage.setItem('user',JSON.stringify(olduser))
       // console.log(res)
     }
-  },[Axios])
+  },[])
   
   const lengthToZer0=useCallback(async()=>{
     let res=await Axios.post(`https://memogramapp.herokuapp.com/api/chat/NotifyLengthZero`)
@@ -57,7 +57,7 @@ function Chat() {
       sessionStorage.setItem('MesgNotificationLength',0)
       // console.log(res)
     }
-  },[Axios])
+  },[])
 
   useEffect(()=>{
     (async()=>{
@@ -70,7 +70,7 @@ function Chat() {
     }
     })();
    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[unreading,lengthToZer0])
+  },[])
   
 
 
@@ -144,7 +144,7 @@ function Chat() {
          
         socket.current.on('messageloaded',(chat)=>{
           divRef.current && scrollDivToBottom (divRef)
-            // console.log(chat)
+            console.log(chat)
             setmessages(chat.messages)
             OpenId.current=chat.messagesWith._id;
             setbannerdata({name:chat.messagesWith.name,profilepicurl:chat.messagesWith.profilepicurl})

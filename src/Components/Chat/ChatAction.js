@@ -1,16 +1,17 @@
-import React ,{useEffect}from 'react';
-import {useHistory} from 'react-router-dom'
+import React from 'react';
+
 import axios from 'axios';
 
-function ChatAction() {
-    const history=useHistory();
+function ChatAction(history) {
+
     const Axios = axios.create({
                    
         headers: {   "Content-Type": "application/json",Authorization: JSON.parse(localStorage.getItem('token'))}
       });
-      useEffect(()=>{
+      
     let controller=new AbortController();
     let signal=controller.signal
+    console.log("machi")
     try{
         (async()=>{
             let res=await Axios.get(`https://memogramapp.herokuapp.com/api/chat`,{signal:signal});
@@ -31,9 +32,9 @@ function ChatAction() {
     };
         
      // eslint-disable-next-line react-hooks/exhaustive-deps
-      },[])
+      
 
-     
+  
    
 }
 
