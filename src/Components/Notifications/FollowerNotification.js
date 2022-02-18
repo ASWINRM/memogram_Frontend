@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Feed, Button, Divider } from "semantic-ui-react";
 import calculateTime from "../../utils/calculateTime";
 import {userfollow,userunfollow} from '../../utils/followaction'
@@ -12,7 +12,7 @@ function FollowerNotification({ notification,userfollowstats,setuserfollowstats}
         following => following.user === notification.user._id
       ).length > 0);
 
-    function followuser(id){
+    let followuser=useCallback((id)=>{
         // console.log('followuser')
        setuserfollowstats(prev=>({
            ...prev,
@@ -20,8 +20,9 @@ function FollowerNotification({ notification,userfollowstats,setuserfollowstats}
        }))
 
      
-    }
-   function unfollowuser(id){
+    },[userfollowstats])
+    
+   let unfollowuser=useCallback((id)=>{
       //  console.log("unfollow user")
        setuserfollowstats(prev=>({
            ...prev,
@@ -29,7 +30,7 @@ function FollowerNotification({ notification,userfollowstats,setuserfollowstats}
        }))
        
     
-   }
+   },[userfollowstats])
 
   return (
     <>

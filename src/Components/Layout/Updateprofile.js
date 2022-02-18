@@ -22,11 +22,11 @@ const [updated,setupdated]=useState(false)
 //     console.log(user);
 // },[user])
 
-const changesocialstate=(showsociallinks)=>{
+const changesocialstate=usecallback((showsociallinks)=>{
     setshowsociallinks(!showsociallinks)
-}
+},[showsociallinks])
 
-const handlechange=async (e)=>{
+const handlechange=useCallback(async (e)=>{
 
     try{
         let {name,value,files}=e.target
@@ -76,10 +76,10 @@ const handlechange=async (e)=>{
         // console.log(e)
     }
  
-}
+},[user,mediapreview,media])
 
 
-const uploadimage=async ()=>{
+const uploadimage=usecallback(async ()=>{
     try{
         if(media!==null){
             // console.log(media);
@@ -108,7 +108,7 @@ const uploadimage=async ()=>{
     }
       
       
-}
+},[media,user,mediapreview])
 
     return (
         <div>{

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,memo} from "react";
 import { Form, Segment } from "semantic-ui-react";
 
 function MessageInputField({ sendmsg }) {
@@ -33,4 +33,4 @@ function MessageInputField({ sendmsg }) {
   );
 }
 
-export default MessageInputField;
+export default memo(MessageInputField);

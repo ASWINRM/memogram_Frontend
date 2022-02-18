@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from 'react-router'
 import { Form, Button, Message, Segment, Divider } from "semantic-ui-react";
 import axios from "axios";
@@ -18,37 +18,44 @@ let token=window.location.pathname.split('/')[2]
   const [errorMsg, setErrorMsg] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = e => {
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
 
     setNewPassword(prev => ({ ...prev, [name]: value }));
-  };
+  },[newPassword]);
 
   useEffect(() => {
     errorMsg !== null && setTimeout(() => setErrorMsg(null), 5000);
   }, [errorMsg]);
 
-  const resetPassword = async e => {
+  const resetPassword = useCallback(async e => {
     e.preventDefault();
-
-    setLoading(true);
-    try {
-      if (field1 !== field2) {
-        return setErrorMsg("Passwords do not match");
+    let controller=new AbortController();
+    let signal=controller.signal;
+    try{
+      setLoading(true);
+      try {
+        if (field1 !== field2) {
+          return setErrorMsg("Passwords do not match");
+        }
+  
+        await axios.post(`https://memogramapp.herokuapp.com/api/forgot/token`, {
+          password: field1,
+          token:token,
+          signal:signal
+        });
+  
+        setSuccess(true);
+      } catch (error) {
+        setErrorMsg(error);
       }
-
-      await axios.post(`https://memogramapp.herokuapp.com/api/forgot/token`, {
-        password: field1,
-        token:token
-      });
-
-      setSuccess(true);
-    } catch (error) {
-      setErrorMsg(error);
+  
+      setLoading(false);
+    }catch(e){
+         console.log(e)
     }
-
-    setLoading(false);
-  };
+   
+  },[success]);
 
   return (
     <>

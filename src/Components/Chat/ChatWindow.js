@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{memo}from 'react';
 
 import Banner from './Banner';
 import MessageInputField from './MessageInputField';
@@ -61,4 +61,4 @@ function ChatWindow({bannerdata,messages,user,divRef,sendmsg}) {
     );
 }
 
-export default ChatWindow;
+export default memo(ChatWindow);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import axios from 'axios'
 import { useState,useEffect} from 'react'
 
@@ -94,24 +94,25 @@ import Settings from '../Components/Layout/Settings'
 
    
 
-    function settingpost(postid,post){
+    let settingpost=useCallback((postid,post)=>{
         // console.log(postid);
         if(postid){
         //   console.log(postid);
           setposts((prev)=>prev.filter(pos=>pos._id!==postid));
           setShowToastr(true);
         }
-    }
+    },[posts])
       
     
-function followuser(id){
+ let followuser=useCallback((id)=>{
     // console.log('followuser')
    setuserfollowstats(prev=>({
        ...prev,
        following:[...prev.following,{user:id}]
    }))
-}
-function unfollowuser(id){
+},[userfollowstats])
+
+let unfollowuser=useCallback((id)=>{
   //  console.log("unfollow user")
    setuserfollowstats(prev=>({
        ...prev,
@@ -119,7 +120,7 @@ function unfollowuser(id){
    }))
    
   
-}
+},[userfollowstats])
   
 
     // useEffect(()=>{
@@ -160,7 +161,7 @@ function unfollowuser(id){
        
       }
 
-        const getposts=async ()=>{
+        const getposts=useCallback(async ()=>{
             setloading(true);
             try{
                var postres=await Axios.get(`https://memogramapp.herokuapp.com/api/post/userpost/${username}`)
@@ -181,9 +182,9 @@ function unfollowuser(id){
             }
             setloading(false);
             
-        }
+        },[posts])
 
-        const getuserfollowstatstics=async ()=>{
+        const getuserfollowstatstics=useCallback(async ()=>{
             setloading(true);
             try{
                 const followingstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followings`);
@@ -198,7 +199,7 @@ function unfollowuser(id){
                 // console.log(e)
             }
             setloading(false);
-        }
+        },[userfollowstats])
 
         
 

@@ -1,5 +1,5 @@
 
-import {useEffect,useState,useRef} from 'react';
+import {useEffect,useState,useRef, useCallback} from 'react';
 import axios from 'axios';
 import NotificationPortal from './NotificationPortal' 
 import {NoPosts} from '../Components/Layout/NoData'
@@ -93,15 +93,15 @@ useEffect(()=>{
 },[])
 
 
- function settingpost(postid,post){
+ let settingpost=useCallback((postid,post)=>{
     // console.log(postid);
     if(postid){
       // console.log(postid);
       setposts((prev)=>prev.filter(pos=>pos._id!==postid));
       setShowToastr(true);
     }
-   
-  }
+ 
+  },[posts,ShowToastr])
 
   useEffect(()=>{
     if(header !=='home'){
@@ -134,7 +134,7 @@ useEffect(()=>{
 
 
 
- const fetchDataOnScroll=async ()=>{
+ const fetchDataOnScroll= useCallback(async ()=>{
 
   try{
   
@@ -169,7 +169,7 @@ useEffect(()=>{
     // console.log(e);
   }
         
- }
+ },[posts])
 
  
 

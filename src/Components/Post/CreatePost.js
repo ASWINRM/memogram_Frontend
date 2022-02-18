@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef ,useCallback} from "react";
 import { Form, Button, Image, Divider, Message, Icon } from "semantic-ui-react";
 
 import { submitNewPost } from "../../utils/postaction";
@@ -17,7 +17,7 @@ const CreatePost=({ user, setPosts,logintoken,setloading })=>{
 
 
 
-  const handleChange =async (e)  => {
+  const handleChange =useCallback(async (e)  => {
     const { name, value } = e.target;
    
     if (name === "media") {
@@ -68,7 +68,7 @@ const CreatePost=({ user, setPosts,logintoken,setloading })=>{
     }
 
     
-  };
+  },[newPost,picUrl,media,mediaPreview]);
 
 
  

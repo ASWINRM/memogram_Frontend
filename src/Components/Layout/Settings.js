@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useCallback} from 'react';
 import { Button,  Form } from 'semantic-ui-react'
 import {checkusername,handlesubmit} from '../../utils/usernameaction'
 import { Message,Input,Icon } from 'semantic-ui-react'
@@ -37,12 +37,12 @@ function Settings() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[username])
 
-   async function usernamechecking(username){
+    let usernamechecking= useCallback(async (username)=>{
         setusernameloading(true);
      
         await checkusername(username,userstatemanage);
      
-     }
+     },[username])
 
      function userstatemanage(data){
         if(data==="Available"){
@@ -68,7 +68,7 @@ function Settings() {
    }
 
   
-   function handlechange(e){
+   let  handlechange=useCallback((e)=>{
 
     const {name,value}=e.target;
     // console.log(name)
@@ -81,7 +81,7 @@ function Settings() {
         setuserpasswords(prev=>({...prev,newpassword:value}))
     }
 
-   }
+   },[userpasswords])
   
 
     return (

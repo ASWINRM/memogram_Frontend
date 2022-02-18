@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react';
+import React,{useState,useEffect,useRef, useCallback} from 'react';
 import { Comment, Grid ,Segment} from "semantic-ui-react";
 import axios from 'axios';
 import {useHistory} from 'react-router-dom'
@@ -20,10 +20,12 @@ function Chat() {
   const [bannerdata,setbannerdata]=useState({name:"",profilepicurl:""})
   const history=useHistory();
   const divRef=useRef();
+  let socket=useRef()
   // console.log(window.location.pathname.split('/')[1]==='chats')
   const querymsgwith=window.location.pathname.split("/")[2]
-  const user=JSON.parse(localStorage.getItem('user'))
+  const [user,setuser]=useState(JSON.parse(localStorage.getItem('user')));
   const OpenId=useRef();
+
   const Axios = axios.create({
                    
     headers: {   "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token'))}
@@ -37,7 +39,7 @@ function Chat() {
  
   },[])
 
-  const unreading=async()=>{
+  const unreading=useCallback(async()=>{
     let res=await Axios.post(`https://memogramapp.herokuapp.com/api/chat/setNotificationRead`)
     
     if(res){
@@ -46,16 +48,16 @@ function Chat() {
       localStorage.setItem('user',JSON.stringify(olduser))
       // console.log(res)
     }
-  }
+  },[])
   
-  const lengthToZer0=async()=>{
+  const lengthToZer0=useCallback(async()=>{
     let res=await Axios.post(`https://memogramapp.herokuapp.com/api/chat/NotifyLengthZero`)
      
     if(res){
       sessionStorage.setItem('MesgNotificationLength',0)
       // console.log(res)
     }
-  }
+  },[])
 
   useEffect(()=>{
     (async()=>{
@@ -68,7 +70,7 @@ function Chat() {
     }
     })();
    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  },[unreading,lengthToZer0])
   
 
 
@@ -83,7 +85,7 @@ function Chat() {
   //   console.log(chats)
   // },[chats])
 
-  let socket=useRef()
+  
 
     useEffect(()=>{
         if(!socket.current){
@@ -188,7 +190,7 @@ function Chat() {
         
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    })
+    },[])
 
     useEffect(()=>{
       (async()=>{
@@ -215,7 +217,7 @@ function Chat() {
       })();
     },[querymsgwith])
 
-  const search=(result)=>{
+  const search=useCallback((result)=>{
    
     let alreadyinChat=chats.length>0 && chats.filter((chat)=>result.messagesWith===result._id).length>0;
 
@@ -236,10 +238,10 @@ function Chat() {
     }
    
 
-  }
+  },[chats])
 
 
-  const sendmsg=(text)=>{
+  const sendmsg=useCallback((text)=>{
     if(socket.current){
       let newch={
         date:Date.now(),
@@ -265,7 +267,7 @@ function Chat() {
         msg:text
       })
     }
-  }
+  },[messages]);
 
 
   const deletechat=async(messageId)=>{

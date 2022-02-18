@@ -26,11 +26,12 @@ export const Searchbar=()=>{
      
    },[text])
    
-    const handlechange=async (e)=>{
+    const handlechange=useCallback(async (e)=>{
       
          value=e.target.value;
         // console.log(value);
-    
+      let controller=new AbortController();
+      let signal=controller.signal;
       try{
           settext(value);
          setloading(true);
@@ -45,7 +46,8 @@ export const Searchbar=()=>{
            const res=await axios.get(`https://memogramapp.herokuapp.com/api/search/${value}`,{
                headers:{
                    Authorization:token
-               }
+               },
+               sigal:signal
            })
            if(res){
             // console.log(res.data);
@@ -68,7 +70,7 @@ export const Searchbar=()=>{
         setloading(false);
       }
     
-      }
+      },[results,text])
 
     
 

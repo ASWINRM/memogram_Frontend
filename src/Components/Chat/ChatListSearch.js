@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useCallback,memo}from 'react';
 import  { useState ,useEffect} from "react";
 import { List, Image, Divider } from "semantic-ui-react";
 import axios from "axios";
@@ -26,11 +26,13 @@ function ChatListSearch({search}) {
      
    },[text])
    
-    const handlechange=async (e)=>{
+    const handlechange= useCallback(async (e)=>{
       
          value=e.target.value;
         // console.log(value);
        setinputval(e.target.value)
+       let controller=new AbortController();
+       let signal=controller.signal;
       try{
           settext(value);
          setloading(true);
@@ -45,7 +47,8 @@ function ChatListSearch({search}) {
            const res=await axios.get(`https://memogramapp.herokuapp.com/api/search/${value}`,{
                headers:{
                    Authorization:token
-               }
+               },
+               signal:signal
            })
            if(res){
             // console.log(res.data);
@@ -69,7 +72,7 @@ function ChatListSearch({search}) {
         setloading(false);
       }
     
-      }
+      },[results,inputval,text])
 
 
     useEffect(() => {
@@ -120,4 +123,4 @@ function ChatListSearch({search}) {
     )
 }
 
-export default ChatListSearch;
+export default memo(ChatListSearch);

@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{memo}from "react";
 
 import calculateTime from "../../utils/calculateTime";
 import './Message.css'
@@ -35,4 +35,4 @@ function Message({ message, user, bannerProfilePic, divRef }) {
   );
 }
 
-export default Message;
+export default memo(Message);

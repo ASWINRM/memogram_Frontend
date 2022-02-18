@@ -26,16 +26,21 @@ function Notifications() {
 
   useEffect(() => {
 
-    
+    const controller = new AbortController();
+     const signal = controller.signal;
     (async function() {
 
         try {
-            await getuserfollowstatstics()
-            await Promise.all([getuserfollowstatstics,  usernotifications(),notificationRead(),makeNotificationsRead()]);
+            await getuserfollowstatstics(signal)
+            await Promise.all([  usernotifications(signal),notificationRead(signal),makeNotificationsRead(signal)]);
            
         } catch (e) {
             console.error(e);
         }
+        return () => {
+          // cancel the request before component unmounts
+          controller.abort();
+        };
     })();
 
     let olduser=JSON.parse(localStorage.getItem('user'));
@@ -53,14 +58,15 @@ function Notifications() {
   },[notifications])
 
 
-  const getuserfollowstatstics=async ()=>{
+  const getuserfollowstatstics=useCallback(async (signal)=>{
    
     try{
+      
         setpageloading(true)
         console.log("fdjjdjd");
-        const followingstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followings`);
+        const followingstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followings`,{signal:signal});
         
-        const followerstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followers`);
+        const followerstats=await Axios.get(`https://memogramapp.herokuapp.com/api/followtask/followers`,{signal:signal});
         console.log({following:followingstats.data,followers:followerstats.data})
         if(followingstats && followerstats){
             console.log({following:followingstats.data,followers:followerstats.data})
@@ -72,12 +78,13 @@ function Notifications() {
         console.log(e)
     }
     
-}
+  
+},[userfollowstats])
 
-const makeNotificationsRead=async ()=>{
+const makeNotificationsRead=async (signal)=>{
     try{
 
-       await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength})
+       await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength,signal:signal})
 
     }catch(e){
         // console.log(e)
@@ -86,11 +93,11 @@ const makeNotificationsRead=async ()=>{
 
 
 
-const notificationRead = async () => {
+const notificationRead = async (signal) => {
     try {
         setpageloading(true)
       await Axios.post(
-        `https://memogramapp.herokuapp.com/api/notification/SetNotificationsRead`);
+        `https://memogramapp.herokuapp.com/api/notification/SetNotificationsRead`,{signal:signal});
         setpageloading(false)
     } catch (error) {
       console.log(error);
@@ -99,11 +106,11 @@ const notificationRead = async () => {
   };
 
 
-  const usernotifications=async ()=>{
+  const usernotifications=async (signal)=>{
     try {
         setpageloading(true)
         
-        let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/getuserNotifications`);
+        let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/getuserNotifications`,{signal:signal});
         console.log(res.data)
         console.log(res.data)
         if(res.data!=="no notifications"){

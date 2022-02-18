@@ -1,4 +1,4 @@
-import React,{useState}  from 'react';
+import React,{useCallback, useState}  from 'react';
 import {  Image,  List,Loader,Button} from 'semantic-ui-react'
 import {userfollow,userunfollow} from '../../utils/followaction'
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
 
      
 
-     function followuser(id){
+     let followuser=useCallback((id)=>{
         //  console.log('followuser')
         setuserfollowstats(prev=>({
             ...prev,
@@ -22,8 +22,9 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
         }))
 
       
-     }
-    function unfollowuser(id){
+     },[userfollowstats])
+     
+    let unfollowuser=useCallback((id)=>{
         // console.log("unfollow user")
         setuserfollowstats(prev=>({
             ...prev,
@@ -31,7 +32,7 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
         }))
         
      
-    }
+    },[userfollowstats])
      
     return (
         <div>

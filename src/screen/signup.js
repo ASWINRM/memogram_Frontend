@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useCallback} from 'react'
 import {Headermessage,Footermessage} from '../Components/Common/WelcomeMessage'
 import {Form,Message,Button,Divider,Segment} from 'semantic-ui-react'
 import { useState,useEffect} from 'react'
@@ -106,7 +106,7 @@ useEffect(()=>{
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
 
-    const checkusername=async (username)=>{
+    const checkusername=useCallback(async (username)=>{
         setusernameloading(true);
      
 
@@ -124,7 +124,7 @@ useEffect(()=>{
         }
        
         setusernameloading(false);
-    }
+    },[user,username])
 
     useEffect(() => {
        username===""?setusernameAvailable(false):checkusername(username)
@@ -132,7 +132,7 @@ useEffect(()=>{
 
   
 
-    const handlesubmit=async()=>{
+    const handlesubmit=useCallback(async()=>{
     
         if(user.profilepicurl){
             setformloading(true);
@@ -146,7 +146,7 @@ useEffect(()=>{
             setformloading(false);
             history.push('/home');
         }
-        }
+        },[user])
 
     
      

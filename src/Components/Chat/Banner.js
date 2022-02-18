@@ -1,5 +1,5 @@
 // import React,{useEffect} from "react";
-import React from "react";
+import React,{memo} from "react";
 import { Segment, Grid, Image } from "semantic-ui-react";
 
 function Banner({ bannerData }) {
@@ -23,4 +23,4 @@ function Banner({ bannerData }) {
   );
 }
 
-export default Banner;
+export default memo(Banner);

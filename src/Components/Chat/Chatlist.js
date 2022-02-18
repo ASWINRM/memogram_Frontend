@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,memo} from 'react';
 import { Divider, Comment, Icon, List } from "semantic-ui-react";
 import {useHistory} from 'react-router-dom'
 import calculateTime from '../../utils/calculateTime'
@@ -64,4 +64,4 @@ return  (
   
 }
 
-export default Chatlist;
+export default memo(Chatlist);

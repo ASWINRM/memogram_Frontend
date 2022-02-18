@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Card,
   Icon,
@@ -77,7 +77,7 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
   // console.log(user);
   // console.log(post.picurl);
   // },[])
-  const settingcomments=(commentId)=>{
+  const settingcomments=useCallback((commentId)=>{
     if(commentId){
       console.log(commentId)
       console.log(comments)
@@ -85,15 +85,16 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
       console.log(comments)
     }
   
-  }
+  },[comments])
    
 
-  const addingcomments=(addedcomments)=>{
+  const addingcomments=useCallback((addedcomments)=>{
     if(addedcomments){
       setComments((prev)=>[addedcomments,...prev])
       console.log(comments)
     }
-  }
+  },[comments])
+  
   const addPropsToModal = () => ({
     post,
     user,

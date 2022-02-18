@@ -77,15 +77,15 @@ useEffect(()=>{
     };
   },[])
 
- function settingpost(postid,post){
+  let settingpost=useCallback((postid,post)=>{
     // console.log(postid);
     if(postid){
       // console.log(postid);
       setposts((prev)=>prev.filter(pos=>pos._id!==postid));
       setShowToastr(true);
     }
-   
-  }
+ 
+  },[posts,ShowToastr])
 
   useEffect(()=>{
     if(header !=='home'){

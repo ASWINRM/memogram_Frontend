@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {useState,useEffect} from 'react'
 import {  Image,  List,Loader,Button} from 'semantic-ui-react'
 import {userfollow,userunfollow} from '../../utils/followaction'
@@ -9,30 +9,31 @@ function Followers({ userfollowstats,setuserfollowstats,userinfo}) {
     //  console.log( userfollowstats,userinfo,profile);
     //  console.log(userinfo.userfollowers.length)
      const [loading,setloading]=useState(false);
-     const [isfollowing, setisfollowing] = useState(false);
+     
 
      useEffect(()=>{
         // console.log(userfollowstats)
         sessionStorage.removeItem('userfollowstats');
         sessionStorage.setItem('userfollowstats',userfollowstats)
   
-   },[userfollowstats])
-   function followuser(id){
-    setuserfollowstats(prev=>({
-        ...prev,
+     },[userfollowstats])
+     let followuser=useCallback((id)=>{
+        setuserfollowstats(prev=>({
+         ...prev,
         following:[...prev.following,{user:id}]
-    }))
-   sessionStorage.setItem('userfollowstats',userfollowstats)
-    setisfollowing(true);
- }
-function unfollowuser(id){
+        }))
+        sessionStorage.setItem('userfollowstats',userfollowstats)
+      
+      },[userfollowstats])
+
+     let unfollowuser=useCallback((id)=>{
     setuserfollowstats(prev=>({
         ...prev,
         following:prev.following.filter((f)=>f.user!==id)
     }))
     sessionStorage.setItem('userfollowstats',userfollowstats)
-    setisfollowing(false);
-}
+  
+   },[userfollowstats])
      
     return (
         <>
@@ -42,7 +43,7 @@ function unfollowuser(id){
         
           {
              userinfo.userfollowers.length>0 ? (userinfo.userfollowers.map((userfollower)=>{
-                 setisfollowing(userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id)).length>0
+                 let isfollowing=userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id).length>0
 
                
                 return (
@@ -65,7 +66,7 @@ function unfollowuser(id){
                                     setloading(true)
                                   isfollowing?await userunfollow(userfollower.user._id,unfollowuser):await userfollow(userfollower.user._id,followuser)
                                   setloading(false)
-                                  setisfollowing(!isfollowing)
+                                  isfollowing=!isfollowing
 
                                  }}
                                 />

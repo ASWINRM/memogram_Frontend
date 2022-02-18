@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState,useEffect, useCallback } from "react";
 import axios from "axios";
 import { Card, Icon, Image, Divider, Segment, Container,Dimmer,Loader } from "semantic-ui-react";
 
@@ -42,12 +42,12 @@ function PostPage() {
 
     },[])
 
-    const settingcomments=(commentId)=>{
+    const settingcomments=useCallback((commentId)=>{
         if(commentId){
           setcomments((prev)=>prev.filter((comment)=>comment._id!==commentId))
         }
       
-      }
+      },[comments])
 
     return (
         <>

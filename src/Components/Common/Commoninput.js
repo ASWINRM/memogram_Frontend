@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useCallback} from 'react'
 import {Form,Message,Button,Divider} from 'semantic-ui-react'
 
 const Commoninputs  =({user,handlechange,showsociallinks,
@@ -9,13 +9,13 @@ const Commoninputs  =({user,handlechange,showsociallinks,
   //   console.log(user)
   // },[user])
 //  console.log(Bio,facebook,twitter,instagram)
-  const handleBioChange=async(e)=>{
+  const handleBioChange=useCallback(async(e)=>{
     
     const {name,value}=e.target;   
     
    setuser((prev)=>({...prev,[name]: value}))
   
-}
+},[user])
     return (
         <>
           {/* <Form.Field
