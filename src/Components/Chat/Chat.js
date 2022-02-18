@@ -8,7 +8,7 @@ import ChatListSearch from './ChatListSearch';
 import ChatWindow from './ChatWindow';
 import io from 'socket.io-client'
 import newMsgSound from './newsound'
-
+import MessageNotification from '../Notifications/MessageNotification'
 const scrollDivToBottom = divRef =>
 divRef.current !== null && divRef.current.scrollIntoView({ behaviour: "smooth" });
 
@@ -21,6 +21,8 @@ function Chat() {
   const history=useHistory();
   const divRef=useRef();
   let socket=useRef()
+  let [aboutchat,setaboutchat]=useState();
+  let [notification,setnotification]=useState(null);
   // console.log(window.location.pathname.split('/')[1]==='chats')
   const querymsgwith=window.location.pathname.split("/")[2]
   const [user,setuser]=useState(JSON.parse(localStorage.getItem('user')));
@@ -34,8 +36,10 @@ function Chat() {
   useEffect(()=>{
 
   let allchats=JSON.parse(localStorage.getItem('chats'));
-  setchats(allchats)
-    
+  console.log(allchats.about)
+  console.log(allchats)
+  setchats(allchats.ChatsToBeSent)
+    setaboutchat(allchats.about)
  
   },[])
 
@@ -156,10 +160,11 @@ function Chat() {
       if(socket.current){
         socket.current.on("newmsgreceived",(newchat)=>{
 
+      
          
    // console.log(newchat)
    setmessages((prev)=>[...prev,newchat])
-   newMsgSound(bannerdata.name);
+
     let newchats=JSON.parse(localStorage.getItem('chats'))
    // console.log(newchats);
  
@@ -167,7 +172,16 @@ function Chat() {
      newchats.find((ms)=>ms.messagesWith===newchat.sender)['lastMessage']=newchat.msg;
      newchats.find((ms)=>ms.messagesWith===newchat.sender)['date']=Date.now();
      // console.log(newchats)
-    
+     newMsgSound(bannerdata.name);
+       setnotification({
+         user:{
+           profilepicurl:newchats.find((ms)=>ms.messagesWith===newchat.sender).profilepicurl,
+           name:newchats.find((ms)=>ms.messagesWith===newchat.sender).name,
+           messagesWith:newchats.find((ms)=>ms.messagesWith===newchat.sender).messagesWith
+         },
+         messgae:newchat.msg,
+         date:newchat.date
+       })
       setchats(prev=> [newchats.find((ms)=>ms.messagesWith===newchat.sender),...prev.filter((chat)=>chat.messagesWith!==newchat.sender)])
    }else{
      let newch={
@@ -177,8 +191,19 @@ function Chat() {
        name:bannerdata.name,
        profilepicurl:bannerdata.profilepicurl
      }
-
-   
+     newMsgSound(bannerdata.name);
+     setnotification({
+      user:{
+        profilepicurl:newch.profilepicurl,
+        name:newch.name,
+        messagesWith:newch.messagesWith
+      },
+      messgae:newchat.msg,
+      date:newchat.date
+    })
+     if(!aboutchat){
+      setaboutchat("chats found")
+    }
      setchats((prev)=>[newch,...prev])
    }
           
@@ -218,8 +243,8 @@ function Chat() {
     },[querymsgwith])
 
   const search=useCallback((result)=>{
-   
-    let alreadyinChat=chats.length>0 && chats.filter((chat)=>result.messagesWith===result._id).length>0;
+   console.log(chats);
+    let alreadyinChat= (chats && chats.length>0) && chats.filter((chat)=>result.messagesWith===result._id).length>0;
 
     if(alreadyinChat){
         history.push(`/messages/${result.messagesWith}`)
@@ -233,6 +258,7 @@ function Chat() {
         }
 
         setchats(prev=>[newchat,...prev])
+        setaboutchat("chats found")
         localStorage.setItem('chats',JSON.stringify(chats))
         history.push(`/messages/${result._id}`)
     }
@@ -257,10 +283,14 @@ function Chat() {
         receiver:OpenId.current,
         date:Date.now()
       }
+      if(!aboutchat){
+        setaboutchat("chats found")
+      }
       setmessages((prev)=>[...prev,newmsg])
       setchats((prev)=>[newch,...prev.filter((chat)=>chat.messagesWith!==newch.messagesWith)])
       // console.log(user._id);
       // console.log(OpenId.current)
+      
       socket.current.emit("sendmessage",{
         userId:user._id,
         msgToId:OpenId.current,
@@ -284,8 +314,16 @@ function Chat() {
             </div>
 
             {
+              notification && <MessageNotification notification={notification} ></MessageNotification>
+            }
 
-              querymsgwith==='nochats'?<NoMessages></NoMessages>:
+            { 
+                 <>{
+                  aboutchat==='chats not found'&&<NoMessages></NoMessages>
+                 }
+                 {
+
+                
                 (chats&&chats.length>0) ? (
                     <div style={{marginTop:"20px",width:"100%"}}>
                     <Grid stackable>
@@ -304,7 +342,8 @@ function Chat() {
                             </Comment.Group>
                         </Grid.Column>
                         <Grid.Column mobile={16} tablet={6} computer={10}>
-                            <ChatWindow
+                          {
+                            bannerdata &&<ChatWindow
                             messages={messages}
                             bannerdata={bannerdata} 
                             user={user}
@@ -312,10 +351,15 @@ function Chat() {
                             sendmsg={sendmsg}
                             >
                             </ChatWindow>
+                          }
+                            
                         </Grid.Column>
                     </Grid>
                     </div>
                 ):<NoMessages></NoMessages>
+              }
+                </>
+
             }
         </Segment>
     );

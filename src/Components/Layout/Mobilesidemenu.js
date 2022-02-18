@@ -115,8 +115,8 @@ function Mobilesidemenu({user,pc}) {
            </Link>
            <br />
    
-           <Link to="/chats" style={{ textDecoration: 'none' }}>
-             <List.Item active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+           
+             <List.Item onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
              {
                (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
                <Icon
@@ -126,7 +126,7 @@ function Mobilesidemenu({user,pc}) {
                  color={
                    (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
                  }
-                 onClick={()=>ChatAction(history)}
+                 
                />
                </Badge>:<Icon
                  name={unreadMessage ? "mail" : "mail outline"}
@@ -134,13 +134,13 @@ function Mobilesidemenu({user,pc}) {
                  color={
                    (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
                  }
-                 onClick={()=>ChatAction(history)}
+                 
                />
              }
              
                
              </List.Item>
-           </Link>
+       
            <br />
    
            <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>
@@ -196,8 +196,8 @@ function Mobilesidemenu({user,pc}) {
      </Link>
      <br />
 
-     <Link to="/chats" style={{ textDecoration: 'none' }}>
-       <Menu.Item active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+     
+       <Menu.Item    onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
        {
          (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
          <Icon
@@ -206,7 +206,7 @@ function Mobilesidemenu({user,pc}) {
            color={
              (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
            }
-           onClick={()=>ChatAction(history)}
+           
          />
          </Badge>:<Icon
            name={unreadMessage ? "mail" : "mail outline"}
@@ -214,13 +214,13 @@ function Mobilesidemenu({user,pc}) {
            color={
              (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
            }
-           onClick={()=>ChatAction(history)}
+        
          />
        }
        
          
        </Menu.Item>
-     </Link>
+     
      <br />
 
      <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>

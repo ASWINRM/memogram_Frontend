@@ -15,12 +15,12 @@ function ChatAction(history) {
     try{
         (async()=>{
             let res=await Axios.get(`https://memogramapp.herokuapp.com/api/chat`,{signal:signal});
-    
+           
             if(res){
                 // console.log(res.data)
                 console.log(res);
                 localStorage.setItem('chats',JSON.stringify(res.data))
-                history.push(`/messages/${res.data[0].messagesWith}`)
+                history.push(`/messages/${res.data.ChatsToBeSent[0].messagesWith}`)
             }
         })();
     }catch(e){

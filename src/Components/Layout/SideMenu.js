@@ -121,7 +121,7 @@ const SideMenu=({user,pc})=>{
         <br />
 
         
-          <List.Item active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+          <List.Item onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
           {
             (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
             <Icon
@@ -138,14 +138,14 @@ const SideMenu=({user,pc})=>{
               color={
                 (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
               }
-              onClick={()=>ChatAction(history)}
+             
             />
           }
           {(pc===true) &&<List.Content>
               <List.Header content="Messages" />
             </List.Content> }
             
-          </List.Item>
+          </List.Item   >
         
         <br />
 
