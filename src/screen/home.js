@@ -134,7 +134,7 @@ useEffect(()=>{
 
 
 
- const fetchDataOnScroll= useCallback(async ()=>{
+ const fetchDataOnScroll= async ()=>{
 
   try{
   
@@ -169,7 +169,7 @@ useEffect(()=>{
     // console.log(e);
   }
         
- },[posts])
+ }
 
  
 

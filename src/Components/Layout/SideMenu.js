@@ -58,7 +58,7 @@ const SideMenu=({user,pc})=>{
     useEffect(()=>{
       let controller=new AbortController();
      let signal = controller.signal;
-       (async()=>{
+   
     
          let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
 
@@ -67,9 +67,9 @@ const SideMenu=({user,pc})=>{
           sessionStorage.setItem('NotificationLength',parseInt(res.data))
          }
          
-       })();
+     
 
-       (async()=>{
+  
         
          let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
 
@@ -79,7 +79,7 @@ const SideMenu=({user,pc})=>{
            
            sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
          }
-       })();
+   
 
       return () => controller.abort();
        
