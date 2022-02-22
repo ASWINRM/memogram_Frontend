@@ -22,8 +22,8 @@ import NoImageModal from "./NoImageModal";
 
 const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
   const user=JSON.parse(localStorage.getItem('user'));
-
-  // console.log(posts)
+// console.log(post)
+//   console.log(post.user.username)
   // console.log(post.likes.length>0?post.likes.filter((like) => like.user._id === user._id).length>0?true:false :"");
   // if(settingpost instanceof Function){
   //   // console.log("settingpost is a function in cardpost");
@@ -34,8 +34,8 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
   //   console.log(typeof(settingpost))
   //   console.log(typeof(setShowToastr))
   // }
-  const [likes, setLikes] = useState(post.likes.length>0 ? post.likes :[]);
-  let [isLiked,setisLiked] =useState((likes && post.likes.length > 0) && post.likes.filter((like) => like.user._id === user._id).length > 0);
+  const [likes, setLikes] = useState((post.likes &&post.likes.length>0) ? post.likes :[]);
+  let [isLiked,setisLiked] =useState((post.likes && post.likes.length > 0) && post.likes.filter((like) => like.user._id === user._id).length > 0);
  
   useEffect(()=>{
     // console.log("isliked changing")
@@ -144,12 +144,9 @@ const CardPost=( {post,  setposts,posts, setShowToastr ,settingpost,socket})=>{
               onClick={() => setShowModal(true)}
             />
           )} 
-
+ 
           <Card.Content>
-            
-           
-
-              {(user.role === "root" || (post && post.user.username=== user.username)) && (
+              { user && (user.role === "root" || (post && post.user.username=== user.username)) && (
               <>
                 <Popup
                   on="click"

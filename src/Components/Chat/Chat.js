@@ -12,7 +12,7 @@ import MessageNotification from '../Notifications/MessageNotification'
 const scrollDivToBottom = divRef =>
 divRef.current !== null && divRef.current.scrollIntoView({ behaviour: "smooth" });
 
-function Chat() {
+function Chat({settingstate,messagesWith,socket}) {
 
   const [chats,setchats]=useState();
   const [connectedusers,setconnectedusers]=useState();
@@ -20,7 +20,7 @@ function Chat() {
   const [bannerdata,setbannerdata]=useState({name:"",profilepicurl:""})
   const history=useHistory();
   const divRef=useRef();
-  let socket=useRef()
+
   let [aboutchat,setaboutchat]=useState();
   let [notification,setnotification]=useState(null);
   // console.log(window.location.pathname.split('/')[1]==='chats')
@@ -62,17 +62,18 @@ function Chat() {
       // console.log(res)
     }
   },[])
-
+ 
+  let config=useCallback( async()=>{
+    try {
+          
+      await Promise.all([unreading(),lengthToZer0()]);
+     
+  } catch (e) {
+      console.error(e);
+  }
+  },[])
   useEffect(()=>{
-    (async()=>{
-      try {
-            
-        await Promise.all([unreading(),lengthToZer0()]);
-       
-    } catch (e) {
-        console.error(e);
-    }
-    })();
+   config()
    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   
@@ -94,34 +95,6 @@ function Chat() {
 
   
 
-    useEffect(()=>{
-        if(!socket.current){
-          socket.current=io.connect('https://memogramapp.herokuapp.com');
-        }
-
-        if(socket.current){
-            socket.current.emit('join',{userId:user._id})
-
-            socket.current.on("connectedusers",({users})=>{
-              if(users.length>0){
-                  // console.log(users)
-                setconnectedusers(users)
-              }
-            })
-
-          
-           
-            
-        }
-
-        return () => {
-            if (socket.current) {
-              socket.current.disconnect();
-              socket.current.off();
-            }
-          };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
 
     // async function finduser(){
      
@@ -231,6 +204,7 @@ function Chat() {
             if(res){
               if(res!=="nochats"){
                 OpenId.current=res.data._id
+                console.log(res.data)
                 setbannerdata({name:res.data.name,profilepicurl:res.data.profilepicurl})
                 setmessages([]);
               }
@@ -250,7 +224,7 @@ function Chat() {
     let alreadyinChat= (chats && chats.length>0) && chats.filter((chat)=>result.messagesWith===result._id).length>0;
 
     if(alreadyinChat){
-        history.push(`/messages/${result.messagesWith}`)
+        settingstate(`messages/${result.messagesWith}`)
     }else{
         let newchat={
             messagesWith: result._id,
@@ -263,11 +237,11 @@ function Chat() {
         setchats(prev=>[newchat,...prev])
         setaboutchat("chats found")
         localStorage.setItem('chats',JSON.stringify(chats))
-        history.push(`/messages/${result._id}`)
+        settingstate(`messages/${result._id}`)
     }
    
 
-  },[chats,history])
+  },[chats])
 
 
   const sendmsg=useCallback((text)=>{
@@ -339,6 +313,8 @@ function Chat() {
                                         chat={chat}
                                         connectedusers={connectedusers}
                                         deletechat={deletechat}
+                                        settingstate={settingstate}
+                                        querymsgwith={messagesWith}
                                       ></Chatlist>
                                   ))}
                                 </Segment>

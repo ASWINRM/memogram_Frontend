@@ -9,11 +9,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlaceHolderPosts,EndMessage} from '../Components/Layout/PlaceHolderGroup'
 import CardPost from '../Components/Post/CardPost.js';
 import { Segment } from 'semantic-ui-react';
-import io from 'socket.io-client'
+
 import { Dimmer, Loader } from 'semantic-ui-react'
 
 
-const Home=(home)=>{
+const Home=({socket})=>{
   const [posts,setposts] = useState([]);
   const [hasmore, sethasmore] = useState(false);
   const [ShowToastr, setShowToastr] = useState(false);
@@ -21,27 +21,23 @@ const Home=(home)=>{
   const [PageNumber, setPageNumber] = useState(1);
   const user=JSON.parse(localStorage.getItem('user'));
   const [loading, setloading] = useState(true);
-  const header=window.location.pathname.split('/')[1]
+  const header= user && user.username;
   const [newNotification,setnewNotification]=useState(null);
   const [notificationPopup, showNotificationPopup] = useState(false);
   // console.log(JSON.parse(localStorage.getItem('user')))
-  let socket=useRef()
-
+ console.log(socket)
   useEffect(()=>{
-    if(!socket.current){
-      socket.current=io.connect('https://memogramapp.herokuapp.com');
-      if(socket.current){
-        socket.current.emit('join',{userId:user._id})
 
-        socket.current.on("connectedusers",({users})=>{
-          if(users.length>0){
-              //  console.log(users)
-            
-          }
-        })
+    console.log(posts)
+    return ()=>{
+      setposts([]);
+      sethasmore(false);
+      setPageNumber();
+      setloading(false);
+      setnewNotification(null);
+      showNotificationPopup(false);
     }
-  }
-},[])
+  },[])
 useEffect(()=>{
   if(showNotificationPopup===false){
    setnewNotification("");
@@ -97,6 +93,7 @@ useEffect(()=>{
     // console.log(postid);
     if(postid){
       // console.log(postid);
+      posts.length>0&&
       setposts((prev)=>prev.filter(pos=>pos._id!==postid));
       setShowToastr(true);
     }
@@ -134,7 +131,7 @@ useEffect(()=>{
 
 
 
- const fetchDataOnScroll= async ()=>{
+ const fetchDataOnScroll= useCallback(async ()=>{
 
   try{
   
@@ -159,7 +156,7 @@ useEffect(()=>{
       setShowToastr(false);
       // console.log(res.data);
     }else {
-      setposts((prev)=>[...prev,...res.data]);
+      posts.length>0 ?setposts((prev)=>[...prev,...res.data]):setposts([res.data]);
       setPageNumber((prev)=>prev+1);
       // console.log(res.data);
     }
@@ -169,7 +166,7 @@ useEffect(()=>{
     // console.log(e);
   }
         
- }
+ },[])
 
  
 
@@ -253,16 +250,19 @@ useEffect(()=>{
      }
  
      > 
-       {posts.map((post)=>(
-       <CardPost
+       {posts[0].length>0 && posts[0].map((post)=>{
+ 
+         return (
+      <CardPost
        key={post._id}
        post={post}
-       posts={posts}
        setShowToastr={setShowToastr}
        settingpost={settingpost}
        socket={socket}
        ></CardPost>
-       ))}
+         )
+       
+    })}
       </InfiniteScroll> 
      </Segment>
      }

@@ -84,8 +84,8 @@ function Notifications() {
 const makeNotificationsRead=async (signal)=>{
     try{
 
-       await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength,signal:signal})
-
+       let res =await Axios.post(`https://memogramapp.herokuapp.com/api/notification/makeNotificationsRead`,{notificationLength:notificationLength,signal:signal})
+        console.log(res.data)
     }catch(e){
         // console.log(e)
     }
@@ -96,8 +96,12 @@ const makeNotificationsRead=async (signal)=>{
 const notificationRead = async (signal) => {
     try {
         setpageloading(true)
-      await Axios.post(
+      let res=await Axios.post(
         `https://memogramapp.herokuapp.com/api/notification/SetNotificationsRead`,{signal:signal});
+
+        if(res){
+          console.log(res)
+        }
         setpageloading(false)
     } catch (error) {
       console.log(error);

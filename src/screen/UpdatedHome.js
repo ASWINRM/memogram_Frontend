@@ -1,5 +1,5 @@
 
-import React, {useEffect,useState,useRef,useCallback} from 'react';
+import {useEffect,useState,useRef, useCallback} from 'react';
 import axios from 'axios';
 import NotificationPortal from './NotificationPortal' 
 import {NoPosts} from '../Components/Layout/NoData'
@@ -9,11 +9,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlaceHolderPosts,EndMessage} from '../Components/Layout/PlaceHolderGroup'
 import CardPost from '../Components/Post/CardPost.js';
 import { Segment } from 'semantic-ui-react';
-import io from 'socket.io-client'
+
 import { Dimmer, Loader } from 'semantic-ui-react'
 
 
-const UpdatedHome=()=>{
+const UpdatedHome=({socket})=>{
   const [posts,setposts] = useState([]);
   const [hasmore, sethasmore] = useState(false);
   const [ShowToastr, setShowToastr] = useState(false);
@@ -21,27 +21,23 @@ const UpdatedHome=()=>{
   const [PageNumber, setPageNumber] = useState(1);
   const user=JSON.parse(localStorage.getItem('user'));
   const [loading, setloading] = useState(true);
-  const header=window.location.pathname.split('/')[1]
+  const header= user && user.username;
   const [newNotification,setnewNotification]=useState(null);
   const [notificationPopup, showNotificationPopup] = useState(false);
-  console.log(JSON.parse(localStorage.getItem('user')))
-  let socket=useRef()
-
+  // console.log(JSON.parse(localStorage.getItem('user')))
+ console.log(socket)
   useEffect(()=>{
-    if(!socket.current){
-      socket.current=io.connect('https://memogramapp.herokuapp.com');
-      if(socket.current){
-        socket.current.emit('join',{userId:user._id})
 
-        socket.current.on("connectedusers",({users})=>{
-          // if(users.length>0){
-          //      console.log(users)
-            
-          // }
-        })
+    console.log(posts)
+    return ()=>{
+      setposts([]);
+      sethasmore(false);
+      setPageNumber();
+      setloading(false);
+      setnewNotification(null);
+      showNotificationPopup(false);
     }
-  }
-},[])
+  },[])
 useEffect(()=>{
   if(showNotificationPopup===false){
    setnewNotification("");
@@ -62,25 +58,42 @@ useEffect(()=>{
   setnewNotification(data)
   showNotificationPopup(true)
  })
-  }
-},[])
 
+ socket.current.on("followerNotification",({data})=>{
+   console.log("following request notifcation");
+
+   setnewNotification(data)
+   showNotificationPopup(true);
+ })
+  }
+})
 
 
 useEffect(()=>{
-    return ()=>{
-    
-   if (socket.current) {
-    socket.current.disconnect();
-    socket.current.off();
-  }
-    };
-  },[])
+  return ()=>{
+    setposts([]);
+   sethasmore(false);
+   setShowToastr(false);
+  
+ setPageNumber();
+  
+  setloading();
+  
+  setnewNotification();
+ showNotificationPopup();
+ if (socket.current) {
+  socket.current.disconnect();
+  socket.current.off();
+}
+  };
+},[])
 
-  let settingpost=useCallback((postid,post)=>{
+
+ let settingpost=useCallback((postid,post)=>{
     // console.log(postid);
     if(postid){
       // console.log(postid);
+      posts.length>0&&
       setposts((prev)=>prev.filter(pos=>pos._id!==postid));
       setShowToastr(true);
     }
@@ -99,10 +112,12 @@ useEffect(()=>{
    if(user){
     // console.log(user);
      document.title=`WelCome ${user.name.toString().split(" ")[0]}`;
-     fetchDataOnScroll();
+     fetchDataOnScroll()
    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
+
+
 
  useEffect(() => {
   
@@ -116,7 +131,7 @@ useEffect(()=>{
 
 
 
- const fetchDataOnScroll=async ()=>{
+ const fetchDataOnScroll= useCallback(async ()=>{
 
   try{
   
@@ -141,7 +156,7 @@ useEffect(()=>{
       setShowToastr(false);
       // console.log(res.data);
     }else {
-      setposts((prev)=>[...prev,...res.data]);
+      posts.length>0 ?setposts((prev)=>[...prev,...res.data]):setposts([res.data]);
       setPageNumber((prev)=>prev+1);
       // console.log(res.data);
     }
@@ -151,13 +166,17 @@ useEffect(()=>{
     // console.log(e);
   }
         
- }
+ },[])
 
- if(posts.length===0) {
+ 
+
+ if(!posts || posts.length===0) {
   setTimeout(()=>{
     setloading(false);
   },2000)
   return(
+
+
     <div style={{"marginTop":"5%","marginLeft":"5%"}}>
  <Segment>
  
@@ -188,6 +207,8 @@ useEffect(()=>{
    setTimeout(()=>{
      setloading(false);
    },7000)
+
+
   return(
     <>
    <div style={{margin:"20px"}}></div>
@@ -229,16 +250,19 @@ useEffect(()=>{
      }
  
      > 
-       {posts.map((post)=>(
-       <CardPost
+       {posts[0].length>0 && posts[0].map((post)=>{
+ 
+         return (
+      <CardPost
        key={post._id}
        post={post}
-       posts={posts}
        setShowToastr={setShowToastr}
        settingpost={settingpost}
        socket={socket}
        ></CardPost>
-       ))}
+         )
+       
+    })}
       </InfiniteScroll> 
      </Segment>
      }

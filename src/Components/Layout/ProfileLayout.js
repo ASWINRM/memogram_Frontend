@@ -16,6 +16,8 @@ const AppMedia = createMedia({
 function ProfileLayout(props) {
     const ContextRef=createRef();
    const user=JSON.parse(localStorage.getItem('user'));
+
+   
 //    if(user){
 //        console.log("user :"+user);
 //    }

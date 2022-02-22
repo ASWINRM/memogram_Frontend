@@ -13,7 +13,7 @@ const AppMedia = createMedia({
   
   const mediaStyles = AppMedia.createMediaStyle();
   const { Media, MediaContextProvider } = AppMedia;
-function Chatlayout(props) {
+function Chatlayout() {
     const ContextRef=createRef();
    const user=JSON.parse(localStorage.getItem('user'));
     return (

@@ -3,10 +3,10 @@ import { Divider, Comment, Icon, List } from "semantic-ui-react";
 import {useHistory} from 'react-router-dom'
 import calculateTime from '../../utils/calculateTime'
 
-function Chatlist({chat, connectedusers,deletechat}) {
+function Chatlist({chat, connectedusers,deletechat,settingstate},querymsgwith) {
 const history=useHistory();
 
-const querymsgwith=window.location.pathname.split("/")[2]
+
 
 const [isOnline,setisOnline]=useState(false);
 useEffect(()=>{
@@ -21,7 +21,7 @@ return  (
        <List.Item
           active={chat.messagesWith===querymsgwith}
          onClick={()=>{
-             history.push(`/messages/${chat.messagesWith}`)
+            settingstate(`messages/${chat.messagesWith}`)
          }}
        >
 

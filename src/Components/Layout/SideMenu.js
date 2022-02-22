@@ -7,85 +7,100 @@ import { useHistory } from "react-router";
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import axios from "axios";
-import ChatAction from "../Chat/ChatAction";
-const SideMenu=({user,pc})=>{
+
+const SideMenu=({user,pc,settingstate,activeState,ChatAction})=>{
 //   console.log(pc)
 // console.log(user)
+
   let history=useHistory();
     const location=useLocation();
     const  { unreadNotification, email, unreadMessage, username }=user
+    const [notificationLength,setnotificationLength]=useState()
+    const [msgNotification,setmsgNotification]=useState()
     // console.log(username);
     // console.log(window.location.pathname.split('/')[1])
     // console.log(window.location.pathname.split('/')[2])
     // console.log(window.location.pathname.split('/')[2]==='notifications'+"page")
 
  
+    let notifyLength =async(signal)=>{
+      let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
+
+      if(res){
+       setnotificationLength(parseInt(res.data))
+       sessionStorage.setItem('NotificationLength',parseInt(res.data))
+      }
+      
+    }
+
+    let chatnotification=async(signal)=>{ 
+      let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
+
+      if(msgres){
+       //  console.log(msgres.data.TotalLength)
+        setmsgNotification(msgres.data.TotalLength)
+        
+        sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
+      }
+    }
    
-
-    const isActive = route => {
-
-      if(window.location.pathname.split('/')[1]===route){
-        return true;
-      }else{
-        // console.log("location return"+ location.pathname.toString().trim() === route.toString().trim())
-        // console.log(location.pathname.toString().trim());
-        // console.log(route);
     
-        return location.pathname.toString() === route.toString();
-      }
-     
-
-    }
-    const [notificationLength,setnotificationLength]=useState()
-    const [msgNotification,setmsgNotification]=useState()
-    useEffect(()=>{
-      if(window.location.pathname.split('/')[1]==='messages'){
-        setmsgNotification(0)
-      }
-
-  },[msgNotification])
-
-  useEffect(()=>{
-    if(window.location.pathname.split('/')[2]==='notifications'){
-      setnotificationLength(0)
-    }
-},[notificationLength])
     const Axios=axios.create({
                 
       headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
     });
 
     useEffect(()=>{
+      
       let controller=new AbortController();
-     let signal = controller.signal;
-       (async()=>{
-    
-         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
+      let signal = controller.signal;
 
-         if(res){
-          setnotificationLength(parseInt(res.data))
-          sessionStorage.setItem('NotificationLength',parseInt(res.data))
-         }
-         
-       })();
+      try{
+        Promise.all([chatnotification(signal),notifyLength(signal)]);
 
-       (async()=>{
-        
-         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
-
-         if(msgres){
-          //  console.log(msgres.data.TotalLength)
-           setmsgNotification(msgres.data.TotalLength)
-           
-           sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
-         }
-       })();
+      }catch(e){
+        console.log(e)
+      }
 
       return () => controller.abort();
        
        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+
+
+    // const isActive = route => {
+
+    //   if(window.location.pathname.split('/')[1]===route){
+    //     return true;
+    //   }else{
+    //     // console.log("location return"+ location.pathname.toString().trim() === route.toString().trim())
+    //     // console.log(location.pathname.toString().trim());
+    //     // console.log(route);
+    
+    //     return location.pathname.toString() === route.toString();
+    //   }
+     
+
+    // }
+
+
+
+    useEffect(()=>{
+      if(activeState==='messages'){
+        setmsgNotification(0)
+      }
+
+  },[msgNotification])
+
+
+  useEffect(()=>{
+    if(activeState==='notifications'){
+      setnotificationLength(0)
+    }
+},[notificationLength])
+
+    
     // useEffect(()=>{
     //   console.log(notificationLength+" in side menu")
     // },[notificationLength])
@@ -107,9 +122,11 @@ const SideMenu=({user,pc})=>{
         size="big"
         verticalAlign="middle"
         selection>
-        <Link to="/home" style={{ textDecoration: 'none' }} >
-          <List.Item active={location.pathname==="/home"?true:false} style={location.pathname==="/home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-            <Icon name="home" size="large" color={location.pathname!=="/home" ? "teal":"teal"} />
+
+          <List.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('home')}
+          >
+            <Icon name="home" size="large" color={activeState!=="home" ? "teal":"teal"} />
             {
               (pc===true) && <List.Content>
               <List.Header content="Home" />
@@ -117,26 +134,26 @@ const SideMenu=({user,pc})=>{
           
             }
            </List.Item>
-        </Link>
+      
         <br />
 
         
-          <List.Item onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+          <List.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
           {
             (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
             <Icon
               name={unreadMessage ? "mail" : "mail outline"}
               size="large"
               color={
-                (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
               }
-              onClick={()=>ChatAction(history)}
+              onClick={()=>ChatAction()}
             />
             </Badge>:<Icon
               name={unreadMessage ? "mail" : "mail outline"}
               size="large"
               color={
-                (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
               }
              
             />
@@ -145,12 +162,13 @@ const SideMenu=({user,pc})=>{
               <List.Header content="Messages" />
             </List.Content> }
             
-          </List.Item   >
+          </List.Item >
         
         <br />
 
-        <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>
-          <List.Item active={(window.location.pathname.split('/')[2] ==="notifications")} style={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] === "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+        
+          <List.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('notification')} >
             {/* <Icon
               name={unreadNotification ? "hand point right" : "bell outline"}
               size="large"
@@ -172,15 +190,17 @@ const SideMenu=({user,pc})=>{
             }
             
           </List.Item>
-        </Link>
+        
         <br />
 
-        <Link to={`/${username}`} style={{ textDecoration: 'none' }}>
-          <List.Item active={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] !== "notifications")} style={(window.location.pathname.split('/')[1] === username &&window.location.pathname.split('/')[2] !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+        
+          <List.Item active={(activeState===username && activeState!== "notifications")} style={(activeState === username &&activeState !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate(username)}
+          >
             <Icon
               name="user"
               size="large"
-              color={(new URLSearchParams(useLocation().search).get(username)  === username && "teal") || "grey"}
+              color={(activeState=== username && "teal") || "grey"}
             />
             {
               (pc===true) && <List.Content>
@@ -189,7 +209,7 @@ const SideMenu=({user,pc})=>{
             }
             
           </List.Item>
-        </Link>
+        
         <br />
 
         <List.Item onClick={() => Logout(email)}>

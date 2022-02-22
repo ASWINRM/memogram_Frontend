@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import axios from 'axios'
-import { useState,useEffect} from 'react'
+import { useState,useEffect,memo} from 'react'
 
 import { Alert } from '@mui/material'
 import { Grid } from 'semantic-ui-react'
@@ -15,9 +15,9 @@ import Followers from '../Components/Layout/Followers'
 import Following from '../Components/Layout/Following'
 import Updateprofile from '../Components/Layout/Updateprofile'
 import Settings from '../Components/Layout/Settings'
- function Profile (){
+ function Profile ({username}){
 
-    let username=window.location.pathname.split('/')[1]
+
     // console.log(username)
     const [posts,setposts]=useState([])
     const [loading,setloading]=useState(true)
@@ -34,66 +34,6 @@ import Settings from '../Components/Layout/Settings'
     const  [profile,setprofile]=useState()
  
     const [ShowToastr,setShowToastr]=useState(false)
-   
-    
-
-    useEffect(()=>{
-  if(activeitem!=='update' || activeitem!=='following' || activeitem!=='followers' || activeitem!=='settings' ){
-    (async function() {
-        try {
-            await Promise.all([getuserinfo(), getposts(),getuserfollowstatstics()]);
-           
-        } catch (e) {
-            // console.error(e);
-        }
-    })();
-
-  }
-
-//   console.log(activeitem)
-        
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-        
-    },[username,getuserinfo,getposts,getuserfollowstatstics]);
-
-  
-
-
-
-    useEffect(()=>{
-        console.log(userfollowstats)
-        // console.log(userinfo)
-        let user=JSON.parse(localStorage.getItem('user'));
-        if(userinfo && user){
-             if(userinfo.user._id===user._id||userinfo.user.email===user.email ){
-                setownprofile(true);
-             }else{
-                 setownprofile(false);
-             }
-         
-        }
-       
-    },[userfollowstats,userinfo])
-
-
-    useEffect(()=>{
-        if(userinfo){
-            if(username!==userinfo.user.username){
-                setposts(null)
-                setuserinfo(null)
-                setuserfollowstats(null)
-                setfollowerslength(null);
-                setfollowingslength(null);
-                setuser(null)
-                setprofile(null)
-                
-            }
-        }
-      
-    },[username,userinfo])
-
-   
-
     let settingpost=useCallback((postid,post)=>{
         // console.log(postid);
         if(postid){
@@ -123,20 +63,8 @@ let unfollowuser=useCallback((id)=>{
 },[userfollowstats])
   
 
-    // useEffect(()=>{
-    //     console.log(username);
-    // },[username])
-
-    useEffect(()=>{
-        ShowToastr && setTimeout(() => setShowToastr(false), 3000)
-    },[ShowToastr])
-
-    const Axios=axios.create({
-                
-        headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
-      });
-
-      const getuserinfo=async()=>{
+   
+    const getuserinfo=async()=>{
           
         setloading(true);
           try{
@@ -202,6 +130,79 @@ let unfollowuser=useCallback((id)=>{
         },[userfollowstats])
 
         
+
+    useEffect(()=>{
+  if(activeitem!=='update' || activeitem!=='following' || activeitem!=='followers' || activeitem!=='settings' ){
+    (async function() {
+        try {
+            await Promise.all([getuserinfo(), getposts(),getuserfollowstatstics()]);
+           
+        } catch (e) {
+            // console.error(e);
+        }
+    })();
+
+  }
+
+//   console.log(activeitem)
+        
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+        
+    },[username]);
+
+  
+
+
+
+    useEffect(()=>{
+        console.log(userfollowstats)
+        // console.log(userinfo)
+        let user=JSON.parse(localStorage.getItem('user'));
+        if(userinfo && user){
+             if(userinfo.user._id===user._id||userinfo.user.email===user.email ){
+                setownprofile(true);
+             }else{
+                 setownprofile(false);
+             }
+         
+        }
+       
+    },[userfollowstats,userinfo])
+
+
+    useEffect(()=>{
+        if(userinfo){
+            if(username!==userinfo.user.username){
+                setposts(null)
+                setuserinfo(null)
+                setuserfollowstats(null)
+                setfollowerslength(null);
+                setfollowingslength(null);
+                setuser(null)
+                setprofile(null)
+                
+            }
+        }
+      
+    },[username,userinfo])
+
+   
+
+    
+    // useEffect(()=>{
+    //     console.log(username);
+    // },[username])
+
+    useEffect(()=>{
+        ShowToastr && setTimeout(() => setShowToastr(false), 3000)
+    },[ShowToastr])
+
+    const Axios=axios.create({
+                
+        headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
+      });
+
+     
 
         return (
             <>
@@ -313,4 +314,4 @@ let unfollowuser=useCallback((id)=>{
 }
 
 
-export default Profile;
+export default memo(Profile);

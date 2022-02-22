@@ -3,7 +3,6 @@ import { Button,  Form } from 'semantic-ui-react'
 import {checkusername,handlesubmit} from '../../utils/usernameaction'
 import { Message,Input,Icon } from 'semantic-ui-react'
 
-
 function Settings() {
     
     const regex=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/; 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List, Icon, Dropdown, Container ,Menu} from "semantic-ui-react";
+import { List, Icon, Dropdown, Container ,Menu, DropdownMenu} from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
 import  LogoutUser  from '../../utils/logoutUser'
@@ -8,7 +8,7 @@ import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useHistory } from "react-router";
 import axios from "axios";
-function Mobilesidemenu({user,pc}) {
+function Mobilesidemenu({user,pc,activeState,settingstate}) {
     // console.log(user);
     // console.log(pc)
     let history=useHistory();
@@ -38,13 +38,13 @@ function Mobilesidemenu({user,pc}) {
     const [notificationLength,setnotificationLength]=useState()
     const [msgNotification,setmsgNotification]=useState()
     useEffect(()=>{
-      if(window.location.pathname.split('/')[1]==='messages'){
+      if(activeState==='messages'){
         setmsgNotification(0)
       }
   },[msgNotification])
 
   useEffect(()=>{
-    if(window.location.pathname.split('/')[2]==='notifications'){
+    if(activeState==='notifications'){
       setnotificationLength(0)
     }
 },[notificationLength])
@@ -53,29 +53,37 @@ function Mobilesidemenu({user,pc}) {
       headers: {  "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token')) }
     });
 
+    let notifyLength =async(signal)=>{
+      let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
+
+      if(res){
+       setnotificationLength(parseInt(res.data))
+       sessionStorage.setItem('NotificationLength',parseInt(res.data))
+      }
+      
+    }
+
+    let chatnotification=async(signal)=>{ 
+      let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
+
+      if(msgres){
+       //  console.log(msgres.data.TotalLength)
+        setmsgNotification(msgres.data.TotalLength)
+        
+        sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
+      }
+    }
     useEffect(()=>{
       let controller=new AbortController();
       let signal = controller.signal;
-       (async()=>{
-         let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
+      try{
+        Promise.all([chatnotification(signal),notifyLength(signal)]);
 
-         if(res){
-          setnotificationLength(parseInt(res.data))
-          sessionStorage.setItem('NotificationLength',parseInt(res.data))
-         }
-       })();
+      }catch(e){
+        console.log(e)
+      }
 
-       (async()=>{
-         let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
-
-         if(msgres){
-        //    console.log(msgres.data.TotalLength)
-           setmsgNotification(msgres.data.TotalLength)
-           
-           sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
-         }
-       })();
-       return ()=>controller.abort()
+      return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -102,155 +110,160 @@ function Mobilesidemenu({user,pc}) {
        
        selection>   
            {
-               pc===true? <List
+               pc===true? 
+               <List
                style={{ paddingTop: "1rem",marginLeft:"1rem" }}
                size="big"
                
                verticalAlign="middle"
                selection>           
-           <Link to="/home" style={{ textDecoration: 'none' }} >
-             <List.Item active={location.pathname==="/home"?true:false} style={location.pathname==="/home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-               <Icon name="home" size="large" color={location.pathname!=="/home" ? "teal":"teal"} />
-             </List.Item>
-           </Link>
-           <br />
-   
            
-             <List.Item onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-             {
-               (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
-               <Icon
-                 name={unreadMessage ? "mail" : "mail outline"}
-                 size="large"
-                 
-                 color={
-                   (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
-                 }
-                 
-               />
-               </Badge>:<Icon
-                 name={unreadMessage ? "mail" : "mail outline"}
-                 size="large"
-                 color={
-                   (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
-                 }
-                 
-               />
-             }
-             
-               
-             </List.Item>
-       
-           <br />
-   
-           <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>
-             <List.Item active={(window.location.pathname.split('/')[2] ==="notifications")} style={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] === "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-               
-   
-               {
-                 (unreadNotification&&notificationLength>0)? <Badge badgeContent={notificationLength} color="secondary"  overlap="circular" >
-                 <NotificationsIcon color="action" fontSize="large" color="primary" />
-                  </Badge>: <NotificationsIcon color="action" fontSize="large" />
-               }
-               
-             </List.Item>
-           </Link>
-           <br />
-           <List.Item>
-           <Dropdown item icon="bars" direction="left">
-               <Dropdown.Menu>
-                 <Link to={`/${username}`} style={{ textDecoration: 'none' }}>
-                   <Dropdown.Item active={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] !== "notifications")} style={(window.location.pathname.split('/')[1] === username &&window.location.pathname.split('/')[2] !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-                     <Icon
-                 name="user"
-                 size="large"
-                 color={(new URLSearchParams(location.search).get(username)  === username && "teal") || "grey"}
-               />
-                     Account
-                   </Dropdown.Item>
-                 </Link>
-   
-                 <Link to="/search">
-                   <Dropdown.Item active={isActive("/search")}>
-                     <Icon name="search" size="large" />
-                     Search
-                   </Dropdown.Item>
-                 </Link>
-   
-                 <Dropdown.Item onClick={() => Logout(email)}>
-                 <Icon name="log out" size="large" color="grey"/>
-                   Logout
-                 </Dropdown.Item>
-               </Dropdown.Menu>
-             </Dropdown>
-          </List.Item>
-           
-   
+           <List.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('home')}
+          >
+            <Icon name="home" size="large" color={activeState!=="home" ? "teal":"teal"} />
+            {
+              (pc===true) && <List.Content>
+              <List.Header content="Home" />
+            </List.Content>
           
-         </List>:
+            }
+           </List.Item>
+
+           <List.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+          {
+            (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
+            <Icon
+              name={unreadMessage ? "mail" : "mail outline"}
+              size="large"
+              color={
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
+              }
+              onClick={()=>ChatAction()}
+            />
+            </Badge>:<Icon
+              name={unreadMessage ? "mail" : "mail outline"}
+              size="large"
+              color={
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
+              }
+             
+            />
+          }
+          {(pc===true) &&<List.Content>
+              <List.Header content="Messages" />
+            </List.Content> }
+            
+          </List.Item >
+          <br />
+          <List.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('notification')} >
+            {/* <Icon
+              name={unreadNotification ? "hand point right" : "bell outline"}
+              size="large"
+              color={
+                (isActive(`/${username}/notifications`) && "teal") ||
+                (unreadNotification && "orange")
+              }
+            /> */}
+
+            {
+              (unreadNotification&&notificationLength>0)? <Badge badgeContent={notificationLength} color="secondary"  overlap="circular" >
+              <NotificationsIcon color="action" fontSize="large" color="primary" />
+               </Badge>: <NotificationsIcon color="action" fontSize="large" />
+            }
+            {
+              (pc===true)&& <List.Content>
+              <List.Header content="Notifications" />
+            </List.Content>
+            }
+            
+          </List.Item>
+           <br />
+               </List>:
     <>
-     <Link to="/home" style={{ textDecoration: 'none' }} >
-       <Menu.Item active={location.pathname==="/home"?true:false} style={location.pathname==="/home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-         <Icon name="home" size="large" color={location.pathname!=="/home" ? "teal":"teal"} />
-       </Menu.Item>
-     </Link>
-     <br />
+     <Menu.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('home')}
+          >
+            <Icon name="home" size="large" color={activeState!=="home" ? "teal":"teal"} />
+            {
+              (pc===true) && <List.Content>
+              <List.Header content="Home" />
+            </List.Content>
+          
+            }
+           </Menu.Item>
 
-     
-       <Menu.Item    onClick={()=>ChatAction(history)} active={isActive("/messages")} style={isActive("/messages")?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-       {
-         (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
-         <Icon
-           name={unreadMessage ? "mail" : "mail outline"}
-           size="large"
-           color={
-             (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
-           }
-           
-         />
-         </Badge>:<Icon
-           name={unreadMessage ? "mail" : "mail outline"}
-           size="large"
-           color={
-             (isActive("/messages") && "teal") || (unreadMessage && "blue") || "blue"
-           }
-        
-         />
-       }
-       
-         
-       </Menu.Item>
-     
-     <br />
+           <Menu.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+          {
+            (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
+            <Icon
+              name={unreadMessage ? "mail" : "mail outline"}
+              size="large"
+              color={
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
+              }
+              onClick={()=>ChatAction()}
+            />
+            </Badge>:<Icon
+              name={unreadMessage ? "mail" : "mail outline"}
+              size="large"
+              color={
+                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
+              }
+             
+            />
+          }
+          {(pc===true) &&<List.Content>
+              <List.Header content="Messages" />
+            </List.Content> }
+            
+          </Menu.Item >
+          <br />
+          <Menu.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate('notification')} >
+            {/* <Icon
+              name={unreadNotification ? "hand point right" : "bell outline"}
+              size="large"
+              color={
+                (isActive(`/${username}/notifications`) && "teal") ||
+                (unreadNotification && "orange")
+              }
+            /> */}
 
-     <Link to={`/${username}/notifications`} style={{ textDecoration: 'none' }}>
-       <Menu.Item active={(window.location.pathname.split('/')[2] ==="notifications")} style={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] === "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-         
-
-         {
-           (unreadNotification&&notificationLength>0)? <Badge badgeContent={notificationLength} color="secondary"  overlap="circular" >
-           <NotificationsIcon color="action" fontSize="large" color="primary" />
-            </Badge>: <NotificationsIcon color="action" fontSize="large" />
-         }
-         
-       </Menu.Item>
-     </Link>
-     <br />
-     <Menu.Item>
+            {
+              (unreadNotification&&notificationLength>0)? <Badge badgeContent={notificationLength} color="secondary"  overlap="circular" >
+              <NotificationsIcon color="action" fontSize="large" color="primary" />
+               </Badge>: <NotificationsIcon color="action" fontSize="large" />
+            }
+            {
+              (pc===true)&& <List.Content>
+              <List.Header content="Notifications" />
+            </List.Content>
+            }
+            
+          </Menu.Item>
+           <br />
+           <Menu.Item>
      <Dropdown item icon="bars" direction="left" style={{paddingBottom:"1rem"}}>
      
          <Dropdown.Menu>
-           <Link to={`/${username}`} style={{ textDecoration: 'none' }}>
-             <Dropdown.Item active={(window.location.pathname.split('/')[1] === username && window.location.pathname.split('/')[2] !== "notifications")} style={(window.location.pathname.split('/')[1] === username &&window.location.pathname.split('/')[2] !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-               <Icon
-           name="user"
-           size="large"
-           color={(new URLSearchParams(location.search).get(username)  === username && "teal") || "grey"}
-         />
-               Account
-             </Dropdown.Item>
-           </Link>
-
+         <DropdownMenu.Item active={(activeState===username && activeState!== "notifications")} style={(activeState === username &&activeState !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+          onClick={()=>settingstate(username)}
+          >
+            <Icon
+              name="user"
+              size="large"
+              color={(activeState=== username && "teal") || "grey"}
+            />
+            {
+              (pc===true) && <List.Content>
+              <List.Header content="Account" />
+            </List.Content>
+            }
+            
+          </DropdownMenu.Item>
+          
            <Link to="/search">
              <Dropdown.Item active={isActive("/search")}>
                <Icon name="search" size="large" />

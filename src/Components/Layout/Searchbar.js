@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import {  Icon } from 'semantic-ui-react'
 
 
-export const Searchbar=()=>{
+export const Searchbar=({settingstate,mobile})=>{
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);
     const [results, setresults] = useState([]);
@@ -26,6 +26,17 @@ export const Searchbar=()=>{
      
    },[text])
    
+   let pcclicks=(result)=>{settingstate(`anotherProfile/${result.name}`)
+   }
+
+   let mobileclick=(result)=>{
+
+      settingstate(`anotherProfile/${result.name}`);
+      history.push('/home')
+    
+    
+    
+   }
     const handlechange=useCallback(async (e)=>{
       
          value=e.target.value;
@@ -100,7 +111,9 @@ export const Searchbar=()=>{
              
         return (
           
-<List.Item key={result._id} onClick={()=>history.push(`/${result.name}`)} >
+<List.Item key={result._id} onClick={ 
+mobile=='click'?pcclicks(result):mobileclick(result)
+} >
   
  
   <Image src={result.profilepicurl} alt="ProfilePic" avatar />
