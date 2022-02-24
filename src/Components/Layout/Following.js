@@ -8,7 +8,7 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
     //  console.log( userfollowstats,userinfo,profile);
      const currentuser=JSON.parse(localStorage.getItem('user'));
     //  console.log(currentuser)
-     const [loading,setloading]=useState(false);
+    let [loading,setloading]=useState(false);
     //  let [isfollowing, setisfollowing] = useState(false);
 
 
@@ -46,7 +46,7 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
                userinfo.userfollowings.length>0 ? userinfo.userfollowings.map((userfollower)=>{
             //    setisfollowing(userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id).length>0)
                 let isfollowing=(userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id)).length>0
-     
+               
                   return (
                     
                     <List celled  size='massive' divided verticalAlign="middle" key={userfollower.user._id} >
@@ -72,7 +72,11 @@ function Following({userfollowstats,setuserfollowstats,userinfo,profile}) {
                                setloading(true)
                                isfollowing?await userunfollow(userfollower.user._id,unfollowuser):await userfollow(userfollower.user._id,followuser)
                               setloading(false);
-                               isfollowing=!isfollowing
+                               if(isfollowing){
+                                 isfollowing=false;
+                               }else{
+                                isfollowing=true;
+                               }
                              
                             }}
                            />

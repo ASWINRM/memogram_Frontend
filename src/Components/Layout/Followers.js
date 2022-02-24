@@ -4,11 +4,11 @@ import {  Image,  List,Loader,Button} from 'semantic-ui-react'
 import {userfollow,userunfollow} from '../../utils/followaction'
 import { NoFollowData} from './NoData'
 function Followers({ userfollowstats,setuserfollowstats,userinfo}) {
-    const currentuser=JSON.parse(localStorage.getItem('user'));
-    
+  const [loading,setloading]=useState(false);
+  const currentuser=JSON.parse(localStorage.getItem('user'));
     //  console.log( userfollowstats,userinfo,profile);
     //  console.log(userinfo.userfollowers.length)
-     const [loading,setloading]=useState(false);
+    
      
 
      useEffect(()=>{
@@ -37,14 +37,12 @@ function Followers({ userfollowstats,setuserfollowstats,userinfo}) {
      
     return (
         <>
-        {
-            loading && <Loader size='large'></Loader>
-        }
+       
         
           {
              userinfo.userfollowers.length>0 ? (userinfo.userfollowers.map((userfollower)=>{
                  let isfollowing=userfollowstats.following.filter((followinguser)=>followinguser.user===userfollower.user._id).length>0
-
+                 
                
                 return (
                     <List celled  size='massive' divided verticalAlign="middle" key={userfollower.user._id}>

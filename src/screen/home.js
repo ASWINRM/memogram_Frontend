@@ -81,10 +81,7 @@ useEffect(()=>{
   
   setnewNotification();
  showNotificationPopup();
- if (socket.current) {
-  socket.current.disconnect();
-  socket.current.off();
-}
+
   };
 },[])
 

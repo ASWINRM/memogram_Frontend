@@ -35,16 +35,16 @@ const Layout= ()=>{
 useEffect(()=>{
   if(!socket.current){
 
-    socket.current=io.connect('https://memogramapp.herokuapp.com');
+    socket.current=io('https://memogramapp.herokuapp.com');
     if(socket.current){
       console.log("machan connected")
       socket.current.emit('join',{userId:user._id})
 
       socket.current.on("connectedusers",({users})=>{
-        if(users.length>0){
+        
              console.log(users)
           
-        }
+        
       })
   }
 }

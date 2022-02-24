@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { List, Icon } from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import { useLocation } from "react-router";
@@ -23,17 +23,17 @@ const SideMenu=({user,pc,settingstate,activeState,ChatAction})=>{
     // console.log(window.location.pathname.split('/')[2]==='notifications'+"page")
 
  
-    let notifyLength =async(signal)=>{
+    let notifyLength =useCallback(async(signal)=>{
       let res=await Axios.get(`https://memogramapp.herokuapp.com/api/notification/notificationlength`,{signal:signal})
 
       if(res){
        setnotificationLength(parseInt(res.data))
        sessionStorage.setItem('NotificationLength',parseInt(res.data))
       }
-      
-    }
+    
+    },[])
 
-    let chatnotification=async(signal)=>{ 
+    let chatnotification=useCallback(async(signal)=>{ 
       let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
 
       if(msgres){
@@ -42,7 +42,7 @@ const SideMenu=({user,pc,settingstate,activeState,ChatAction})=>{
         
         sessionStorage.setItem('MesgNotificationLength',parseInt(msgres.data.TotalLength))
       }
-    }
+    },[])
    
     
     const Axios=axios.create({

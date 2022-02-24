@@ -5,9 +5,9 @@ import MessageInputField from './MessageInputField';
 import Message from './Message'
 import { Dimmer, Loader } from 'semantic-ui-react'
 import {  Grid} from "semantic-ui-react";
-function ChatWindow({bannerdata,messages,user,divRef,sendmsg}) {
+function ChatWindow({bannerdata,messages,user,divRef,sendmsg,querymsgwith}) {
 
-    const querymsgwith=window.location.pathname.split("/")[2];
+    
 
     return (
         <>

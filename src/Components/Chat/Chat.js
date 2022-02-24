@@ -6,7 +6,7 @@ import Chatlist from './Chatlist';
 import {NoMessages} from '../Layout/NoData'
 import ChatListSearch from './ChatListSearch';
 import ChatWindow from './ChatWindow';
-import io from 'socket.io-client'
+
 import newMsgSound from './newsound'
 import MessageNotification from '../Notifications/MessageNotification'
 const scrollDivToBottom = divRef =>
@@ -24,7 +24,8 @@ function Chat({settingstate,messagesWith,socket}) {
   let [aboutchat,setaboutchat]=useState();
   let [notification,setnotification]=useState(null);
   // console.log(window.location.pathname.split('/')[1]==='chats')
-  const querymsgwith=window.location.pathname.split("/")[2]
+  const querymsgwith=messagesWith
+  
   const [user,setuser]=useState(JSON.parse(localStorage.getItem('user')));
   const OpenId=useRef();
 
@@ -32,6 +33,10 @@ function Chat({settingstate,messagesWith,socket}) {
                    
     headers: {   "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token'))}
   });
+
+  useEffect(()=>{
+     socket.current.emit('connectedusers',{userId:user._id})
+  },[])
 
   useEffect(()=>{
 
@@ -111,10 +116,10 @@ function Chat({settingstate,messagesWith,socket}) {
     // }
 
     useEffect(()=>{
-
+              console.log(querymsgwith);
       (async()=>{
         if(querymsgwith){
-          // console.log("dei load message")
+          console.log("dei load message")
           socket.current.emit('loadmessage',{userId:user._id,messagesWith:querymsgwith})
 
         
@@ -197,7 +202,7 @@ function Chat({settingstate,messagesWith,socket}) {
       (async()=>{
         socket.current.on('nomsgfound',async()=>{
           // console.log("dei no msg found")
-          // console.log(querymsgwith)
+          console.log(querymsgwith)
           if(querymsgwith){
             let res=await axios.get(`https://memogramapp.herokuapp.com/api/chat/finduser/${querymsgwith}`)
              
@@ -328,6 +333,7 @@ function Chat({settingstate,messagesWith,socket}) {
                             user={user}
                             divRef={divRef}
                             sendmsg={sendmsg}
+                            querymsgwith={querymsgwith}
                             >
                             </ChatWindow>
                           }
