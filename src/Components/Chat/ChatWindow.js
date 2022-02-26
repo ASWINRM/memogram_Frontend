@@ -18,7 +18,7 @@ function ChatWindow({bannerdata,messages,user,divRef,sendmsg,querymsgwith}) {
             <>
             <Grid>
         <Grid.Column width={12}>
-                {(querymsgwith && bannerdata && messages && user)? (
+                {(querymsgwith && bannerdata && user)? (
                   <>
                     <div
                       style={{
