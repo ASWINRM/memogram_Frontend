@@ -35,21 +35,43 @@ const Layout= ()=>{
  let socket=useRef()
 
 useEffect(()=>{
-  if(!socket.current){
+  if (!socket.current) {
+    if (user._id) {
+      socket.current = io('https://memogramapp.herokuapp.com');
+      if (socket.current) {
+        console.log("machan connected")
+        socket.current.emit('join', { userId: user._id })
 
-    socket.current=io('https://memogramapp.herokuapp.com');
-    if(socket.current){
-      console.log("machan connected")
-      socket.current.emit('join',{userId:user._id})
-
-      socket.current.on("connectedusers",({users})=>{
+        socket.current.on("connectedusers", ({ users }) => {
         
-             console.log(users)
+          console.log(users)
           
         
-      })
+        })
+      } else {
+        let res = axios.get(`https://memogramapp.herokuapp.com/api/profile/finduser/${user.username}`)
+      
+        if (res) {
+          localStorage.setItem('user', JSON.stringify(res.data));
+          user = res.data
+          if (res.data._id) {
+            socket.current = io('https://memogramapp.herokuapp.com');
+            if (socket.current) {
+              console.log("machan connected")
+              socket.current.emit('join', { userId: res.data._id })
+              socket.current.on("connectedusers", ({ users }) => {
+                console.log(users)
+          
+        
+              })
+            }
+
+          }
+        }
+   
+      }
+    }
   }
-}
 
 return ()=>{
   if (socket.current) {
