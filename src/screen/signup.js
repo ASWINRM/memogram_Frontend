@@ -20,7 +20,7 @@ const regex=/^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
     email:"",
     password:"",
     confirmpassword:"",
-    Bio:"",
+    bio:"",
     facebook:"",
     twitter:"",
     instagram:""
@@ -31,7 +31,7 @@ useEffect(()=>{
       email:"",
       password:"",
       confirmpassword:"",
-      Bio:"",
+      bio:"",
       facebook:"",
       twitter:"",
       instagram:""
@@ -49,7 +49,7 @@ useEffect(()=>{
   const [mediapreview,setmediapreview]=useState("");
   const [highlighted,sethighlighted]=useState(false);
 
-   const {name,email,password,confirmpassword,Bio}=user;
+   const {name,email,password,confirmpassword,bio}=user;
 
    const handlechange=async (e)=>{
       
@@ -117,6 +117,9 @@ useEffect(()=>{
                 // console.log(res.data);
                 setusernameAvailable(true);
                 setuser((prev)=>({...prev,username}));
+            } else {
+                setusernameAvailable(false);
+           seterrormsg("Username not Available");
             }
         }catch(e){
             setusernameAvailable(false);
@@ -264,7 +267,8 @@ useEffect(()=>{
                         showsociallinks={showsociallinks}
                         setshowsociallinks={setshowsociallinks}
                         handlechange={handlechange}
-                        setuser={setuser}
+                            setuser={setuser}
+                            
                        ></Commoninputs>
                        <Divider></Divider>
                        <Button type="submit" color="blue" content="SignUp" 

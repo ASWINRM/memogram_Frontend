@@ -3,7 +3,7 @@ import {Form,Message,Button,Divider} from 'semantic-ui-react'
 
 const Commoninputs  =({user,handlechange,showsociallinks,
   setshowsociallinks,setuser})=> {
-  let {Bio,facebook,twitter,instagram}=user
+  let {bio,facebook,twitter,instagram}=user
 
   // useEffect(()=>{
   //   console.log(user)
@@ -33,7 +33,7 @@ const Commoninputs  =({user,handlechange,showsociallinks,
           <div style={{marginBottom:"3%"}}>
             <label>Bio</label>
             <textarea name="bio"  onChange={handleBioChange}   className="myText"
-            placeholder="Bio Data" rows="5" cols="50"required value={Bio}></textarea>
+            placeholder="Bio Data" rows="5" cols="50"required value={bio}></textarea>
           </div>
           <Button content="Add Social Links"
           icon="at"
