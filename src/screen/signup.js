@@ -96,7 +96,7 @@ useEffect(()=>{
    }
 
    useEffect(() => {
-      const isUser=Object.values({name,email,password,confirmpassword,Bio}).every((item)=>item!=="")
+      const isUser=Object.values({name,email,password,confirmpassword,bio}).every((item)=>item!=="")
     //   console.log(isUser);
       if(!isUser){
          setsubmitDisable(true);
