@@ -1,7 +1,7 @@
 import React, { useState,useEffect, useCallback } from "react";
 import axios from "axios";
-import { Card, Icon, Image, Divider, Segment, Container,Dimmer,Loader } from "semantic-ui-react";
-
+import { Card, Icon, Image, Divider, Segment, Container,Dimmer,Loader ,Button} from "semantic-ui-react";
+import { useHistory } from 'react-router';
 import PostComments from "./PostComments";
 import CommentInputField from "./CommentInputField";
 import calculateTime from "../../utils/calculateTime";
@@ -23,7 +23,7 @@ function PostPage() {
       const [likes,setlikes]=useState(null);
       const [comments,setcomments]=useState(null)
       // console.log(postId);
-      
+      let history=useHistory();
       const isLiked = (likes&& likes.length > 0) && likes.filter(like => like.user === user._id).length > 0;
   
     useEffect(()=>{
@@ -53,6 +53,10 @@ function PostPage() {
         <>
            <Navbar></Navbar>
         <Container text>
+        <Button icon onClick={()=>{ 
+            history.push('/home')}}>
+               <Icon name='arrow left' /> back
+                   </Button>
             {
                 post ? (
            <>

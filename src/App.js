@@ -32,13 +32,14 @@ function App() {
        <Route exact  path='/signup'  component={Signup}></Route>
        <Route exact   path='/'      component={Login}></Route>
        <Route exact   path='/search'      component={Searchbar}></Route>
+       <Route exact   path='/:username' component={ProfileLayout}></Route>
        <Route exact path='/resetpassword/:token' component={ResetPage}></Route>
        <Route exact  path='/forgot/password' component={ForgotPage}></Route>
-       <Route exact path='/:username/notifications' component={NotificationLayout}></Route>
+  
        <Route exact path='/post/:postid' component={PostPage}></Route>
        
-       <Route exact path='/messages/:messagesWith' component={Chatlayout}></Route>
-       <Route exact   path='/:username' component={ProfileLayout}></Route>
+      
+      
        </Switch>
        
          </main>

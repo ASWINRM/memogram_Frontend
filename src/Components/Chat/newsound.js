@@ -4,7 +4,7 @@ const newMsgSound = senderName => {
     sound && sound.play();
   
     if (senderName) {
-      document.title = `New message from ${senderName}`;
+      document.title = `New Notification from ${senderName}`;
   
       if (document.visibilityState === "visible") {
         setTimeout(() => {

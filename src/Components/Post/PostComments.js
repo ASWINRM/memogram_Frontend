@@ -20,7 +20,7 @@ const PostComments=({ comment, user, setComments, postId,settingcomments,socket 
   return (
     <>
     {
-      <Comment.Group>
+      <Comment.Group key={comment.user._id}>
       <Comment>
         {
           profilepicurl!==" " ?  <Comment.Avatar src={profilepicurl} />:ownuser._id===comment.user._id?<Comment.Avatar src={user.profilepicurl} />:<Comment.Avatar src={ownuser.profilepicurl} />

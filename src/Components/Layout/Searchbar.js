@@ -26,17 +26,17 @@ export const Searchbar=({settingstate,mobile})=>{
      
    },[text])
    
-   let pcclicks=(result)=>{settingstate(`anotherProfile/${result.name}`)
-   }
+  //  let pcclicks=(result)=>{settingstate(`anotherProfile/${result.name}`)
+  //  }
 
-   let mobileclick=(result)=>{
+  //  let mobileclick=(result)=>{
 
-      settingstate(`anotherProfile/${result.name}`);
-      history.push('/home')
+  //     settingstate(`anotherProfile/${result.name}`);
+  //     history.push('/home')
     
     
     
-   }
+  //  }
     const handlechange=useCallback(async (e)=>{
       
          value=e.target.value;
@@ -111,8 +111,8 @@ export const Searchbar=({settingstate,mobile})=>{
              
         return (
           
-<List.Item key={result._id} onClick={ 
-mobile=='click'?pcclicks(result):mobileclick(result)
+<List.Item key={result._id} onClick={ ()=>
+history.push(`/${result.name}`)
 } >
   
  

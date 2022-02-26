@@ -3,6 +3,8 @@ import { Divider, Feed } from "semantic-ui-react";
 import calculateTime from "../../utils/calculateTime";
 
 function CommentNotification({ notification }) {
+
+  
   return (
     <>
       <Feed.Event>

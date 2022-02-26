@@ -2,8 +2,11 @@ import React from "react";
 import { Feed, Divider } from "semantic-ui-react";
 import calculateTime from "../..//utils/calculateTime";
 
+
 function LikeNotification({ notification }) {
     // console.log(notification)
+ 
+  
   return (
     <>
       <Feed.Event>
@@ -34,3 +37,4 @@ function LikeNotification({ notification }) {
 }
 
 export default LikeNotification;
+

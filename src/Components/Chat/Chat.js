@@ -12,7 +12,7 @@ import MessageNotification from '../Notifications/MessageNotification'
 const scrollDivToBottom = divRef =>
 divRef.current !== null && divRef.current.scrollIntoView({ behaviour: "smooth" });
 
-function Chat({settingstate,messagesWith,socket}) {
+function Chat({settingstate,messagesWith,socket,msgnotification,setmsgnotification}) {
 
   const [chats,setchats]=useState();
   const [connectedusers,setconnectedusers]=useState();
@@ -20,9 +20,9 @@ function Chat({settingstate,messagesWith,socket}) {
   const [bannerdata,setbannerdata]=useState({name:"",profilepicurl:""})
   const history=useHistory();
   const divRef=useRef();
-
+  
   let [aboutchat,setaboutchat]=useState();
-  let [notification,setnotification]=useState(null);
+
   // console.log(window.location.pathname.split('/')[1]==='chats')
   const querymsgwith=messagesWith
   
@@ -83,7 +83,8 @@ function Chat({settingstate,messagesWith,socket}) {
   },[])
   
   useEffect(()=>{
-    console.log("bannerdata"+bannerdata)
+    console.log("bannerdata");
+    console.log(bannerdata)
   },[bannerdata])
 
 
@@ -105,13 +106,7 @@ function Chat({settingstate,messagesWith,socket}) {
      
     //   if(querymsgwith){
     //     console.log("dei mame")
-    //     let res=await axios.get(`http://localhost:5000/api/chat/finduser`,{userid:querymsgwith})
-    //     if(res){
-    //       console.log("findusers")
-    //       console.log(res)
-    //       setbannerdata({name:res.data.name,profilepicurl:res.data.profilepicurl})
-    //       setmessages([]);
-    //     }
+   
     //   }
     // }
 
@@ -121,21 +116,29 @@ function Chat({settingstate,messagesWith,socket}) {
         if(querymsgwith){
           console.log("dei load message")
           socket.current.emit('loadmessage',{userId:user._id,messagesWith:querymsgwith})
-
-        
-      }
-      })();
-       
-         
+     
         socket.current.on('messageloaded',(chat)=>{
           divRef.current && scrollDivToBottom (divRef)
             console.log(chat)
             setmessages(chat.messages)
             OpenId.current=chat.messagesWith._id;
             setbannerdata({name:chat.messagesWith.name,profilepicurl:chat.messagesWith.profilepicurl})
+           
         })
+        
+      }
+      })();
+
+
+       
+         
+       
     },[querymsgwith,user._id])
 
+
+    useEffect(()=>{
+      
+    })
 
     useEffect(()=>{
       if(socket.current){
@@ -147,23 +150,26 @@ function Chat({settingstate,messagesWith,socket}) {
    setmessages((prev)=>[...prev,newchat])
 
     let newchats=JSON.parse(localStorage.getItem('chats'))
-   // console.log(newchats);
+   console.log(newchats);
  
-   if(newchats &&newchats.filter((ms)=>ms.messagesWith===newchat.sender).length>0 ){
-     newchats.find((ms)=>ms.messagesWith===newchat.sender)['lastMessage']=newchat.msg;
-     newchats.find((ms)=>ms.messagesWith===newchat.sender)['date']=Date.now();
-     // console.log(newchats)
-     newMsgSound(bannerdata.name);
-       setnotification({
-         user:{
-           profilepicurl:newchats.find((ms)=>ms.messagesWith===newchat.sender).profilepicurl,
-           name:newchats.find((ms)=>ms.messagesWith===newchat.sender).name,
-           messagesWith:newchats.find((ms)=>ms.messagesWith===newchat.sender).messagesWith
-         },
-         messgae:newchat.msg,
-         date:newchat.date
-       })
-      setchats(prev=> [newchats.find((ms)=>ms.messagesWith===newchat.sender),...prev.filter((chat)=>chat.messagesWith!==newchat.sender)])
+   if(newchats.ChatsToBeSent.length>0 ){
+     if(newchats.ChatsToBeSent.filter((ms)=>ms.messagesWith===newchat.sender).length>0){
+      newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender)['lastMessage']=newchat.msg;
+      newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender)['date']=Date.now();
+      // console.log(newchats)
+      newMsgSound(bannerdata.name);
+        setmsgnotification({
+          user:{
+            profilepicurl:newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender).profilepicurl,
+            name:newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender).name,
+            messagesWith:newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender).messagesWith
+          },
+          messgae:newchat.msg,
+          date:newchat.date
+        })
+       setchats(prev=> [newchats.ChatsToBeSent.find((ms)=>ms.messagesWith===newchat.sender),...prev.filter((chat)=>chat.messagesWith!==newchat.sender)])
+     }
+     
    }else{
      let newch={
        date:newchat.date,
@@ -173,7 +179,7 @@ function Chat({settingstate,messagesWith,socket}) {
        profilepicurl:bannerdata.profilepicurl
      }
      newMsgSound(bannerdata.name);
-     setnotification({
+     setmsgnotification({
       user:{
         profilepicurl:newch.profilepicurl,
         name:newch.name,
@@ -295,10 +301,7 @@ function Chat({settingstate,messagesWith,socket}) {
                <ChatListSearch  search={search}></ChatListSearch> 
             </div>
 
-            {
-              notification && <MessageNotification notification={notification} ></MessageNotification>
-            }
-
+           
             { 
                  <>{
                   aboutchat==='chats not found'&&<NoMessages></NoMessages>

@@ -9,11 +9,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { PlaceHolderPosts,EndMessage} from '../Components/Layout/PlaceHolderGroup'
 import CardPost from '../Components/Post/CardPost.js';
 import { Segment } from 'semantic-ui-react';
-
+import newMsgSound from '../Components/Chat/newsound';
 import { Dimmer, Loader } from 'semantic-ui-react'
 
 
-const Home=({socket})=>{
+const Home=({socket , newNotification,setnewNotification,notificationPopup,showNotificationPopup})=>{
   const [posts,setposts] = useState([]);
   const [hasmore, sethasmore] = useState(false);
   const [ShowToastr, setShowToastr] = useState(false);
@@ -22,8 +22,7 @@ const Home=({socket})=>{
   const user=JSON.parse(localStorage.getItem('user'));
   const [loading, setloading] = useState(true);
   const header= user && user.username;
-  const [newNotification,setnewNotification]=useState(null);
-  const [notificationPopup, showNotificationPopup] = useState(false);
+ 
   // console.log(JSON.parse(localStorage.getItem('user')))
  console.log(socket)
   useEffect(()=>{
@@ -48,12 +47,14 @@ useEffect(()=>{
   if(socket.current){
  socket.current.on("newlikenotification",({data})=>{
    console.log(data);
+   newMsgSound(data.user.username);
     setnewNotification(data)
     showNotificationPopup(true)
  })
 
  socket.current.on('newcommentNotification',({data})=>{
    console.log("comment received")
+newMsgSound(data.user.username);
    console.log(data);
   setnewNotification(data)
   showNotificationPopup(true)
@@ -152,10 +153,11 @@ useEffect(()=>{
     if(res.data==="NoPosts"){
       setShowToastr(false);
       // console.log(res.data);
-    }else {
-      posts.length>0 ?setposts((prev)=>[...prev,...res.data]):setposts([res.data]);
+    } else {
+      console.log(res.data);
+      posts.length>0 ?setposts((prev)=>[...prev,...res.data]):setposts(res.data);
       setPageNumber((prev)=>prev+1);
-      // console.log(res.data);
+      
     }
 
    
@@ -209,13 +211,7 @@ useEffect(()=>{
   return(
     <>
    <div style={{margin:"20px"}}></div>
-   {notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
-          notificationPopup={notificationPopup}
-          showNotificationPopup={showNotificationPopup}
-        />
-      )}
+   
 
      <CreatePost user={user} setPosts={setposts} setloading={setloading}></CreatePost>
      {
@@ -247,8 +243,8 @@ useEffect(()=>{
      }
  
      > 
-       {posts[0].length>0 && posts[0].map((post)=>{
- 
+       {posts.length>0 && posts.map((post)=>{
+             console.log(posts)
          return (
       <CardPost
        key={post._id}

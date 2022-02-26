@@ -1,4 +1,4 @@
-import React,{useState,useCallback} from 'react';
+import React,{useState,useCallback,useEffect} from 'react';
 import { Button,  Divider,  Form,Message,Header,Icon } from 'semantic-ui-react'
 import ImageDropDiv from '../Common/ImageDropDiv';
 import Commoninputs from '../Common/Commoninput'
@@ -8,8 +8,8 @@ import { Profileupdate} from '../../utils/profileaction'
 
 function Updateprofile({profile,setactiveitem}) {
     
-    console.log(profile);
-const [media,setmedia]=useState(null);
+    // console.log(profile);
+    const [media, setmedia] = useState(null);
 const [mediapreview,setmediapreview]=useState(profile.user.profilepicurl);
 const [errormsg,seterrormsg]=useState();
 const [showsociallinks,setshowsociallinks]=useState(false);
@@ -17,14 +17,40 @@ const [user,setuser]=useState(profile);
 const [highlighted,sethighlighted]=useState(false);
 const [loading,setloading]=useState(false)
 const [updated,setupdated]=useState(false)
+let [profilepicurl, setprofilepicurl] = useState(" ");
+useEffect(()=>{
+    console.log(user);
+},[user])
 
-// useEffect(()=>{
-//     console.log(user);
-// },[user])
+    useEffect(async() => {
+        if (media) {
+                console.log(media)
+                 const form=new FormData();
+            form.append('file',media);
+  
+          const config={
+              headers:{
+                  'Content-Type':'multipart/form-data',Authorization:  JSON.parse(localStorage.getItem('token')) 
+              }
+          }
+  
+          const res=await axios.post(`https://memogramapp.herokuapp.com/api/post/upload`,form,config);
+  
+          if(res){
+              console.log(res.data)
+              setprofilepicurl(res.data)
+             
+              
+          }
+      
+            }
+    },[media])
 
 const changesocialstate=useCallback((showsociallinks)=>{
     setshowsociallinks(!showsociallinks)
 },[showsociallinks])
+
+  
 
 const handlechange=useCallback(async (e)=>{
 
@@ -36,34 +62,22 @@ const handlechange=useCallback(async (e)=>{
 
       
 
-        if(name==='media'){
+        if (name === 'media') {
+            setmedia(files[0]);
             let file=files[0];
-            // console.log("updating media")
-            setmedia(file);
+            console.log(files[0])
+            
             setmediapreview(URL.createObjectURL(file));
-      
-            // if(file!==null){
-            //     const form=new FormData();
-            //     form.append('file',file);
-      
-            //   const config={
-            //       headers:{
-            //           'Content-Type':'multipart/form-data',Authorization:  JSON.parse(localStorage.getItem('token')) 
-            //       }
-            //   }
-      
-            //   const res=await axios.post(`http://localhost:5000/api/profile/update`,form,config,user);
-      
-            //   if(res){
-            //       console.log(res.data)
-                  
-            //   }
-            // }
-      
+          
+            setmedia(files[0])
+            
+           
+          
            
         }else{
             // console.log("updating others")
-            if(name!=='bio'){
+            console.log(name)
+            if(name!=='Bio'){
                 setuser(prev=>({...prev,[name]:value}))
             }else{
                 setuser(prev=>({...prev,['bio']:value}))
@@ -79,36 +93,7 @@ const handlechange=useCallback(async (e)=>{
 },[user,mediapreview,media])
 
 
-const uploadimage=useCallback(async ()=>{
-    try{
-        if(media!==null){
-            // console.log(media);
-            const form=new FormData();
-            form.append('file',media);
-  
-          const config={
-              headers:{
-                  'Content-Type':'multipart/form-data',Authorization:  JSON.parse(localStorage.getItem('token')) 
-              }
-          }
-  
-          const res=await axios.post(`https://memogramapp.herokuapp.com/api/post/upload`,form,config);
-  
-          if(res){
-            //   console.log(res.data)
-              setmediapreview(res.data)
-              setuser(prev=>({...prev,profilepicurl:res.data}))
-              
-          }
-        }
 
-    }catch(e){
-        // console.log(e)
-        seterrormsg(e)
-    }
-      
-      
-},[media,user,mediapreview])
 
     return (
         <div>{
@@ -126,19 +111,15 @@ const uploadimage=useCallback(async ()=>{
                 e.preventDefault()
                  setloading(true)
 
-                if(media!==null){
-                    await uploadimage();
-                }
-
-               const res= await Profileupdate(user,seterrormsg)
+               
+              
+               const res= await Profileupdate(user,seterrormsg,profilepicurl)
 
                if(res ){
                    setloading(false);
                    setupdated(true);
                 
                }
-
-
 
             }}
             >

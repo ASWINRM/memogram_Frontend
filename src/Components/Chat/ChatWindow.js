@@ -7,7 +7,10 @@ import { Dimmer, Loader } from 'semantic-ui-react'
 import {  Grid} from "semantic-ui-react";
 function ChatWindow({bannerdata,messages,user,divRef,sendmsg,querymsgwith}) {
 
-    
+    console.log(querymsgwith)
+    console.log(messages)
+    console.log(user)
+    console.log(bannerdata)
 
     return (
         <>

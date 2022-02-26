@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState ,useEffect} from "react";
 import { Feed, Button, Divider } from "semantic-ui-react";
 import calculateTime from "../../utils/calculateTime";
 import {userfollow,userunfollow} from '../../utils/followaction'
+import newMsgSound from "../Chat/newsound";
+function FollowerNotification({ notification, userfollowstats, setuserfollowstats }) {
 
-function FollowerNotification({ notification,userfollowstats,setuserfollowstats}) {
   const [disabled, setDisabled] = useState(false);
    const [loading,setloading]=useState(false);
    console.log(userfollowstats)

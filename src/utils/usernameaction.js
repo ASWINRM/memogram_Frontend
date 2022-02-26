@@ -26,17 +26,17 @@ export const checkusername=async (username,userstatemanage)=>{
 
 export async function handlesubmit(username,currentpassword,newpassword,passwordmanage){
 
-   
+   let user=JSON.parse(localStorage.getItem('user'))
     const Axios = axios.create({
      
-        headers: {   "Content-Type": "application/json",Authorization: JSON.parse(localStorage.getItem('token'))}
+        headers: {   "Content-Type": "application/json",Authorization:localStorage.getItem('token')}
         });
         try{
             console.log("update password function")
-            const res=await Axios.post(`http://localhost:5000/api/profile/update/password`,
+            const res=await Axios.post(`https://memogramapp.herokuapp.com/api/profile/update/password`,
             {username:username,
             currentpassword:currentpassword,
-            newpassword:newpassword})
+            newpassword:newpassword,userid:user._id})
 
             // if(res){
             //     // console.log(res);

@@ -2,18 +2,18 @@
 import axios from "axios";
 
 
-export const Profileupdate=async(user,seterrormsg)=>{
+export const Profileupdate=async(user,seterrormsg,profilepicurl)=>{
 
     try{
-
-        // console.log(user);
-    
+        let userId=JSON.parse(localStorage.getItem('user'))
+        console.log(user);
+        console.log(profilepicurl)
         const Axios = axios.create({
                    
-            headers: {   "Content-Type": "application/json",Authorization:  JSON.parse(localStorage.getItem('token'))}
+            headers: {   "Content-Type": "application/json",Authorization:localStorage.getItem('token')}
           });
     
-        const res=await Axios.post(`https://memogramapp.herokuapp.com/api/profile/update`,{user});
+        const res=await Axios.post(`https://memogramapp.herokuapp.com/api/profile/update`,{user,profilepicurl,userid:userId._id});
     
         if(res){
             // console.log(res.data);

@@ -34,6 +34,7 @@ const SideMenu=({user,pc,settingstate,activeState,ChatAction})=>{
     },[])
 
     let chatnotification=useCallback(async(signal)=>{ 
+      
       let msgres=await Axios.get(`https://memogramapp.herokuapp.com/api/chat/MessageNotification`,{signal:signal})
 
       if(msgres){

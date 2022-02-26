@@ -12,6 +12,8 @@ import Notification from '../../screen/notification';
 import axios from 'axios';
 import io from 'socket.io-client'
 import Chat from '../Chat/Chat'
+import MessageNotification from '../Notifications/MessageNotification';
+import NotificationPortal from '../../screen/NotificationPortal'
 const AppMedia = createMedia({
   breakpoints: { zero: 0, mobile: 549, tablet: 850, computer: 1080 }
 });
@@ -25,9 +27,9 @@ const Layout= ()=>{
    const user=JSON.parse(localStorage.getItem('user'));
    const [home,sethome]=useState(true);
    const[activeState,SetactiveState]=useState('home');
-
-
-
+   let [msgnotification,setmsgnotification]=useState(null);
+   const [newNotification,setnewNotification]=useState(null);
+   const [notificationPopup, showNotificationPopup] = useState(false);
    
 
  let socket=useRef()
@@ -62,6 +64,8 @@ function settingstate(state){
   SetactiveState(state);
   return state
 }
+
+
 
 const scrollToTop = async () => {
  sethome(!home);
@@ -135,14 +139,35 @@ window.scrollTo({
                           
                         </Sticky> 
                    </Grid.Column>
+                  
                    <Grid.Column  mobile={16} tablet={4} computer={11}>
+                   {
+              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+            }
+            {notificationPopup && newNotification !== null && (
+        <NotificationPortal
+          newNotification={newNotification}
+          notificationPopup={notificationPopup}
+          showNotificationPopup={showNotificationPopup}
+        />
+      )}
                      <Visibility context={ContextRef}>
                            {
 
-                            (activeState==='home' ) && <Home socket={socket} ></Home>
+                            (activeState==='home' ) && <Home socket={socket}
+                             newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup} ></Home>
                           }
                           {
-                            activeState==='Updatehome' && <UpdatedHome ></UpdatedHome>
+                          activeState === 'Updatehome' && <UpdatedHome
+                             socket={socket}
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup}
+                            ></UpdatedHome>
                           }
                           {
                             activeState===`${user.username}`  && <Profile username={user.username}></Profile>
@@ -155,7 +180,7 @@ window.scrollTo({
                           }
                           {
                             (activeState.split('/')[0]==="messages" && socket.current)&& <Chat messagesWith={activeState.split('/')[1]} settingstate={settingstate}
-                            socket={socket}></Chat>
+                            socket={socket} msgnotification={msgnotification} setmsgnotification={setmsgnotification}></Chat>
                           }
                        </Visibility>
                    </Grid.Column>
@@ -166,6 +191,7 @@ window.scrollTo({
                       </Segment>
                     </Sticky>
                    </Grid.Column>
+                 
                </Grid>
            </Ref>
            </Media>
@@ -182,12 +208,31 @@ window.scrollTo({
                         </Grid.Column>
 
                         <Grid.Column width={15}>
+                        {
+              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification}></MessageNotification>
+            }
+            {notificationPopup && newNotification !== null && (
+        <NotificationPortal
+          newNotification={newNotification}
+          notificationPopup={notificationPopup}
+          showNotificationPopup={showNotificationPopup}
+        />
+      )}
                           <Visibility context={ContextRef}>
                           {
-                            (activeState==='home' && socket.current) && <Home socket={socket} ></Home>
+                            (activeState==='home' && socket.current) && <Home socket={socket} 
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup} ></Home>
                           }
                           {
-                            activeState==='Updatehome' && <UpdatedHome ></UpdatedHome>
+                            activeState==='Updatehome' && <UpdatedHome
+                             socket={socket}
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup}></UpdatedHome>
                           }
                           {
                             activeState===`${user.username}`  && <Profile username={user.username}></Profile>
@@ -200,11 +245,13 @@ window.scrollTo({
                           }
                           {
                             (activeState.split('/')[0]==="messages" && socket.current)&& <Chat messagesWith={activeState.split('/')[1]} settingstate={settingstate}
-                            socket={socket}></Chat>
+                            socket={socket}  msgnotification={msgnotification} setmsgnotification={setmsgnotification}></Chat>
                           }
 
                             </Visibility>
                         </Grid.Column>
+               
+
                       </>
                   </Grid>
                 </Ref>
@@ -212,6 +259,16 @@ window.scrollTo({
 
               <Media between={["mobile", "tablet"]}>
                 <Ref innerRef={ContextRef}>
+                {
+              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+            }
+{notificationPopup && newNotification !== null && (
+        <NotificationPortal
+          newNotification={newNotification}
+          notificationPopup={notificationPopup}
+          showNotificationPopup={showNotificationPopup}
+        />
+      )}
                   <Grid>
                   
                       <>
@@ -224,10 +281,19 @@ window.scrollTo({
                         <Grid.Column width={14}>
                         <Visibility context={ContextRef}>
                         {
-                            (activeState==='home' && socket.current) && <Home socket={socket} ></Home>
+                            (activeState==='home' && socket.current) && <Home socket={socket}
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup} ></Home>
                           }
                           {
-                            activeState==='Updatehome' && <UpdatedHome ></UpdatedHome>
+                            activeState === 'Updatehome' && <UpdatedHome
+                               socket={socket}
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup} ></UpdatedHome>
                           }
                           {
                             activeState===`${user.username}`  && <Profile username={user.username}></Profile>
@@ -240,7 +306,7 @@ window.scrollTo({
                           }
                           {
                             (activeState.split('/')[0]==="messages" && socket.current)&& <Chat messagesWith={activeState.split('/')[1]} settingstate={settingstate}
-                            socket={socket}></Chat>
+                            socket={socket}  msgnotification={msgnotification} setmsgnotification={setmsgnotification}></Chat>
                           }
                         </Visibility>
                         </Grid.Column>
@@ -251,14 +317,36 @@ window.scrollTo({
               </Media>
 
               <Media between={["zero", "mobile"]}>
+             
+
                 <Mobilesidemenu user={user} pc={false} settingstate={settingstate} />
+
                 <Grid>
+ {
+              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+            }
+            {notificationPopup && newNotification !== null && (
+        <NotificationPortal
+          newNotification={newNotification}
+          notificationPopup={notificationPopup}
+          showNotificationPopup={showNotificationPopup}
+        />
+      )}
                   <Grid.Column> <Visibility context={ContextRef}>
                           {
-                            (activeState==='home' && socket.current) && <Home socket={socket} ></Home>
+                            (activeState==='home' && socket.current) && <Home socket={socket} 
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup} ></Home>
                           }
                           {
-                            activeState==='Updatehome' && <UpdatedHome ></UpdatedHome>
+                      activeState === 'Updatehome' && <UpdatedHome
+                         socket={socket}
+                            newNotification={ newNotification} 
+                            setnewNotification={setnewNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup}></UpdatedHome>
                           }
                           {
                             activeState===`${user.username}`  && <Profile username={user.username}></Profile>
@@ -271,7 +359,7 @@ window.scrollTo({
                           }
                            {
                             (activeState.split('/')[0]==="messages" && socket.current)&& <Chat messagesWith={activeState.split('/')[1]} settingstate={settingstate}
-                            socket={socket}></Chat>
+                            socket={socket}  msgnotification={msgnotification} setmsgnotification={setmsgnotification}></Chat>
                           }
                     </Visibility></Grid.Column>
                 </Grid>

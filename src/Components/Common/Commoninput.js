@@ -2,17 +2,19 @@ import React,{useCallback} from 'react'
 import {Form,Message,Button,Divider} from 'semantic-ui-react'
 
 const Commoninputs  =({user,handlechange,showsociallinks,
-  changesocialstate,setuser})=> {
+  setshowsociallinks,setuser})=> {
   let {Bio,facebook,twitter,instagram}=user
 
   // useEffect(()=>{
   //   console.log(user)
+  
+                            
   // },[user])
 //  console.log(Bio,facebook,twitter,instagram)
   const handleBioChange=useCallback(async(e)=>{
     
     const {name,value}=e.target;   
-    
+    console.log(name)
    setuser((prev)=>({...prev,[name]: value}))
   
 },[setuser])
@@ -30,13 +32,13 @@ const Commoninputs  =({user,handlechange,showsociallinks,
           ></Form.Field>   */}
           <div style={{marginBottom:"3%"}}>
             <label>Bio</label>
-            <textarea name="Bio"  onChange={handleBioChange}   className="myText"
+            <textarea name="bio"  onChange={handleBioChange}   className="myText"
             placeholder="Bio Data" rows="5" cols="50"required value={Bio}></textarea>
           </div>
           <Button content="Add Social Links"
           icon="at"
           type="button"
-          onClick={()=>changesocialstate(showsociallinks)}
+          onClick={()=>setshowsociallinks(!showsociallinks)}
           color="red"
           ></Button>
           {showsociallinks &&
