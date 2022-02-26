@@ -112,7 +112,7 @@ function Chat({settingstate,messagesWith,socket,msgnotification,setmsgnotificati
 
     useEffect(()=>{
               console.log(querymsgwith);
-      (async()=>{
+     
         if(querymsgwith){
           console.log("dei load message")
           socket.current.emit('loadmessage',{userId:user._id,messagesWith:querymsgwith})
@@ -127,7 +127,7 @@ function Chat({settingstate,messagesWith,socket,msgnotification,setmsgnotificati
         })
         
       }
-      })();
+      
 
 
        
