@@ -1,4 +1,4 @@
-Memogram-A social media Application
+<h1>Memogram</h1>
 A Social media application where user can create ,
 delete, like ,comment on their friends posts and they can
 follow and unfollow the users , they used to get
