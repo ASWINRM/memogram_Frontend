@@ -38,7 +38,8 @@ let token=window.location.pathname.split('/')[2]
         if (field1 !== field2) {
           return setErrorMsg("Passwords do not match");
         }
-  
+        console.log(token);
+        console.log(field1);
         await axios.post(`https://memogramapp.herokuapp.com/api/forgot/token`, {
           password: field1,
           token:token,
