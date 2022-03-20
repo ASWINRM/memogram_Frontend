@@ -6,47 +6,68 @@ import Navbar from "./Navbar";
 import { Container } from 'semantic-ui-react'
 function ResetPage() {
     let history=useHistory();
-  
+ 
 let token=window.location.pathname.split('/')[2]
 // console.log(token)
-  const [newPassword, setNewPassword] = useState({ field1: "", field2: "" });
-
-  const { field1, field2 } = newPassword;
+  const [field1, setfield1] = useState("");
+  const [field2, setfield2] = useState("");
+ 
   const [showpassword,setshowpassword]=useState(false);
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = useCallback((e) => {
+ 
+  const handleChange = (e) => {
     const { name, value } = e.target;
-
-    setNewPassword(prev => ({ ...prev, [name]: value }));
-  },[newPassword]);
+    // console.log(name);
+    // console.log(value);
+    setfield1(value);
+  };
+  
+  const handleChange2 = (e) => {
+    const { name, value } = e.target;
+    // console.log(name);
+    // console.log(value);
+    setfield2(value);
+  }
 
   useEffect(() => {
     errorMsg !== null && setTimeout(() => setErrorMsg(null), 5000);
   }, [errorMsg]);
 
-  const resetPassword = useCallback(async e => {
+  const resetPassword = async e => {
     e.preventDefault();
     let controller=new AbortController();
     let signal=controller.signal;
-    try{
+    try {
+      console.log(field1);
+      console.log(field2);
       setLoading(true);
       try {
+        if (field1.length < 6 && field1.length < 6) {
+          console.log(field1 + " " + field2)
+                setLoading(false);
+          return setErrorMsg("Password must be atleast 6 characters length");
+        }
         if (field1 !== field2) {
+                setLoading(false);
           return setErrorMsg("Passwords do not match");
         }
         console.log(token);
         console.log(field1);
-        await axios.post(`https://memogramapp.herokuapp.com/api/forgot/token`, {
-          password: field1,
+        if (field1 !== "" && field1.length > 6 && field2.length > 6) {
+          console.log(field1);
+          await axios.post(`https://memogramapp.herokuapp.com/api/forgot/token`, {
+          password:field1,
           token:token,
           signal:signal
         });
   
         setSuccess(true);
+        }
+        
       } catch (error) {
         setErrorMsg(error);
       }
@@ -56,7 +77,7 @@ let token=window.location.pathname.split('/')[2]
          console.log(e)
     }
    
-  },[success]);
+  };
 
   return (
     <>
@@ -114,7 +135,7 @@ let token=window.location.pathname.split('/')[2]
               label="Confirm Password"
               placeholder="Confirm new Password"
               name="field2"
-              onChange={handleChange}
+              onChange={handleChange2}
               value={field2}
               required
             />
