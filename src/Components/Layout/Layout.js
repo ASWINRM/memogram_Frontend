@@ -141,17 +141,16 @@ window.scrollTo({
         {user?
         
         <MediaContextProvider>
-
+        <>
         
-        <div>
-            
-            <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}} onClick={()=>scrollToTop()}>
-           <NewNavbar scrollToTop={scrollToTop}></NewNavbar>
-           </div>
-           <Media greaterThanOrEqual="computer">
-           <Ref innerRef={ContextRef}>
-           
-               <Grid columns='3'>
+        <div> 
+               <div style={{position:"sticky",zIndex:"1",top:"0%",width: "100%",display:"block"}} onClick={()=>scrollToTop()}>
+               <NewNavbar scrollToTop={scrollToTop}></NewNavbar>
+              </div>
+                <Media greaterThanOrEqual="computer">
+                  <Ref innerRef={ContextRef}>
+                 <>
+                  <Grid columns='3'>
                    <Grid.Column floated="left"  mobile={0} tablet={8} computer={2}>
                        
                       <Sticky context={ContextRef} active={true} offset={85} >
@@ -164,15 +163,15 @@ window.scrollTo({
                   
                    <Grid.Column  mobile={16} tablet={4} computer={11}>
                    {
-              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
-            }
-            {notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
-          notificationPopup={notificationPopup}
-          showNotificationPopup={showNotificationPopup}
-        />
-      )}
+                        msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+                     }
+                      {notificationPopup && newNotification !== null && (
+                         <NotificationPortal
+                           newNotification={newNotification}
+                            notificationPopup={notificationPopup}
+                             showNotificationPopup={showNotificationPopup}
+                     />
+                     )}
                      <Visibility context={ContextRef}>
                            {
 
@@ -214,12 +213,14 @@ window.scrollTo({
                     </Sticky>
                    </Grid.Column>
                  
-               </Grid>
-           </Ref>
-           </Media>
+                    </Grid>
+                   </> 
+                </Ref>
+               </Media>
 
-           <Media between={["tablet", "computer"]}>
-                <Ref innerRef={ContextRef}>
+               <Media between={["tablet", "computer"]}>
+                  <Ref innerRef={ContextRef}>
+                    <>
                   <Grid>
                    
                       <>
@@ -231,15 +232,15 @@ window.scrollTo({
 
                         <Grid.Column width={15}>
                         {
-              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification}></MessageNotification>
-            }
-            {notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
-          notificationPopup={notificationPopup}
-          showNotificationPopup={showNotificationPopup}
-        />
-      )}
+                        msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification}></MessageNotification>
+                     }
+                   {notificationPopup && newNotification !== null && (
+                 <NotificationPortal
+                    newNotification={newNotification}
+                      notificationPopup={notificationPopup}
+                    showNotificationPopup={showNotificationPopup}
+                  />
+                 )}
                           <Visibility context={ContextRef}>
                           {
                             (activeState==='home' && socket.current) && <Home socket={socket} 
@@ -276,21 +277,24 @@ window.scrollTo({
 
                       </>
                   </Grid>
+                  </>
                 </Ref>
               </Media>
 
               <Media between={["mobile", "tablet"]}>
-                <Ref innerRef={ContextRef}>
+                  <Ref innerRef={ContextRef}>
+                    <>
                 {
-              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
-            }
-{notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
-          notificationPopup={notificationPopup}
-          showNotificationPopup={showNotificationPopup}
-        />
-      )}
+                 msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+                 }
+                       {notificationPopup && newNotification !== null && (
+                        <NotificationPortal
+                        newNotification={newNotification}
+                          notificationPopup={notificationPopup}
+                            showNotificationPopup={showNotificationPopup}
+                            />
+                    )}
+                    
                   <Grid>
                   
                       <>
@@ -335,36 +339,40 @@ window.scrollTo({
                       </>
                    
                   </Grid>
+                  </>
                 </Ref>
               </Media>
 
               <Media between={["zero", "mobile"]}>
-             
-
-                <Mobilesidemenu user={user} pc={false} settingstate={settingstate} />
-
+               
+                  
+                  <>
+                     
+                    <Mobilesidemenu user={user} pc={false} settingstate={settingstate} />
+                    
                 <Grid>
- {
-              msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
-            }
-            {notificationPopup && newNotification !== null && (
-        <NotificationPortal
-          newNotification={newNotification}
-          notificationPopup={notificationPopup}
-          showNotificationPopup={showNotificationPopup}
-        />
-      )}
-                  <Grid.Column> <Visibility context={ContextRef}>
+                   {
+                      msgnotification && <MessageNotification notification={msgnotification} setmsgnotification={setmsgnotification} ></MessageNotification>
+                   }
+                   {notificationPopup && newNotification !== null && (
+                   <NotificationPortal
+                         newNotification={newNotification}
+                          notificationPopup={notificationPopup}
+                         showNotificationPopup={showNotificationPopup}
+                     />
+                   )}
+                    <Grid.Column>
+                      <Visibility context={ContextRef}>
                           {
-                            (activeState==='home' && socket.current) && <Home socket={socket} 
+                            (activeState==='home' && socket.current) ? <Home socket={socket} 
                             newNotification={ newNotification} 
                             setnewNotification={setnewNotification}
                             notificationPopup={notificationPopup}
-                             showNotificationPopup={showNotificationPopup} ></Home>
+                             showNotificationPopup={showNotificationPopup} ></Home>:<p></p>
                           }
                           {
-                      activeState === 'Updatehome' && <UpdatedHome
-                         socket={socket}
+                           activeState === 'Updatehome' && <UpdatedHome
+                            socket={socket}
                             newNotification={ newNotification} 
                             setnewNotification={setnewNotification}
                             notificationPopup={notificationPopup}
@@ -379,29 +387,32 @@ window.scrollTo({
                           {
                             activeState.split('/')[0]==="anotherProfile" && <Profile username={activeState.split('/')[1]}></Profile>
                           }
-                           {
+                          {
                             (activeState.split('/')[0]==="messages" && socket.current)&& <Chat messagesWith={activeState.split('/')[1]} settingstate={settingstate}
                             socket={socket}  msgnotification={msgnotification} setmsgnotification={setmsgnotification}></Chat>
                           }
-                    </Visibility></Grid.Column>
+                      </Visibility>
+                    </Grid.Column>
                 </Grid>
+                </>
+                
               </Media>
+            </div>
+            </>
+             </MediaContextProvider>
 
-
-        </div>
-        </MediaContextProvider>
-
-        :
-        <div>
+            :
+               <div>
+             <>
+                <NewNavbar></NewNavbar>
+               <Container style={{paddingTop:"1rem"}} text>
+                   
+               </Container>
+               </>
+              </div>
+          }
         
-         <NewNavbar></NewNavbar>
-        <Container style={{paddingTop:"1rem"}} text>
-        
-        </Container>
-        </div>
-        }
-        
-        </>
+         </>
        
     )
 }

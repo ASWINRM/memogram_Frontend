@@ -23,7 +23,7 @@ const Home=({socket , newNotification,setnewNotification,notificationPopup,showN
   const [loading, setloading] = useState(true);
   const header= user && user.username;
  
-  // console.log(JSON.parse(localStorage.getItem('user')))
+  console.log(JSON.parse(localStorage.getItem('user')))
  console.log(socket)
   useEffect(()=>{
 

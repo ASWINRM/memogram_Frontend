@@ -104,23 +104,12 @@ function Mobilesidemenu({user,pc,activeState,settingstate}) {
          <Menu fluid borderless size='massive'>
              <Container text style={{position:"fixed",zIndex:"1"}} >
              <div
-       
-       style={{ display:'flex',flexDirection:'row',backgroundColor:'white',boxShadow:" 1px 5px #f2f4f2",borderBottomRightRadius:"1rem"  ,height:"20%",width:"97%"}}
-       size="big"
-       
-       selection>   
-           {
-               pc===true? 
-               <List
-               style={{ paddingTop: "1rem",marginLeft:"1rem" }}
-               size="big"
-               
-               verticalAlign="middle"
-               selection>           
-           
-           <List.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
-          onClick={()=>settingstate('home')}
-          >
+              style={{ display:'flex',flexDirection:'row',backgroundColor:'white',boxShadow:" 1px 5px #f2f4f2",borderBottomRightRadius:"1rem"  ,height:"20%",width:"97%"}}
+              size="big" >   
+          
+              <Menu.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+               onClick={()=>settingstate('home')}
+                >
             <Icon name="home" size="large" color={activeState!=="home" ? "teal":"teal"} />
             {
               (pc===true) && <List.Content>
@@ -128,73 +117,9 @@ function Mobilesidemenu({user,pc,activeState,settingstate}) {
             </List.Content>
           
             }
-           </List.Item>
-
-           <List.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
-          {
-            (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
-            <Icon
-              name={unreadMessage ? "mail" : "mail outline"}
-              size="large"
-              color={
-                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
-              }
-              onClick={()=>ChatAction()}
-            />
-            </Badge>:<Icon
-              name={unreadMessage ? "mail" : "mail outline"}
-              size="large"
-              color={
-                (activeState==="messages" && "teal") || (unreadMessage && "blue") || "blue"
-              }
-             
-            />
-          }
-          {(pc===true) &&<List.Content>
-              <List.Header content="Messages" />
-            </List.Content> }
-            
-          </List.Item >
-          <br />
-          <List.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
-          onClick={()=>settingstate('notification')} >
-            {/* <Icon
-              name={unreadNotification ? "hand point right" : "bell outline"}
-              size="large"
-              color={
-                (isActive(`/${username}/notifications`) && "teal") ||
-                (unreadNotification && "orange")
-              }
-            /> */}
-
-            {
-              (unreadNotification&&notificationLength>0)? <Badge badgeContent={notificationLength} color="secondary"  overlap="circular" >
-              <NotificationsIcon color="action" fontSize="large" color="primary" />
-               </Badge>: <NotificationsIcon color="action" fontSize="large" />
-            }
-            {
-              (pc===true)&& <List.Content>
-              <List.Header content="Notifications" />
-            </List.Content>
-            }
-            
-          </List.Item>
-           <br />
-               </List>:
-    <>
-     <Menu.Item active={activeState==="home"?true:false} style={activeState==="home"?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
-          onClick={()=>settingstate('home')}
-          >
-            <Icon name="home" size="large" color={activeState!=="home" ? "teal":"teal"} />
-            {
-              (pc===true) && <List.Content>
-              <List.Header content="Home" />
-            </List.Content>
-          
-            }
-           </Menu.Item>
-
-           <Menu.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
+              </Menu.Item>
+              
+               <Menu.Item onClick={()=>ChatAction()} active={activeState==="messages"} style={activeState==="messages"?{"backgroundColorr":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}} >
           {
             (unreadMessage && msgNotification>0)?<Badge badgeContent={msgNotification} color="secondary"  overlap="circular" >
             <Icon
@@ -219,8 +144,8 @@ function Mobilesidemenu({user,pc,activeState,settingstate}) {
             </List.Content> }
             
           </Menu.Item >
-          <br />
-          <Menu.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+              <br />
+               <Menu.Item active={activeState ==="notification"} style={(activeState ==="notification" )?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
           onClick={()=>settingstate('notification')} >
             {/* <Icon
               name={unreadNotification ? "hand point right" : "bell outline"}
@@ -243,29 +168,27 @@ function Mobilesidemenu({user,pc,activeState,settingstate}) {
             }
             
           </Menu.Item>
-           <br />
-           <Menu.Item>
-     <Dropdown item icon="bars" direction="left" style={{paddingBottom:"1rem"}}>
-     
-         <Dropdown.Menu>
-         <DropdownMenu.Item active={(activeState===username && activeState!== "notifications")} style={(activeState === username &&activeState !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
-          onClick={()=>settingstate(username)}
-          >
+              <br />
+              <Menu.Item>
+                
+         <Dropdown item icon="bars" direction="left" style={{paddingBottom:"1rem"}}>
+            
+                  <Dropdown.Menu>
+                    <div>
+            <Dropdown.Item active={(activeState===username && activeState!== "notifications")} style={(activeState === username &&activeState !== "notifications")?{"backgroundColor":"#EEEEEE" ,"borderRadius": "15px","paddingTop":"10px","paddingBottom":"10px"}: {"paddingTop":"10px","paddingBottom":"10px"}}
+             onClick={()=>settingstate(username)}
+             >
             <Icon
               name="user"
               size="large"
               color={(activeState=== username && "teal") || "grey"}
             />
-            {
-              (pc===true) && <List.Content>
-              <List.Header content="Account" />
-            </List.Content>
-            }
+           Account
             
-          </DropdownMenu.Item>
-          
+           </Dropdown.Item>
+          </div>
            <Link to="/search">
-             <Dropdown.Item active={isActive("/search")}>
+             <Dropdown.Item active={isActive("/search")} >
                <Icon name="search" size="large" />
                Search
              </Dropdown.Item>
@@ -276,13 +199,14 @@ function Mobilesidemenu({user,pc,activeState,settingstate}) {
              Logout
            </Dropdown.Item>
          </Dropdown.Menu>
-       </Dropdown>
+         
+                </Dropdown>
+                
     </Menu.Item>
-     
-
-    </>
+ 
+    
   
-           }
+           
           </div>
              </Container>
          </Menu>
