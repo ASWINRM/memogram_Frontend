@@ -251,6 +251,7 @@ useEffect(()=>{
        setShowToastr={setShowToastr}
        settingpost={settingpost}
        socket={socket}
+       setposts={setposts}
        ></CardPost>
          )
        
