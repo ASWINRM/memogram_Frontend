@@ -248,6 +248,7 @@ useEffect(()=>{
       <CardPost
        key={post._id}
        post={post}
+       posts={posts}
        setShowToastr={setShowToastr}
        settingpost={settingpost}
        socket={socket}
