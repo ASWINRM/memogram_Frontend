@@ -61,18 +61,21 @@ export async function  deletePost(postId,setposts,setShowToastr,setError,posts,s
     try{
         const Axios = axios.create({
                 
-            headers: {  "Content-Type": "application/json",Authorization:localStorage.getItem('token') }
+            headers: {  "Content-Type": "application/json",Authorization:JSON.parse(localStorage.getItem('token')) }
           });
-        // console.log("postId "+postId )
-        posts.length>0&&
-      setposts((prev)=>prev.filter(pos=>pos._id!==postId));
+        console.log("postId "+postId )
+      if (posts.length > 0) {
+        console.log("post length greter than 0");
+              console.log(posts);
+              setposts((prev)=>prev.filter(pos=>pos._id!==postId));
+              settingpost();
+      }
+
         //  console.log(post);
-         settingpost();
-        let res=await Axios.put(`https://memogramapp.herokuapp.com/api/post/delete/${postId}`,{userid:user._id});
-       if(res){
-        //  console.log(res);
-      
-        
+       
+       let res= await Axios.put(`https://memogramapp.herokuapp.com/api/post/delete/${postId}`,{userid:user._id});
+      if (res) {
+        console.log(res);
        }
        
     }catch(e){
